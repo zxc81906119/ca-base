@@ -1,0 +1,13 @@
+ARG BASE_IMAGE="registry.access.redhat.com/ubi8/openjdk-17"
+ARG BASE_IMAGE_TAG="latest"
+FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG}
+
+LABEL MAINTAINER=ming
+
+ENV EXEC_JAR_DIR=/run/app
+ENV EXEC_JAR_NAME=clean-base.jar
+ENV EXEC_JAR_PATH="${EXEC_JAR_DIR}/${EXEC_JAR_NAME}"
+
+COPY "./target/${EXEC_JAR_NAME}" "${EXEC_JAR_DIR}/"
+
+CMD ["bash","-c","java -jar ${EXEC_JAR_PATH}"]

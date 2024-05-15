@@ -1,0 +1,13 @@
+proj:
+  profile: ${proj_profile:dev}
+spring:
+  profiles:
+    active: ${proj.profile}
+  config:
+    import:
+      - classpath:application-i18n.yml
+      - classpath:application-logging.yml
+      - classpath:application-jpa.yml
+      - classpath:application-swagger.yml
+      - classpath:application-actuator.yml
+

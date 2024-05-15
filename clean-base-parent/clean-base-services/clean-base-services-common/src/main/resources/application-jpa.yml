@@ -1,0 +1,19 @@
+---
+spring:
+  datasource:
+    username: ${spring_datasource_username:sa}
+    password: ${spring_datasource_password:p@ssw0rd}
+    url: ${spring_datasource_url:jdbc:h2:mem:test}
+    driver-class-name: ${spring_datasource_driver_class_name:org.h2.Driver}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 30000
+      idleTimeout: 600000
+      maxLifetime: 1800000
+      minimum-idle: 1
+      maximum-pool-size: 10
+      auto-commit: true
+  jpa:
+    database: ${spring_jpa_database:h2}
+    hibernate:
+      ddl-auto: validate

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clean-base-deployment
+  labels:
+    app: clean-base
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: clean-base
+  template:
+    metadata:
+      name: clean-base-pod
+      labels:
+        app: clean-base
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: clean-base
+          image: docker.io/minggod/clean-base:latest
+          #          如果用 latest 就得這樣用
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          #          resources:
+          ##            limits:
+          ##              memory: 4M
+          #            requests:
+          #              memory: 2M
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            # 值 > 應用啟動花的秒數
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            #            預設值, 如果實際情況會比一秒久,要調大一點
+            timeoutSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            # 值 > 應用啟動花的秒數
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 1
+

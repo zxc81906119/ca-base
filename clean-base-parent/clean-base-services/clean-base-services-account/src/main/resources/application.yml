@@ -1,0 +1,13 @@
+---
+spring:
+  config:
+    import: classpath:application-common.yml
+
+---
+spring:
+  application:
+    name: clean-base
+
+server:
+  port: 8081
+

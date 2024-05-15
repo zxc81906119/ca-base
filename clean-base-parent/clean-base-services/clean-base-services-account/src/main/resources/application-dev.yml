@@ -1,0 +1,5 @@
+spring:
+  config:
+    import:
+      - classpath:config/application-jpa-dev.yml
+      - classpath:config/application-swagger-dev.yml
