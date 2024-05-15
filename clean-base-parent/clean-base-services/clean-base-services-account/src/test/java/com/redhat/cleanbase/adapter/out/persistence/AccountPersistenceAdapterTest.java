@@ -4,10 +4,10 @@ import com.redhat.cleanbase.adapter.out.persistence.repository.ActivityRepositor
 import com.redhat.cleanbase.adapter.out.persistence.repository.SpringDataAccountRepository;
 import com.redhat.cleanbase.adapter.out.persistence.repository.model.AccountPo;
 import com.redhat.cleanbase.adapter.out.persistence.repository.model.ActivityPo;
-import com.redhat.cleanbase.application.domain.xxx.model.AccountDo;
-import com.redhat.cleanbase.application.domain.xxx.model.ActivityDo;
-import com.redhat.cleanbase.application.domain.xxx.model.ActivityWindowVo;
-import com.redhat.cleanbase.application.domain.xxx.model.MoneyVo;
+import com.redhat.cleanbase.application.domain.model.AccountDo;
+import com.redhat.cleanbase.application.domain.model.ActivityDo;
+import com.redhat.cleanbase.application.domain.model.ActivityWindowVo;
+import com.redhat.cleanbase.application.domain.model.MoneyVo;
 import com.redhat.cleanbase.base.BaseTest;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;

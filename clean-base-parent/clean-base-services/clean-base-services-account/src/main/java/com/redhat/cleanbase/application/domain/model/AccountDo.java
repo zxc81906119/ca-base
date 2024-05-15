@@ -1,8 +1,5 @@
-package com.redhat.cleanbase.application.domain.xxx.model;
+package com.redhat.cleanbase.application.domain.model;
 
-import com.redhat.cleanbase.application.domain.xxx.ActivityDo;
-import com.redhat.cleanbase.application.domain.xxx.ActivityWindowVo;
-import com.redhat.cleanbase.application.domain.xxx.MoneyVo;
 import lombok.*;
 
 import java.time.LocalDateTime;

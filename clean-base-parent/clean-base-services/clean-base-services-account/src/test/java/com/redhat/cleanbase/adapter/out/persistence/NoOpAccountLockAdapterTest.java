@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.adapter.out.persistence;
 
-import com.redhat.cleanbase.application.domain.xxx.model.AccountDo;
+import com.redhat.cleanbase.application.domain.model.AccountDo;
 import com.redhat.cleanbase.base.BaseTest;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;

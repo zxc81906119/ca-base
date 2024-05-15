@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.adapter.out.persistence;
 
-import com.redhat.cleanbase.application.domain.xxx.model.AccountDo.AccountId;
-import com.redhat.cleanbase.application.port.out.xxx.AccountLockPort;
+import com.redhat.cleanbase.application.domain.model.AccountDo.AccountId;
+import com.redhat.cleanbase.application.port.out.AccountLockPort;
 import io.micrometer.observation.annotation.Observed;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,5 @@
-package com.redhat.cleanbase.application.domain.xxx.model;
+package com.redhat.cleanbase.application.domain.model;
 
-import com.redhat.cleanbase.application.domain.xxx.MoneyVo;
 import com.redhat.cleanbase.common.convert.Default;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;

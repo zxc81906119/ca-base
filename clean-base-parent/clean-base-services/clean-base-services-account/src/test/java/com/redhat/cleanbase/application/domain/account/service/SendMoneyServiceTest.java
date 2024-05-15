@@ -1,19 +1,19 @@
 package com.redhat.cleanbase.application.domain.account.service;
 
-import com.redhat.cleanbase.application.domain.xxx.model.AccountDo;
-import com.redhat.cleanbase.application.domain.xxx.model.ActivityWindowVo;
-import com.redhat.cleanbase.application.domain.xxx.model.MoneyVo;
+import com.redhat.cleanbase.application.domain.model.AccountDo;
+import com.redhat.cleanbase.application.domain.model.ActivityWindowVo;
+import com.redhat.cleanbase.application.domain.model.MoneyVo;
 import com.redhat.cleanbase.application.port.usecase.model.SendMoneyCommand;
-import com.redhat.cleanbase.application.port.out.xxx.AccountLockPort;
-import com.redhat.cleanbase.application.port.out.xxx.LoadAccountPort;
-import com.redhat.cleanbase.application.port.out.xxx.UpdateAccountStatePort;
+import com.redhat.cleanbase.application.port.out.AccountLockPort;
+import com.redhat.cleanbase.application.port.out.LoadAccountPort;
+import com.redhat.cleanbase.application.port.out.UpdateAccountStatePort;
 import com.redhat.cleanbase.base.BaseTest;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import com.redhat.cleanbase.application.domain.xxx.service.SendMoneyService;
+import com.redhat.cleanbase.application.domain.service.SendMoneyService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

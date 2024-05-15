@@ -1,11 +1,11 @@
-package com.redhat.cleanbase.application.domain.xxx.service;
+package com.redhat.cleanbase.application.domain.service;
 
-import com.redhat.cleanbase.application.domain.xxx.model.MoneyVo;
+import com.redhat.cleanbase.application.domain.model.MoneyVo;
 import com.redhat.cleanbase.application.port.usecase.SendMoneyUseCase;
 import com.redhat.cleanbase.application.port.usecase.model.SendMoneyCommand;
-import com.redhat.cleanbase.application.port.out.xxx.AccountLockPort;
-import com.redhat.cleanbase.application.port.out.xxx.LoadAccountPort;
-import com.redhat.cleanbase.application.port.out.xxx.UpdateAccountStatePort;
+import com.redhat.cleanbase.application.port.out.AccountLockPort;
+import com.redhat.cleanbase.application.port.out.LoadAccountPort;
+import com.redhat.cleanbase.application.port.out.UpdateAccountStatePort;
 import com.redhat.cleanbase.common.exception.AccountIdNotFoundException;
 import com.redhat.cleanbase.common.exception.ThresholdExceededException;
 import io.micrometer.observation.annotation.Observed;

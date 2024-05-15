@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.application.port.out.xxx;
+package com.redhat.cleanbase.application.port.out;
 
-import com.redhat.cleanbase.application.domain.xxx.model.AccountDo;
+import com.redhat.cleanbase.application.domain.model.AccountDo;
 
 
 public interface AccountLockPort {

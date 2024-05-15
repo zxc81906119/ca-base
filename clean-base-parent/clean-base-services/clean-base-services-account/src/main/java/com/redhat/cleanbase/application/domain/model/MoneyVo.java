@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.application.domain.xxx.model;
+package com.redhat.cleanbase.application.domain.model;
 
 import lombok.NonNull;
 

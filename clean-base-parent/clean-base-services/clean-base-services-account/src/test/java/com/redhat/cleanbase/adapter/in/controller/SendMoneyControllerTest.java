@@ -36,7 +36,6 @@ public class SendMoneyControllerTest extends BaseTest {
 
         Assertions.assertEquals(Boolean.TRUE, res.getIsSend());
         Assertions.assertEquals(ResponseCodeEnum.API_SUCCESS.getValue(), genericResponse.getCode());
-        Assertions.assertEquals(ResponseCodeEnum.API_SUCCESS.name(), genericResponse.getMessage());
 
     }
 

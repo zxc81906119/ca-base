@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.application.port.usecase.model;
 
-import com.redhat.cleanbase.application.domain.xxx.model.AccountDo;
-import com.redhat.cleanbase.application.domain.xxx.model.MoneyVo;
+import com.redhat.cleanbase.application.domain.model.AccountDo;
+import com.redhat.cleanbase.application.domain.model.MoneyVo;
 import com.redhat.cleanbase.common.validation.context.GlobalValidatorContext;
 import jakarta.validation.constraints.NotNull;
 
