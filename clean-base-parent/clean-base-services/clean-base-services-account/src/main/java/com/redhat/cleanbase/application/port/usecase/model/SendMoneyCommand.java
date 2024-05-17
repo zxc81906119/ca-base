@@ -2,7 +2,7 @@ package com.redhat.cleanbase.application.port.usecase.model;
 
 import com.redhat.cleanbase.application.domain.model.AccountDo;
 import com.redhat.cleanbase.application.domain.model.MoneyVo;
-import com.redhat.cleanbase.common.validation.context.GlobalValidatorContext;
+import com.redhat.cleanbase.common.validation.context.GenericValidationContext;
 import jakarta.validation.constraints.NotNull;
 
 public record SendMoneyCommand(
@@ -16,7 +16,7 @@ public record SendMoneyCommand(
         this.sourceAccountId = sourceAccountId;
         this.targetAccountId = targetAccountId;
         this.moneyVo = moneyVo;
-        GlobalValidatorContext.getValidator()
+        GenericValidationContext.getValidator()
                 .validateOrThrow(this);
     }
 }

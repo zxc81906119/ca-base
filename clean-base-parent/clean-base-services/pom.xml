@@ -35,7 +35,7 @@
             </dependency>
             <dependency>
                 <groupId>com.redhat</groupId>
-                <artifactId>clean-base-services-producer</artifactId>
+                <artifactId>clean-base-services-provider</artifactId>
                 <version>${clean-base.version}</version>
             </dependency>
         </dependencies>
@@ -105,7 +105,7 @@
 
     <modules>
         <module>clean-base-services-consumer</module>
-        <module>clean-base-services-producer</module>
+        <module>clean-base-services-provider</module>
         <module>clean-base-services-common</module>
         <module>clean-base-services-account</module>
     </modules>

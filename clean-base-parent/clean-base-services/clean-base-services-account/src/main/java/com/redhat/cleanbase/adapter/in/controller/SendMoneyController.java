@@ -4,8 +4,8 @@ import com.redhat.cleanbase.adapter.in.controller.converter.SendMoneyConverter;
 import com.redhat.cleanbase.adapter.in.controller.model.SendMoneyDto;
 import com.redhat.cleanbase.application.port.usecase.SendMoneyUseCase;
 import com.redhat.cleanbase.common.response.GenericResponse;
-import com.redhat.cleanbase.common.trace.TraceManagement;
-import com.redhat.cleanbase.common.validation.GlobalValidator;
+import com.redhat.cleanbase.common.trace.TracerWrapper;
+import com.redhat.cleanbase.common.validation.GenericValidator;
 import io.micrometer.observation.annotation.Observed;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -25,16 +25,16 @@ public class SendMoneyController {
 
     private final SendMoneyUseCase sendMoneyUseCase;
 
-    private final GlobalValidator globalValidator;
+    private final GenericValidator genericValidator;
 
-    private final TraceManagement traceManagement;
+    private final TracerWrapper tracerWrapper;
 
     @Operation(description = "轉帳")
     @PostMapping
     public GenericResponse<SendMoneyDto.Res> sendMoney(
             @RequestBody SendMoneyDto.Req req) {
 
-        globalValidator.validateOrThrow(req);
+        genericValidator.validateOrThrow(req);
 
         val sendMoneyCommand = sendMoneyConverter.dtoToCommand(req);
 
@@ -44,7 +44,7 @@ public class SendMoneyController {
                 .isSend(isSendMoney)
                 .build();
 
-        return GenericResponse.ok(res, traceManagement.getCurrentSpanTraceId());
+        return GenericResponse.ok(res, tracerWrapper.getCurrentSpanTraceId());
     }
 
 }

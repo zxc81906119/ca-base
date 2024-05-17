@@ -1,8 +1,8 @@
 package com.redhat.cleanbase.common.exception.context;
 
-import com.redhat.cleanbase.common.exception.ParamValidateFailedException;
-import com.redhat.cleanbase.common.exception.generic.GenericException;
-import com.redhat.cleanbase.common.exception.generic.GenericRtException;
+import com.redhat.cleanbase.common.exception.GenericException;
+import com.redhat.cleanbase.common.exception.GenericExceptionInterface;
+import com.redhat.cleanbase.common.exception.GenericRtException;
 import com.redhat.cleanbase.common.exception.info.ExceptionInfo;
 import com.redhat.cleanbase.common.spring.SelfDestroyBean;
 import com.redhat.cleanbase.common.util.ReflectionUtil;
@@ -34,7 +34,7 @@ public final class GenericExceptionContext {
             scanner.addIncludeFilter((metadataReader, metadataReaderFactory) ->
                     isGenericException(metadataReader)
             );
-            for (BeanDefinition beanDefinition : scanner.findCandidateComponents(ParamValidateFailedException.class.getPackageName())) {
+            for (BeanDefinition beanDefinition : scanner.findCandidateComponents(GenericExceptionInterface.class.getPackageName())) {
                 val beanCls = Class.forName(beanDefinition.getBeanClassName());
                 check(beanCls);
                 if (isRtException(beanCls)) {

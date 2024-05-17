@@ -2,7 +2,6 @@ package com.redhat.cleanbase.common.exception;
 
 
 import com.redhat.cleanbase.application.domain.model.MoneyVo;
-import com.redhat.cleanbase.common.exception.generic.GenericRtException;
 import com.redhat.cleanbase.common.exception.info.ExceptionInfo;
 import com.redhat.cleanbase.common.response.code.ResponseCodeEnum;
 
