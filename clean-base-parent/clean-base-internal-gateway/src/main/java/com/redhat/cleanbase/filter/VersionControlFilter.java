@@ -15,11 +15,13 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @Slf4j
 @Component
-@Order(OrderConstant.DECRYPT_REQUEST_BODY_DATA_FILTER_ORDER_ORDER)
-public class DecryptRequestBodyDataFilter implements GlobalFilter {
+@Order(OrderConstant.VERSION_CONTROL_FILTER_ORDER)
+public class VersionControlFilter implements GlobalFilter {
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.info(getClass().getSimpleName());
         return chain.filter(exchange);
     }
+
 }

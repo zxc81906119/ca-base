@@ -15,9 +15,8 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @Slf4j
 @Component
-@Order(OrderConstant.MAPPING_APP_TO_BFF_API_VERSION_FILTER_ORDER)
-public class MappingAppToBffApiVersionFilter implements GlobalFilter {
-
+@Order(OrderConstant.DUPLICATED_REQUEST_FILTER_ORDER)
+public class DuplicatedRequestFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.info(getClass().getSimpleName());

@@ -15,12 +15,11 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @Slf4j
 @Component
-@Order(OrderConstant.VERIFY_DEVICE_ID_FILTER_ORDER)
-public class VerifyDeviceIdFilter implements GlobalFilter {
+@Order(OrderConstant.AUTH_FILTER_ORDER)
+public class AuthFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.info(getClass().getSimpleName());
         return chain.filter(exchange);
     }
-
 }

@@ -15,12 +15,11 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @Slf4j
 @Component
-@Order(OrderConstant.BLOCK_REPEAT_REQUEST_FILTER_ORDER)
-public class BlockRepeatRequestFilter implements GlobalFilter {
+@Order(OrderConstant.CIPHER_FILTER_ORDER)
+public class CipherFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.info(getClass().getSimpleName());
         return chain.filter(exchange);
     }
-
 }
