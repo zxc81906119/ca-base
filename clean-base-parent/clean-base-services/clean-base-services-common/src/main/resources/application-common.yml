@@ -10,4 +10,3 @@ spring:
       - classpath:jpa/application-jpa.yml
       - classpath:swagger/application-swagger.yml
       - classpath:actuator/application-actuator.yml
-
