@@ -4,11 +4,11 @@ import com.redhat.cleanbase.constant.OrderConstant;
 import com.redhat.cleanbase.exception.annotation.CustomExceptionHandler;
 import com.redhat.cleanbase.exception.handler.ExceptionHandler;
 import com.redhat.cleanbase.util.CastUtil;
+import com.redhat.cleanbase.util.ReflectionUtil;
 import io.micrometer.observation.annotation.Observed;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.annotation.Order;
@@ -40,7 +40,7 @@ public class ExceptionFilter implements GlobalFilter {
                                         .orElseGet(() -> throwable instanceof Exception)
                                 )
                                 .min(ExceptionFilter::compareExceptionHandler)
-                                .map((handler) -> handler.process(exchange, throwable))
+                                .map((handler) -> Mono.defer(() -> handler.process(exchange, throwable)))
                                 .orElseGet(() -> Mono.error(throwable)));
     }
 
@@ -59,6 +59,6 @@ public class ExceptionFilter implements GlobalFilter {
     }
 
     private static Optional<CustomExceptionHandler> getExceptionHandlerAnnotation(@NonNull ExceptionHandler exceptionHandler) {
-        return Optional.ofNullable(exceptionHandler.getClass().getAnnotation(CustomExceptionHandler.class));
+        return ReflectionUtil.findAnnotationOpt(exceptionHandler.getClass(), CustomExceptionHandler.class);
     }
 }
