@@ -17,7 +17,6 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Observed
 @Slf4j
@@ -25,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class ExceptionFilter implements GlobalFilter {
 
-    private final Map<Class<? extends Throwable>, ExceptionHandler> exceptionHandlerMap = new ConcurrentHashMap<>();
+    private final Map<Class<? extends Throwable>, ExceptionHandler> exceptionHandlerMap = new HashMap<>();
 
     public ExceptionFilter(List<ExceptionHandler> exceptionHandlers) {
         exceptionHandlers.forEach((exceptionHandler) -> {
