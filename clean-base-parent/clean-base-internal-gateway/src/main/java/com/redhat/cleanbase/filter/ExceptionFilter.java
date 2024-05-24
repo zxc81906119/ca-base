@@ -36,9 +36,16 @@ public class ExceptionFilter implements GlobalFilter {
 
     private static Class<? extends Throwable> getProcessException(ExceptionHandler<?> exceptionHandler) {
         return CastUtil.cast(
-                Optional.of(exceptionHandler.getClass().getGenericSuperclass())
-                        .filter(ParameterizedType.class::isInstance)
-                        .map(ParameterizedType.class::cast)
+                Optional.of(exceptionHandler.getClass())
+                        .map(Class::getGenericInterfaces)
+                        .flatMap((types) ->
+                                Arrays.stream(types)
+                                        .filter(ParameterizedType.class::isInstance)
+                                        .map(ParameterizedType.class::cast)
+                                        .filter((parameterizedType) ->
+                                                ExceptionHandler.class.equals(parameterizedType.getRawType()))
+                                        .findFirst()
+                        )
                         .map(ParameterizedType::getActualTypeArguments)
                         .filter((types) -> types.length != 0)
                         .map((types) -> types[0])
