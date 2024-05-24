@@ -1,14 +1,11 @@
-package com.redhat.cleanbase.common.i18n;
+package com.redhat.cleanbase.common.i18n.msgsource;
 
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.AbstractMessageSource;
-import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.Locale;
 
-@Component(AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME)
-public class DatabaseMessageSource extends AbstractMessageSource {
+public class CustomDBMsgSource extends AbstractMessageSource {
     @Override
     protected MessageFormat resolveCode(String code, Locale locale) {
         // code 是 key , 可以搭配階層(比如 type.i18nKey)
@@ -18,6 +15,6 @@ public class DatabaseMessageSource extends AbstractMessageSource {
         // 未啥還要放 locale ?
         // 因為他 format 的 格式會因為 locale 而有不同
         // 如果沒有 arg 那就沒差
-        return new MessageFormat("i18n_value", locale);
+        return new MessageFormat("CustomDBMsgSource", locale);
     }
 }

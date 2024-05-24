@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.common.response;
 
 
-import com.redhat.cleanbase.common.i18n.msg_source.MessageSourceContext;
+import com.redhat.cleanbase.common.i18n.msgsource.context.I18nContext;
 import com.redhat.cleanbase.common.response.code.ResponseCode;
 import com.redhat.cleanbase.common.response.code.ResponseCodeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,7 +38,7 @@ public class GenericResponse<T> {
     }
 
     public static <T> GenericResponse<T> body(ResponseCode responseCode, T data, String traceId) {
-        val i18nValue = MessageSourceContext.getMessageSource()
+        val i18nValue = I18nContext.getI18nResolver()
                 .getMessage(responseCode.getRoot().getI18nKey());
         return GenericResponse.body(responseCode.getValue(), i18nValue, data, traceId);
     }
