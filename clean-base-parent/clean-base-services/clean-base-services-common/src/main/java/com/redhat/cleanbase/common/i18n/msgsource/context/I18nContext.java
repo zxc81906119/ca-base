@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.common.i18n.msgsource.context;
 
-import com.redhat.cleanbase.common.i18n.msgsource.resolver.I18nResolver;
+import com.redhat.cleanbase.common.i18n.msgsource.resolver.ConvenientMessageSource;
 import com.redhat.cleanbase.common.spring.SelfDestroyBean;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 public final class I18nContext {
     @Getter
-    private static I18nResolver i18nResolver;
+    private static ConvenientMessageSource messageSource;
 
     private I18nContext() {
         throw new UnsupportedOperationException();
@@ -16,8 +16,8 @@ public final class I18nContext {
 
     @Component
     public static class InitClass extends SelfDestroyBean {
-        public InitClass(I18nResolver i18nResolver) {
-            I18nContext.i18nResolver = i18nResolver;
+        public InitClass(ConvenientMessageSource messageSource) {
+            I18nContext.messageSource = messageSource;
         }
     }
 
