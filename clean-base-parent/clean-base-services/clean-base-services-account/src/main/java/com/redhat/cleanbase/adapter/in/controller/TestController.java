@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.adapter.in.controller;
 
 import com.redhat.cleanbase.common.i18n.msgsource.input.DefaultI18nInput;
-import com.redhat.cleanbase.common.i18n.msgsource.resolver.ConvenientMessageSource;
+import com.redhat.cleanbase.common.i18n.msgsource.ConvenientMessageSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;

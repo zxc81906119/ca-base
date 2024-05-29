@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.common.i18n.msgsource.context;
 
-import com.redhat.cleanbase.common.i18n.msgsource.resolver.ConvenientMessageSource;
+import com.redhat.cleanbase.common.i18n.msgsource.ConvenientMessageSource;
 import com.redhat.cleanbase.common.spring.SelfDestroyBean;
 import lombok.Getter;
 import org.springframework.stereotype.Component;

@@ -2,8 +2,7 @@ package com.redhat.cleanbase.common.i18n.config;
 
 import com.redhat.cleanbase.common.i18n.msgsource.CustomDBMsgSource;
 import com.redhat.cleanbase.common.i18n.msgsource.CustomDBMsgSource1;
-import com.redhat.cleanbase.common.i18n.msgsource.resolver.CompositeMessageSource;
-import com.redhat.cleanbase.common.i18n.msgsource.resolver.ConvenientMessageSource;
+import com.redhat.cleanbase.common.i18n.msgsource.CompositeMessageSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.MessageSource;
@@ -32,7 +31,7 @@ public class I18nConfig {
     }
 
     @Bean
-    public ConvenientMessageSource i18nResolver(@Qualifier(AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME) MessageSource messageSource) {
+    public CompositeMessageSource compositeMessageSource(@Qualifier(AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME) MessageSource messageSource) {
         // 順序這邊自己調整
         return new CompositeMessageSource(
                 List.of(
