@@ -43,8 +43,8 @@ public abstract class CustomAbsMsgSource extends AbstractMessageSource implement
         val parent = getParentMessageSource();
         if (parent != null) {
 
-            if (parent instanceof CustomAbsMsgSource myAbsMsgSource) {
-                return myAbsMsgSource.getMessageInternal(input, locale);
+            if (parent instanceof CustomAbsMsgSource customAbsMsgSource) {
+                return customAbsMsgSource.getMessageInternal(input, locale);
             }
 
             if (parent instanceof AbstractMessageSource) {
@@ -53,7 +53,7 @@ public abstract class CustomAbsMsgSource extends AbstractMessageSource implement
                 throw new UnsupportedOperationException();
             }
 
-            return parent.getMessage(input, locale);
+            return parent.getMessage(input.getCode(), args, input.getDefaultMessage(), locale);
         }
         // Not found in parent either.
         return null;
