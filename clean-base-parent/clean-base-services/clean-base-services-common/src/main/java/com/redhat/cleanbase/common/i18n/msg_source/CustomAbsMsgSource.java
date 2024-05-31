@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.common.i18n.msgsource;
+package com.redhat.cleanbase.common.i18n.msg_source;
 
-import com.redhat.cleanbase.common.i18n.msgsource.input.I18nInput;
+import com.redhat.cleanbase.common.i18n.msg_source.input.I18nInput;
 import lombok.val;
 import org.springframework.context.support.AbstractMessageSource;
 import org.springframework.lang.Nullable;

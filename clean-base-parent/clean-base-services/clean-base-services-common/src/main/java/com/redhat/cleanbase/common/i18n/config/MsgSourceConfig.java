@@ -1,9 +1,9 @@
 package com.redhat.cleanbase.common.i18n.config;
 
-import com.redhat.cleanbase.common.i18n.msgsource.CustomDBMsgSource;
-import com.redhat.cleanbase.common.i18n.msgsource.CustomDBMsgSource1;
-import com.redhat.cleanbase.common.i18n.msgsource.CompositeMsgSource;
-import com.redhat.cleanbase.common.i18n.msgsource.CustomPropMsgSource;
+import com.redhat.cleanbase.common.i18n.msg_source.CustomDBMsgSource;
+import com.redhat.cleanbase.common.i18n.msg_source.CustomDBMsgSource1;
+import com.redhat.cleanbase.common.i18n.msg_source.CompositeMsgSource;
+import com.redhat.cleanbase.common.i18n.msg_source.CustomPropMsgSource;
 import lombok.val;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.context.MessageSourceProperties;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @ConditionalOnClass(AbstractMessageSource.class)
 @Configuration
-public class I18nConfig {
+public class MsgSourceConfig {
 
     public static final String CUSTOM_CONFIG_MESSAGE_SOURCE_BEAN_NAME = "customConfigMessageSource";
     public static final String CUSTOM_DB_MESSAGE_SOURCE_BEAN_NAME = "customDBMessageSource";

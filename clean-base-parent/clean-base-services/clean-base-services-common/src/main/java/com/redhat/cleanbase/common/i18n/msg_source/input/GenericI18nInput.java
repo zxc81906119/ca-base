@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.common.i18n.msgsource.input;
+package com.redhat.cleanbase.common.i18n.msg_source.input;
 
 public class GenericI18nInput implements I18nInput {
     private final String code;

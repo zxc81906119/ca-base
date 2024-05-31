@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.common.i18n.msgsource.input;
+package com.redhat.cleanbase.common.i18n.msg_source.input;
 
 import org.springframework.context.MessageSourceResolvable;
 

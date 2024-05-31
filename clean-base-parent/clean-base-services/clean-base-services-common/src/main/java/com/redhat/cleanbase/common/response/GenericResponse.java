@@ -1,8 +1,8 @@
 package com.redhat.cleanbase.common.response;
 
 
-import com.redhat.cleanbase.common.i18n.msgsource.context.I18nContext;
-import com.redhat.cleanbase.common.i18n.msgsource.input.GenericI18nInput;
+import com.redhat.cleanbase.common.i18n.msg_source.context.I18nContext;
+import com.redhat.cleanbase.common.i18n.msg_source.input.GenericI18nInput;
 import com.redhat.cleanbase.common.response.code.ResponseCode;
 import com.redhat.cleanbase.common.response.code.ResponseCodeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;

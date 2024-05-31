@@ -1,7 +1,7 @@
-package com.redhat.cleanbase.common.i18n.msgsource;
+package com.redhat.cleanbase.common.i18n.msg_source;
 
-import com.redhat.cleanbase.common.i18n.msgsource.condition.I18nProcessCondition;
-import com.redhat.cleanbase.common.i18n.msgsource.input.I18nInput;
+import com.redhat.cleanbase.common.i18n.msg_source.condition.I18nProcessCondition;
+import com.redhat.cleanbase.common.i18n.msg_source.input.I18nInput;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
