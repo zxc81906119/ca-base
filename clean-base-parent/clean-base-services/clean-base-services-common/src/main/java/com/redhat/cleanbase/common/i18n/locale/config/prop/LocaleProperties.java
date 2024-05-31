@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.common.i18n.config.prop;
+package com.redhat.cleanbase.common.i18n.locale.config.prop;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

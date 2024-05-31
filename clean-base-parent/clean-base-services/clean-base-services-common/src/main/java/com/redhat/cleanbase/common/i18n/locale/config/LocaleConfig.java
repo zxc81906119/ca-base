@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.common.i18n.config;
+package com.redhat.cleanbase.common.i18n.locale.config;
 
-import com.redhat.cleanbase.common.i18n.config.prop.LocaleProperties;
+import com.redhat.cleanbase.common.i18n.locale.config.prop.LocaleProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

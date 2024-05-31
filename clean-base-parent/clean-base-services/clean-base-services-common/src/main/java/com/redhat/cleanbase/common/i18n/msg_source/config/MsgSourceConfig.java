@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.common.i18n.config;
+package com.redhat.cleanbase.common.i18n.msg_source.config;
 
 import com.redhat.cleanbase.common.i18n.msg_source.CustomDBMsgSource;
 import com.redhat.cleanbase.common.i18n.msg_source.CustomDBMsgSource1;
