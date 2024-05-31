@@ -10,7 +10,7 @@ import org.springframework.context.NoSuchMessageException;
 import java.util.Locale;
 import java.util.Optional;
 
-public interface ConvenientMessageSource extends MessageSource {
+public interface ConvenientMsgSource extends MessageSource {
     String getMessage(I18nInput input, Locale locale);
 
     default String getMessage(I18nInput input) {
@@ -26,10 +26,10 @@ public interface ConvenientMessageSource extends MessageSource {
     }
 
     default String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
-        return getMessage(resolvableToInput(resolvable), locale);
+        return getMessage(transfer(resolvable), locale);
     }
 
-    private static GenericI18nInput resolvableToInput(MessageSourceResolvable resolvable) {
+    private static GenericI18nInput transfer(MessageSourceResolvable resolvable) {
         val code = Optional.ofNullable(resolvable.getCodes())
                 .filter((codes) -> codes.length != 0)
                 .map((codes) -> codes[0])

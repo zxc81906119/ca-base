@@ -2,13 +2,12 @@ package com.redhat.cleanbase.common.i18n.config;
 
 import com.redhat.cleanbase.common.i18n.msgsource.CustomDBMsgSource;
 import com.redhat.cleanbase.common.i18n.msgsource.CustomDBMsgSource1;
-import com.redhat.cleanbase.common.i18n.msgsource.CompositeMessageSource;
-import com.redhat.cleanbase.common.i18n.msgsource.CustomPropertiesMessageSource;
+import com.redhat.cleanbase.common.i18n.msgsource.CompositeMsgSource;
+import com.redhat.cleanbase.common.i18n.msgsource.CustomPropMsgSource;
 import lombok.val;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.context.MessageSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -33,43 +32,43 @@ public class I18nConfig {
     }
 
     @Bean(CUSTOM_CONFIG_MESSAGE_SOURCE_BEAN_NAME)
-    public MessageSource messageSource() {
-        val properties = messageSourceProperties();
-        val messageSource = new ResourceBundleMessageSource();
-        if (StringUtils.hasText(properties.getBasename())) {
-            messageSource.setBasenames(StringUtils
-                    .commaDelimitedListToStringArray(StringUtils.trimAllWhitespace(properties.getBasename())));
+    public CustomPropMsgSource customPropMsgSource() {
+        val sourceProperties = messageSourceProperties();
+        val resourceBundleMessageSource = new ResourceBundleMessageSource();
+        if (StringUtils.hasText(sourceProperties.getBasename())) {
+            resourceBundleMessageSource.setBasenames(StringUtils
+                    .commaDelimitedListToStringArray(StringUtils.trimAllWhitespace(sourceProperties.getBasename())));
         }
-        if (properties.getEncoding() != null) {
-            messageSource.setDefaultEncoding(properties.getEncoding().name());
+        if (sourceProperties.getEncoding() != null) {
+            resourceBundleMessageSource.setDefaultEncoding(sourceProperties.getEncoding().name());
         }
-        messageSource.setFallbackToSystemLocale(properties.isFallbackToSystemLocale());
-        val cacheDuration = properties.getCacheDuration();
+        resourceBundleMessageSource.setFallbackToSystemLocale(sourceProperties.isFallbackToSystemLocale());
+        val cacheDuration = sourceProperties.getCacheDuration();
         if (cacheDuration != null) {
-            messageSource.setCacheMillis(cacheDuration.toMillis());
+            resourceBundleMessageSource.setCacheMillis(cacheDuration.toMillis());
         }
-        messageSource.setAlwaysUseMessageFormat(properties.isAlwaysUseMessageFormat());
-        messageSource.setUseCodeAsDefaultMessage(properties.isUseCodeAsDefaultMessage());
-        return new CustomPropertiesMessageSource(messageSource);
+        resourceBundleMessageSource.setAlwaysUseMessageFormat(sourceProperties.isAlwaysUseMessageFormat());
+        resourceBundleMessageSource.setUseCodeAsDefaultMessage(sourceProperties.isUseCodeAsDefaultMessage());
+        return new CustomPropMsgSource(resourceBundleMessageSource);
     }
 
     @Bean(CUSTOM_DB_MESSAGE_SOURCE_BEAN_NAME)
-    public MessageSource customDBMessageSource() {
+    public CustomDBMsgSource customDBMsgSource() {
         return new CustomDBMsgSource();
     }
 
     @Bean(CUSTOM_DB_MESSAGE_SOURCE_1_BEAN_NAME)
-    public MessageSource customDBMessageSource1() {
+    public CustomDBMsgSource1 customDBMsgSource1() {
         return new CustomDBMsgSource1();
     }
 
     @Bean(AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME)
-    public MessageSource compositeMessageSource() {
-        return new CompositeMessageSource(
+    public CompositeMsgSource compositeMsgSource() {
+        return new CompositeMsgSource(
                 List.of(
-                        customDBMessageSource(),
-                        customDBMessageSource1(),
-                        messageSource()
+                        customDBMsgSource(),
+                        customDBMsgSource1(),
+                        customPropMsgSource()
                 )
         );
     }

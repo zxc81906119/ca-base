@@ -4,7 +4,6 @@ import com.redhat.cleanbase.common.i18n.msgsource.condition.I18nProcessCondition
 import com.redhat.cleanbase.common.i18n.msgsource.input.GenericI18nInput;
 import com.redhat.cleanbase.common.i18n.msgsource.input.I18nInput;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.AbstractResourceBasedMessageSource;
@@ -12,13 +11,12 @@ import org.springframework.context.support.AbstractResourceBasedMessageSource;
 import java.util.Locale;
 
 @RequiredArgsConstructor
-public class CustomPropertiesMessageSource
-        implements MessageSource, I18nProcessCondition {
+public class CustomPropMsgSource implements CustomMsgSource, I18nProcessCondition {
 
     private final AbstractResourceBasedMessageSource abstractResourceBasedMessageSource;
 
     @Override
-    public boolean canProcess(Class<? extends I18nInput> i18nInputClazz) {
+    public boolean isSupported(Class<? extends I18nInput> i18nInputClazz) {
         return GenericI18nInput.class.equals(i18nInputClazz);
     }
 
@@ -35,5 +33,13 @@ public class CustomPropertiesMessageSource
     @Override
     public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
         return abstractResourceBasedMessageSource.getMessage(resolvable, locale);
+    }
+
+
+    @Override
+    public String getMessage(I18nInput input, boolean forceDefaultNull, Locale locale) {
+        return forceDefaultNull ?
+                getMessage(input.getCode(), input.getArguments(), null, locale)
+                : getMessage(input, locale);
     }
 }

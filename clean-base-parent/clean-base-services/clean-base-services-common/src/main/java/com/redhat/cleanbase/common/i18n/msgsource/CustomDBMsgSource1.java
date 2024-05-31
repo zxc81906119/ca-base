@@ -2,26 +2,18 @@ package com.redhat.cleanbase.common.i18n.msgsource;
 
 import com.redhat.cleanbase.common.i18n.msgsource.condition.I18nProcessCondition;
 import com.redhat.cleanbase.common.i18n.msgsource.input.I18nInput;
-import org.springframework.context.support.AbstractMessageSource;
 
 import java.text.MessageFormat;
 import java.util.Locale;
 
-public class CustomDBMsgSource1 extends AbstractMessageSource implements I18nProcessCondition {
+public class CustomDBMsgSource1 extends CustomAbsMsgSource implements I18nProcessCondition {
     @Override
-    protected MessageFormat resolveCode(String code, Locale locale) {
-        // code 是 key , 可以搭配階層(比如 type.i18nKey)
-        // 將 type 和 i18n key 抓出當欄位查詢
-        // locale 當作 table 加工名稱 比如 i18n_${locale},或當作 i18n table 欄位
-        // 抓出來的 i18n 值
-        // 未啥還要放 locale ?
-        // 因為他 format 的 格式會因為 locale 而有不同
-        // 如果沒有 arg 那就沒差
+    protected MessageFormat resolveCode(I18nInput input, Locale locale) {
         return new MessageFormat("CustomDBMsgSource1", locale);
     }
 
     @Override
-    public boolean canProcess(Class<? extends I18nInput> i18nInputClazz) {
+    public boolean isSupported(Class<? extends I18nInput> i18nInputClazz) {
         return false;
     }
 }

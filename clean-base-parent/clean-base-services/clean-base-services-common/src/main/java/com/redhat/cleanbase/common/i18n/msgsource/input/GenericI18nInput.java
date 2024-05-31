@@ -1,7 +1,5 @@
 package com.redhat.cleanbase.common.i18n.msgsource.input;
 
-
-
 public class GenericI18nInput implements I18nInput {
     private final String code;
     private final Object[] arguments;
@@ -15,10 +13,6 @@ public class GenericI18nInput implements I18nInput {
 
     public GenericI18nInput(String code) {
         this(code, null, null);
-    }
-
-    public GenericI18nInput(String code, Object[] arguments) {
-        this(code, arguments, null);
     }
 
     @Override
