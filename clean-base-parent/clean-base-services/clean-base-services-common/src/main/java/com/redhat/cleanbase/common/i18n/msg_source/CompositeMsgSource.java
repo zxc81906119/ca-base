@@ -22,13 +22,20 @@ public class CompositeMsgSource implements ConvenientMsgSource {
         val finalLocale = Optional.ofNullable(locale)
                 .orElseGet(LocaleContextHolder::getLocale);
         return msgSources.stream()
-                .filter((msgSource) ->
-                        !(msgSource instanceof I18nProcessCondition i18nProcessCondition) || i18nProcessCondition.isSupported(inputClass))
-                .map((msgSource) -> msgSource.getMessage(input, true, finalLocale))
+                .filter((msgSource) -> msgSource.isSupported(inputClass))
+                .map((msgSource) -> getMsgOrNull(input, finalLocale, msgSource))
                 .filter(Objects::nonNull)
                 .findFirst()
                 .or(() -> Optional.ofNullable(input.getDefaultMessage()))
                 .orElseGet(input::getCode);
+    }
+
+    private static String getMsgOrNull(I18nInput input, Locale finalLocale, CustomMsgSource msgSource) {
+        try {
+            return msgSource.getMessage(input, true, finalLocale);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

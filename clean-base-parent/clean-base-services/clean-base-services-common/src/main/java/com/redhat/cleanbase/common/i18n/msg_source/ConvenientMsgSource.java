@@ -10,12 +10,7 @@ import org.springframework.context.NoSuchMessageException;
 import java.util.Locale;
 import java.util.Optional;
 
-public interface ConvenientMsgSource extends MessageSource {
-    String getMessage(I18nInput input, Locale locale);
-
-    default String getMessage(I18nInput input) {
-        return getMessage(input, null);
-    }
+public interface ConvenientMsgSource extends I18nMessageSource {
 
     default String getMessage(String code, Object[] args, String defaultMessage, Locale locale) {
         return getMessage(new GenericI18nInput(code, args, defaultMessage), locale);

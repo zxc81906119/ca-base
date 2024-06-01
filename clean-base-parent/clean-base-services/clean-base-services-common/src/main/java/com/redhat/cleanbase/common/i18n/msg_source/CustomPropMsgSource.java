@@ -11,7 +11,7 @@ import org.springframework.context.support.AbstractResourceBasedMessageSource;
 import java.util.Locale;
 
 @RequiredArgsConstructor
-public class CustomPropMsgSource implements CustomMsgSource, I18nProcessCondition {
+public class CustomPropMsgSource implements CustomMsgSource {
 
     private final AbstractResourceBasedMessageSource abstractResourceBasedMessageSource;
 
