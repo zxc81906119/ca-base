@@ -1,9 +1,0 @@
----
-# OpenApi & Swagger
-springdoc:
-  api-docs:
-    enabled: false
-  default-produces-media-type: application/json
-  swagger-ui:
-    enabled: false
-    default-models-expand-depth: -1

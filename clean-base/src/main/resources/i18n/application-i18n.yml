@@ -1,4 +1,0 @@
----
-spring:
-  messages:
-    basename: i18n/messages/response_code,i18n/messages/message
