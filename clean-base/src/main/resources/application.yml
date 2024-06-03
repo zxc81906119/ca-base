@@ -25,20 +25,18 @@ spring:
 ---
 logging:
   config: classpath:log/logback.xml
-
 ---
 spring:
   application:
     name: clean-base
-
 server:
   port: 8081
-
+  servlet:
+    context-path: ${server_servlet_context_path:/clean-base}
 ---
 spring:
   messages:
     basename: i18n/messages/response_code,i18n/messages/message
-
 ---
 # OpenApi & Swagger
 springdoc:
@@ -48,7 +46,6 @@ springdoc:
   swagger-ui:
     enabled: true
     default-models-expand-depth: -1
----
 ---
 # Tracing & Metrics & Probe
 management:
@@ -75,10 +72,6 @@ management:
       path-mapping:
         health: health
 ---
----
 test:
   region: ${test_region:part-a}
-server:
-  servlet:
-    context-path: ${server_servlet_context_path:/clean-base}
 
