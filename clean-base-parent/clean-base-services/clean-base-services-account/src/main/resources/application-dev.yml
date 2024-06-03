@@ -1,5 +1,11 @@
+---
 spring:
   config:
     import:
       - classpath:jpa/application-jpa-dev.yml
       - classpath:swagger/application-swagger-dev.yml
+---
+test:
+  region: ${test_region:not_found}
+  thread:
+    count: 4
