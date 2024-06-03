@@ -30,11 +30,7 @@ public class TestController {
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(2 * Runtime.getRuntime().availableProcessors(), r -> {
         val thread = new Thread(r);
-        val uuid = UUID.randomUUID()
-                .toString()
-                .replace("-", "")
-                .substring(0, 14);
-        thread.setName("pressureTest_" + uuid);
+        thread.setName("pressureTest_" + thread.getId());
         return thread;
     });
 
@@ -44,6 +40,10 @@ public class TestController {
     @PreDestroy
     void close() {
         executorService.shutdown();
+    }
+
+    public static void main(String[] args) {
+
     }
 
     @PostMapping
