@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -42,12 +41,8 @@ public class TestController {
         executorService.shutdown();
     }
 
-    public static void main(String[] args) {
-
-    }
-
     @PostMapping
-    public GenericResponse<TestDto.Res> runAndGetRegion(@RequestBody TestDto.Req req) {
+    public GenericResponse<TestDto.Res> test(@RequestBody TestDto.Req req) {
 
         val region = testProperties.getRegion();
 
