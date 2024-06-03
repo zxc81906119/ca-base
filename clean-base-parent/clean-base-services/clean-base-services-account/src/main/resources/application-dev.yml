@@ -6,6 +6,7 @@ spring:
       - classpath:swagger/application-swagger-dev.yml
 ---
 test:
-  region: ${test_region:not_found}
-  thread:
-    count: 4
+  region: ${test_region:part-a}
+server:
+  servlet:
+    context-path: ${server_servlet_context_path:/clean-base}

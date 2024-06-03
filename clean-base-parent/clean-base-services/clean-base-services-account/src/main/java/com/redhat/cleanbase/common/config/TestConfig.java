@@ -12,13 +12,7 @@ public class TestConfig {
     @ConfigurationProperties("test")
     @Data
     public static class TestProperties {
-        private String region = "not_found";
-        private ThreadProperties thread = new ThreadProperties();
-
-        @Data
-        public static class ThreadProperties {
-            private Integer count = 3;
-        }
+        private String region;
     }
 
 }

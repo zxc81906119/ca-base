@@ -1,77 +1,102 @@
 package com.redhat.cleanbase.adapter.in.controller;
 
 import com.redhat.cleanbase.common.config.TestConfig;
+import com.redhat.cleanbase.common.response.GenericResponse;
+import com.redhat.cleanbase.common.trace.TracerWrapper;
+import io.micrometer.observation.annotation.Observed;
+import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 
+@Observed
 @Slf4j
-@RestController
 @RequestMapping("/test")
+@RestController
 @RequiredArgsConstructor
 public class TestController {
 
+    private final ExecutorService executorService = Executors.newFixedThreadPool(2 * Runtime.getRuntime().availableProcessors(), r -> {
+        val thread = new Thread(r);
+        val uuid = UUID.randomUUID()
+                .toString()
+                .replace("-", "")
+                .substring(0, 14);
+        thread.setName("pressureTest_" + uuid);
+        return thread;
+    });
+
+    private final TracerWrapper tracerWrapper;
     private final TestConfig.TestProperties testProperties;
 
-    @GetMapping("/region")
-    public String getRegion() {
-        return testProperties.getRegion();
+    @PreDestroy
+    void close() {
+        executorService.shutdown();
     }
 
-    @GetMapping({"/multi-thread/{count}", "/multi-thread"})
-    public String processMultiThread(@PathVariable(required = false) Integer count) throws InterruptedException {
-        val finalCount =
-                Optional.ofNullable(count)
-                        .or(() ->
-                                Optional.of(testProperties)
-                                        .map(TestConfig.TestProperties::getThread)
-                                        .map(TestConfig.TestProperties.ThreadProperties::getCount)
-                        )
-                        .orElse(0);
+    @PostMapping
+    public GenericResponse<TestDto.Res> runAndGetRegion(@RequestBody TestDto.Req req) {
 
-        if (finalCount == 0) {
-            return "no_open_thread";
-        }
-        val i1 = Runtime.getRuntime().availableProcessors();
-        val executorService = Executors.newFixedThreadPool(i1 * 2);
+        val region = testProperties.getRegion();
+
+        val threads = Optional.ofNullable(req.getThreads())
+                .orElse(1);
+        val loop = Optional.ofNullable(req.getLoop())
+                .orElse(1);
+        val logEnabled = !Boolean.FALSE.equals(req.getLog());
+
+        log.info("[threads:{}]", threads);
+        log.info("[loop:{}]", loop);
+        log.info("[logEnabled:{}]", logEnabled);
+
+        val countDownLatch = new CountDownLatch(threads);
+        run(threads, loop, logEnabled, countDownLatch, region);
+
         try {
-            val countDownLatch = new CountDownLatch(finalCount);
-            for (int i = 0; i < finalCount; i++) {
-                final int finalI = i + 1;
-                CompletableFuture.runAsync(
-                        () -> {
-                            try {
-
-                                val name = Thread.currentThread().getName();
-                                try {
-                                    log.info("thread: {} , doAction: {} -> open", name, finalI);
-                                    Thread.sleep((long) (Math.random() * 10000));
-                                    log.info("thread: {} , doAction: {} -> end", name, finalI);
-                                } catch (InterruptedException e) {
-                                    log.info("thread: {} , doAction: {} -> interrupted", name, finalI);
-                                }
-                            } finally {
-                                countDownLatch.countDown();
-                            }
-                        }
-                        , executorService);
-            }
             countDownLatch.await();
-        } finally {
-            executorService.shutdown();
+        } catch (InterruptedException e) {
+            log.error("interrupted", e);
         }
-        return "success";
+
+        val res = TestDto.Res.builder()
+                .region(region)
+                .build();
+
+        return GenericResponse.ok(res, tracerWrapper.getCurrentSpanTraceId());
+
+    }
+
+    private void run(Integer threads, Integer loop, boolean logEnabled, CountDownLatch countDownLatch, String region) {
+        for (int i = 0; i < threads; i++) {
+            CompletableFuture.runAsync(
+                    () -> {
+                        try {
+                            runLoop(loop, logEnabled, region);
+                        } finally {
+                            countDownLatch.countDown();
+                        }
+                    },
+                    executorService);
+        }
+    }
+
+    private static void runLoop(Integer loop, boolean logEnabled, String region) {
+        for (int i1 = 0; i1 < loop; i1++) {
+            if (logEnabled) {
+                log.info("[region: {}] [loop:{}]", region, i1);
+            }
+        }
     }
 
 
