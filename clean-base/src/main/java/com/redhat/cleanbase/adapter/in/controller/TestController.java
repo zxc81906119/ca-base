@@ -27,19 +27,8 @@ import java.util.concurrent.Executors;
 @RequiredArgsConstructor
 public class TestController {
 
-    private final ExecutorService executorService = Executors.newFixedThreadPool(2 * Runtime.getRuntime().availableProcessors(), r -> {
-        val thread = new Thread(r);
-        thread.setName("pressureTest_" + thread.getId());
-        return thread;
-    });
-
     private final TracerWrapper tracerWrapper;
     private final TestConfig.TestProperties testProperties;
-
-    @PreDestroy
-    void close() {
-        executorService.shutdown();
-    }
 
     @PostMapping
     public GenericResponse<TestDto.Res> test(@RequestBody TestDto.Req req) {
@@ -75,15 +64,13 @@ public class TestController {
 
     private void run(Integer threads, Integer loop, boolean logEnabled, CountDownLatch countDownLatch, String region) {
         for (int i = 0; i < threads; i++) {
-            CompletableFuture.runAsync(
-                    () -> {
-                        try {
-                            runLoop(loop, logEnabled, region);
-                        } finally {
-                            countDownLatch.countDown();
-                        }
-                    },
-                    executorService);
+            new Thread(() -> {
+                try {
+                    runLoop(loop, logEnabled, region);
+                } finally {
+                    countDownLatch.countDown();
+                }
+            }).start();
         }
     }
 
