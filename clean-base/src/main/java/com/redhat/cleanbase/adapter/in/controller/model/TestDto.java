@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.adapter.in.controller;
+package com.redhat.cleanbase.adapter.in.controller.model;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;

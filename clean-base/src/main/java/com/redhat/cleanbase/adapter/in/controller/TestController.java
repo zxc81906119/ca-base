@@ -1,5 +1,6 @@
 package com.redhat.cleanbase.adapter.in.controller;
 
+import com.redhat.cleanbase.adapter.in.controller.model.TestDto;
 import com.redhat.cleanbase.common.config.TestConfig;
 import com.redhat.cleanbase.common.response.GenericResponse;
 import com.redhat.cleanbase.common.trace.TracerWrapper;
