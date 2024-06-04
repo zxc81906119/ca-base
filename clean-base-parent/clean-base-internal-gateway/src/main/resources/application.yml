@@ -9,15 +9,6 @@ spring:
 spring:
   reactor:
     context-propagation: auto
-
-  cloud:
-    gateway:
-      routes:
-        - id: fee-tax
-          uri: http://localhost:8081
-          predicates:
-            - Path=/fee-tax/**
-
 ---
 # Tracing & Metrics & Probe
 management:
@@ -50,3 +41,12 @@ spring:
       database: 0
       host: localhost
       port: 6379
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: fee-tax
+          uri: http://localhost:8081
+          predicates:
+            - Path=/fee-tax/**
