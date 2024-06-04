@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 
 @Observed
@@ -33,36 +35,39 @@ public class ApiSwitchFilter implements GlobalFilter {
         if (environment.acceptsProfiles(PILOT_PROFILES)) {
             return chain.filter(exchange);
         }
-        // todo 不知道需不需要包裝例外
-        // todo 如需要就要 onErrorResume
-        // todo 不需要就這樣
-        return findEnabledFlag()
+        // todo 如需要包 error to action error , 擇加上 onErrorResume
+        return Mono.defer(ApiSwitchFilter::findEnabledFlag)
                 .map(ApiSwitchFilter::isEnabled)
                 .flatMap((enabled) ->
-                        enabled ? chain.filter(exchange)
-                                : getExceptionMono());
+                        enabled ? chain.filter(exchange) :
+                                getExceptionMono(() -> {
+                                    throw new ExampleException();
+                                })
+                );
     }
 
-
-    public static Mono<Void> getExceptionMono() {
+    public static <O> Mono<O> getExceptionMono(Callable<O> callable) {
         try {
-            throwException();
-        } catch (ExampleException e) {
+            return Optional.ofNullable(callable.call())
+                    .map(Mono::just)
+                    .orElseGet(Mono::empty);
+        } catch (Exception e) {
             return Mono.error(e);
         }
-        // 這邊不會有機會進來
-        return Mono.empty();
     }
 
     public static Mono<String> findEnabledFlag() {
-        return Mono.defer(() ->
-                Mono.fromFuture(
-                        // todo 從 db 抓資料
-                        CompletableFuture.supplyAsync(() ->
-                                "gg"
-                        )
-                )
-        );
+        // todo 從 db 抓資料
+        return Mono.fromFuture(
+                CompletableFuture.supplyAsync(
+                        () -> {
+                            try {
+                                Thread.sleep(4000);
+                            } catch (InterruptedException e) {
+                            }
+                            return "true";
+                        }
+                ));
     }
 
     private static boolean isEnabled(String enabledFlag) {
@@ -75,8 +80,5 @@ public class ApiSwitchFilter implements GlobalFilter {
     public static class ExampleException extends Exception {
     }
 
-    public static void throwException() throws ExampleException {
-        throw new ExampleException();
-    }
 
 }
