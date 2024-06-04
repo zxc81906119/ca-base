@@ -26,9 +26,7 @@ public class ApiSwitchFilter implements GlobalFilter {
 
     private final Environment environment;
 
-    public static final String SPRING_PROFILE_PILOT = "pilot";
-
-    public static final Profiles PILOT_PROFILES = Profiles.of(SPRING_PROFILE_PILOT);
+    public static final Profiles PILOT_PROFILES = Profiles.of("pilot");
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -40,13 +38,13 @@ public class ApiSwitchFilter implements GlobalFilter {
                 .map(ApiSwitchFilter::isEnabled)
                 .flatMap((enabled) ->
                         enabled ? chain.filter(exchange) :
-                                getExceptionMono(() -> {
+                                callFuncAndGetMono(() -> {
                                     throw new ExampleException();
                                 })
                 );
     }
 
-    public static <O> Mono<O> getExceptionMono(Callable<O> callable) {
+    public static <O> Mono<O> callFuncAndGetMono(Callable<O> callable) {
         try {
             return Optional.ofNullable(callable.call())
                     .map(Mono::just)
