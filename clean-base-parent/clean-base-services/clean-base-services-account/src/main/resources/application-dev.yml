@@ -1,5 +1,7 @@
+---
 spring:
   config:
     import:
       - classpath:jpa/application-jpa-dev.yml
       - classpath:swagger/application-swagger-dev.yml
+      - classpath:redis/application-redis-dev.yml

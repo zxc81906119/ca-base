@@ -1,3 +1,4 @@
+---
 proj:
   profile: ${proj_profile:dev}
 spring:
