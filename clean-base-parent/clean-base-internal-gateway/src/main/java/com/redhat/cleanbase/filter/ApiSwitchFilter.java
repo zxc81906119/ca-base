@@ -63,6 +63,7 @@ public class ApiSwitchFilter implements GlobalFilter {
                         () -> {
                             try {
                                 Thread.sleep(4000);
+                                throw new RuntimeException("hello");
                             } catch (InterruptedException e) {
                             }
                             return "true";
