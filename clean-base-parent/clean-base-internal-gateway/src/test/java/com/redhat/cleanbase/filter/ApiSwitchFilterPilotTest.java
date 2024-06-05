@@ -15,8 +15,6 @@ import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static org.mockito.Mockito.*;
-
 @ActiveProfiles(profiles = "pilot")
 @SpringBootTest
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)

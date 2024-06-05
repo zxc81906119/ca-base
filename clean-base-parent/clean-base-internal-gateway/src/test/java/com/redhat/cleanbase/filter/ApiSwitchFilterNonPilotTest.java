@@ -10,15 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
-import org.springframework.core.env.Profiles;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.mock.web.server.MockServerWebExchange;
-import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
