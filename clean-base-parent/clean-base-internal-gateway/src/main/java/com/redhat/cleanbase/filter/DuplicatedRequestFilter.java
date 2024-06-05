@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.filter;
 
-import com.redhat.cleanbase.constant.OrderConstant;
+import com.redhat.cleanbase.constant.OrderConstants;
 import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @Slf4j
 @Component
-@Order(OrderConstant.DUPLICATED_REQUEST_FILTER_ORDER)
+@Order(OrderConstants.DUPLICATED_REQUEST_FILTER_ORDER)
 public class DuplicatedRequestFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

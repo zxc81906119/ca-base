@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.filter;
 
-import com.redhat.cleanbase.constant.OrderConstant;
+import com.redhat.cleanbase.constant.OrderConstants;
 import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @Slf4j
 @Component
-@Order(OrderConstant.VERSION_CONTROL_FILTER_ORDER)
+@Order(OrderConstants.VERSION_CONTROL_FILTER_ORDER)
 public class VersionControlFilter implements GlobalFilter {
 
     @Override

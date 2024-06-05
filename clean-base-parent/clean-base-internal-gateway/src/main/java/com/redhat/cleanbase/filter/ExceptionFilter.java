@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.filter;
 
-import com.redhat.cleanbase.constant.OrderConstant;
+import com.redhat.cleanbase.constant.OrderConstants;
 import com.redhat.cleanbase.exception.handler.ExceptionHandler;
 import com.redhat.cleanbase.util.CastUtil;
 import io.micrometer.observation.annotation.Observed;
@@ -18,7 +18,7 @@ import java.util.*;
 
 @Observed
 @Slf4j
-@Order(OrderConstant.EXCEPTION_FILTER_ORDER)
+@Order(OrderConstants.EXCEPTION_FILTER_ORDER)
 @Component
 public class ExceptionFilter implements GlobalFilter {
 

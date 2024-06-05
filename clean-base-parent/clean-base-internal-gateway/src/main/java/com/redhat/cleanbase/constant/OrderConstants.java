@@ -2,8 +2,8 @@ package com.redhat.cleanbase.constant;
 
 import org.springframework.core.Ordered;
 
-public final class OrderConstant {
-    private OrderConstant() {
+public final class OrderConstants {
+    private OrderConstants() {
         throw new UnsupportedOperationException();
     }
 
