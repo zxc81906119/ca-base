@@ -26,14 +26,13 @@ public class ApiSwitchFilter implements GlobalFilter {
 
     private final Environment environment;
 
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         if (environment.acceptsProfiles(ProfileConstants.PILOT_PROFILES)) {
             return chain.filter(exchange);
         }
 
-        return Mono.defer(ApiSwitchFilter::findEnabledFlag)
+        return Mono.defer(this::findEnabledFlag)
                 .map(ApiSwitchFilter::isEnabled)
                 .flatMap((enabled) ->
                         enabled ? chain.filter(exchange) :
@@ -43,7 +42,7 @@ public class ApiSwitchFilter implements GlobalFilter {
                 );
     }
 
-    public static Mono<String> findEnabledFlag() {
+    public Mono<String> findEnabledFlag() {
         // todo 從 db 抓資料
         return Mono.fromFuture(
                 CompletableFuture.supplyAsync(
