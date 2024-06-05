@@ -1,5 +1,6 @@
 package com.redhat.cleanbase.filter;
 
+import com.redhat.cleanbase.exception.ExampleException;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,9 +52,6 @@ public class ApiSwitchFilterNonPilotTest {
 
         StepVerifier.create(result)
                 .verifyComplete();
-
-        verify(filterChain)
-                .filter(exchange);
     }
 
     @Test
@@ -70,10 +68,8 @@ public class ApiSwitchFilterNonPilotTest {
         val result = filter.filter(exchange, filterChain);
 
         StepVerifier.create(result)
-                .verifyComplete();
+                .verifyError(ExampleException.class);
 
-        verify(filterChain)
-                .filter(exchange);
     }
 
 

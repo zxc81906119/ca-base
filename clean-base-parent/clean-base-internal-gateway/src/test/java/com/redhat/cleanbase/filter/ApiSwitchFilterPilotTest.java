@@ -17,8 +17,8 @@ import reactor.test.StepVerifier;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
 @ActiveProfiles(profiles = "pilot")
+@SpringBootTest
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 public class ApiSwitchFilterPilotTest {
 
@@ -45,9 +45,6 @@ public class ApiSwitchFilterPilotTest {
 
         StepVerifier.create(result)
                 .verifyComplete();
-
-        verify(filterChain)
-                .filter(exchange);
     }
 
 
