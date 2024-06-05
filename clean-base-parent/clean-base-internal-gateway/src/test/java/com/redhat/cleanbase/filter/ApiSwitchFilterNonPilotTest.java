@@ -1,5 +1,6 @@
 package com.redhat.cleanbase.filter;
 
+import com.redhat.cleanbase.base.BaseTest;
 import com.redhat.cleanbase.exception.ExampleException;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,9 +18,7 @@ import reactor.test.StepVerifier;
 
 import static org.mockito.Mockito.doReturn;
 
-@SpringBootTest
-@TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
-public class ApiSwitchFilterNonPilotTest {
+public class ApiSwitchFilterNonPilotTest extends BaseTest {
 
     @SpyBean
     private ApiSwitchFilter filter;

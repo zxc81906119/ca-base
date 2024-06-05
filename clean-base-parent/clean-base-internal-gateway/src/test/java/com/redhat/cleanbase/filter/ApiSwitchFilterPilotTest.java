@@ -1,5 +1,6 @@
 package com.redhat.cleanbase.filter;
 
+import com.redhat.cleanbase.base.BaseTest;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,9 +17,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 @ActiveProfiles(profiles = "pilot")
-@SpringBootTest
-@TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
-public class ApiSwitchFilterPilotTest {
+public class ApiSwitchFilterPilotTest extends BaseTest {
 
     @SpyBean
     private ApiSwitchFilter filter;
