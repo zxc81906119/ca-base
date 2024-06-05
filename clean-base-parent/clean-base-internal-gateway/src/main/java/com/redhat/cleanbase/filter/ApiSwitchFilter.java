@@ -1,6 +1,7 @@
 package com.redhat.cleanbase.filter;
 
 import com.redhat.cleanbase.constant.OrderConstant;
+import com.redhat.cleanbase.exception.ExampleException;
 import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class ApiSwitchFilter implements GlobalFilter {
         if (environment.acceptsProfiles(PILOT_PROFILES)) {
             return chain.filter(exchange);
         }
-        // todo 如需要包 error to action error , 擇加上 onErrorResume
+
         return Mono.defer(ApiSwitchFilter::findEnabledFlag)
                 .map(ApiSwitchFilter::isEnabled)
                 .flatMap((enabled) ->
@@ -63,19 +64,13 @@ public class ApiSwitchFilter implements GlobalFilter {
                                 Thread.sleep(4000);
                             } catch (InterruptedException e) {
                             }
-                            return "false";
+                            return "true";
                         }
                 ));
     }
 
     private static boolean isEnabled(String enabledFlag) {
         return Boolean.TRUE.toString().equalsIgnoreCase(enabledFlag);
-    }
-
-    // todo 模擬 action exception,
-    // todo 將 action exception handler 邏輯
-    // todo 拿來 gateway exception handler 處理
-    public static class ExampleException extends Exception {
     }
 
 

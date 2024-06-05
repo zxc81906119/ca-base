@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.exception.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.redhat.cleanbase.filter.ApiSwitchFilter;
+import com.redhat.cleanbase.exception.ExampleException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -15,10 +15,10 @@ import java.util.HashMap;
 
 @Slf4j
 @Component
-public class ExampleExceptionHandler implements ExceptionHandler<ApiSwitchFilter.ExampleException> {
+public class ExampleExceptionHandler implements ExceptionHandler<ExampleException> {
     @SneakyThrows
     @Override
-    public Mono<Void> process(ServerWebExchange exchange, ApiSwitchFilter.ExampleException throwable) {
+    public Mono<Void> process(ServerWebExchange exchange, ExampleException throwable) {
         log.info("do nothing for example exception");
 
         val response = exchange.getResponse();
