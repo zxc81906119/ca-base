@@ -7,6 +7,8 @@ public final class ProfileConstants {
         throw new UnsupportedOperationException();
     }
 
-    public static final Profiles PILOT_PROFILES = Profiles.of("pilot");
+    public static final String PILOT_PROFILE_NAME = "pilot";
+
+    public static final Profiles PILOT_PROFILES = Profiles.of(PILOT_PROFILE_NAME);
 
 }

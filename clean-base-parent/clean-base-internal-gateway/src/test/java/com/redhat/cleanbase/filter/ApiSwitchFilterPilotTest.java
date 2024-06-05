@@ -1,6 +1,7 @@
 package com.redhat.cleanbase.filter;
 
 import com.redhat.cleanbase.base.BaseTest;
+import com.redhat.cleanbase.constant.ProfileConstants;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.mock.web.server.MockServerWebExchange;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.test.StepVerifier;
 
-@ActiveProfiles(profiles = "pilot")
+@ActiveProfiles(profiles = ProfileConstants.PILOT_PROFILE_NAME)
 public class ApiSwitchFilterPilotTest extends BaseTest {
 
     @Autowired
