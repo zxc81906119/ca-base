@@ -4,11 +4,9 @@ import com.redhat.cleanbase.base.BaseTest;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.mock.web.server.MockServerWebExchange;
@@ -19,7 +17,7 @@ import reactor.test.StepVerifier;
 @ActiveProfiles(profiles = "pilot")
 public class ApiSwitchFilterPilotTest extends BaseTest {
 
-    @SpyBean
+    @Autowired
     private ApiSwitchFilter filter;
 
     @MockBean
