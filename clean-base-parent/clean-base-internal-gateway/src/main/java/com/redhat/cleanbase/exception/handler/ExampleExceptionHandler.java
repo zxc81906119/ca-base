@@ -33,6 +33,8 @@ public class ExampleExceptionHandler implements ExceptionHandler<ExampleExceptio
         val responseData = new ObjectMapper()
                 .writeValueAsBytes(responseMap);
 
-        return response.writeWith(Mono.just(dataBufferFactory.wrap(responseData)));
+        val dataBuffer = dataBufferFactory.wrap(responseData);
+
+        return response.writeWith(Mono.just(dataBuffer));
     }
 }
