@@ -21,16 +21,6 @@ public class ApiSwitchFilterNonPilotTest extends BaseTest {
     @SpyBean
     private ApiSwitchFilter filter;
 
-    @MockBean
-    private GatewayFilterChain filterChain;
-
-    @BeforeEach
-    public void eachSetup() {
-        Mockito.doReturn(Mono.empty())
-                .when(filterChain)
-                .filter(Mockito.any());
-    }
-
     @Test
     public void filter_non_pilot_enable() {
 
