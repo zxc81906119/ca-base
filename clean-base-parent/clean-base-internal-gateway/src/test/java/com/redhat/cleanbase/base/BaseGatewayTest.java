@@ -1,20 +1,25 @@
 package com.redhat.cleanbase.base;
 
-import org.junit.jupiter.api.BeforeEach;
+import lombok.val;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 public abstract class BaseGatewayTest extends BaseTest {
 
-    @MockBean
-    protected GatewayFilterChain filterChain;
+    protected static final GatewayFilterChain GATEWAY_FILTER_CHAIN = getDefaultMockGatewayFilterChain();
 
-    @BeforeEach
-    public void eachSetup() {
-        Mockito.doReturn(Mono.empty())
-                .when(filterChain)
-                .filter(Mockito.any());
+    private static GatewayFilterChain getDefaultMockGatewayFilterChain() {
+        return getMockGatewayFilterChain(Mono.empty());
     }
+
+    public static GatewayFilterChain getMockGatewayFilterChain(Mono<Void> voidMono) {
+        val filterChain = Mockito.mock(GatewayFilterChain.class);
+        Mockito.doReturn(voidMono)
+                .when(filterChain)
+                .filter(Mockito.any(ServerWebExchange.class));
+        return filterChain;
+    }
+
 }

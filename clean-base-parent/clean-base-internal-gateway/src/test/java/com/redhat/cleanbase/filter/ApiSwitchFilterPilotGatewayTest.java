@@ -22,7 +22,7 @@ public class ApiSwitchFilterPilotGatewayTest extends BaseGatewayTest {
                 MockServerHttpRequest.get("/endpoint")
         );
 
-        val result = filter.filter(exchange, filterChain);
+        val result = filter.filter(exchange, GATEWAY_FILTER_CHAIN);
 
         StepVerifier.create(result)
                 .verifyComplete();
