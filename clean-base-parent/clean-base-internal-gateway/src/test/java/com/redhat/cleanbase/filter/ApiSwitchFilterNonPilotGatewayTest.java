@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.filter;
 
-import com.redhat.cleanbase.base.BaseTest;
+import com.redhat.cleanbase.base.BaseGatewayTest;
 import com.redhat.cleanbase.exception.ExampleException;
 import lombok.val;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import reactor.test.StepVerifier;
 
 import static org.mockito.Mockito.doReturn;
 
-public class ApiSwitchFilterNonPilotTest extends BaseTest {
+public class ApiSwitchFilterNonPilotGatewayTest extends BaseGatewayTest {
 
     @SpyBean
     private ApiSwitchFilter filter;
