@@ -11,7 +11,7 @@ public class DefaultExceptionHandler implements ExceptionHandler<Exception> {
     @Override
     public Mono<Void> process(ServerWebExchange exchange, Exception exception) {
         return Mono.fromRunnable(() -> {
-            log.info("do nothing for exception");
+            log.info("do nothing for exception", exception);
             val response = exchange.getResponse();
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
         });
