@@ -22,7 +22,7 @@ public class ExampleExceptionHandler implements ExceptionHandler<ExampleExceptio
 
     @Override
     public Mono<Void> process(ServerWebExchange exchange, ExampleException throwable) {
-        log.info("do nothing for example exception");
+        log.error("do nothing for example exception", throwable);
 
         val response = exchange.getResponse();
 

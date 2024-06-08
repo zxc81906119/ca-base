@@ -11,7 +11,7 @@ public class DefaultRtExceptionHandler implements ExceptionHandler<RuntimeExcept
     @Override
     public Mono<Void> process(ServerWebExchange exchange, RuntimeException runtimeException) {
         return Mono.fromRunnable(() -> {
-            log.info("do nothing for rt exception", runtimeException);
+            log.error("do nothing for rt exception", runtimeException);
             val response = exchange.getResponse();
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
         });
