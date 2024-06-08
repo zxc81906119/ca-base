@@ -39,7 +39,7 @@ public class ExceptionFilter implements GlobalFilter {
         return chain.filter(exchange)
                 .onErrorResume((throwable) ->
                         getExceptionHandler(throwable)
-                                .map((handler) -> Mono.defer(() -> handler.process(exchange, CastUtil.cast(throwable))))
+                                .map((handler) -> handler.process(exchange, CastUtil.cast(throwable)))
                                 .orElseGet(() -> Mono.error(throwable)));
     }
 
