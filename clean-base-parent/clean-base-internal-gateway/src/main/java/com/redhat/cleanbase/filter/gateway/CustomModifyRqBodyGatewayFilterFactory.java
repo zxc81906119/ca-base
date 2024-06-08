@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.filter.gateway;
 
-import com.redhat.cleanbase.function.rewrite.DecRqBodyRewriteFunc;
+import com.redhat.cleanbase.func.rewrite.DecRqBodyRewriteFunc;
 import lombok.Data;
 import lombok.val;
 import org.springframework.cloud.gateway.filter.GatewayFilter;

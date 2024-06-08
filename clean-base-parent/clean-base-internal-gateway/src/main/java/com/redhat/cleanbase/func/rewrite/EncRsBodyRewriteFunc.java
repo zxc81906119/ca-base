@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.function.rewrite;
+package com.redhat.cleanbase.func.rewrite;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;

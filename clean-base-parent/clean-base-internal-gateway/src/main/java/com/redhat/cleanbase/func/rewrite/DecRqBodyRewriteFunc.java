@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.function.rewrite;
+package com.redhat.cleanbase.func.rewrite;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
