@@ -1,0 +1,4 @@
+---
+spring:
+  config:
+    import: route/application-route-dev.yml
