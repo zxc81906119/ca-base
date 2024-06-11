@@ -1,16 +1,19 @@
 ---
 server:
-  port: 8088
+  port: 8087
 
 proj:
   profile: ${proj_profile:dev}
 spring:
+  profiles:
+    active: ${proj.profile}
+    group:
+      dev:
+        - route-dev
   application:
     name: cube-api-internal-gateway
   reactor:
     context-propagation: auto
-  profiles:
-    active: ${proj.profile}
 ---
 # Tracing & Metrics & Probe
 management:
