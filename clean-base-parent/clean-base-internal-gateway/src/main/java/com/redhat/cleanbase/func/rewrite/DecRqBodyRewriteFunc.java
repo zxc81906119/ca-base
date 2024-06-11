@@ -35,11 +35,11 @@ public class DecRqBodyRewriteFunc implements RewriteFunction<String, String> {
             val oldData = objectMapper.readValue(oldStringData, new TypeReference<Map<String, Object>>() {
             });
             val newData = dataTransferFunc.apply(oldData);
-            val decodeDataString = objectMapper.writeValueAsString(newData);
-            return Mono.just(decodeDataString);
+            val newStringData = objectMapper.writeValueAsString(newData);
+            return Mono.just(newStringData);
         } catch (JsonProcessingException e) {
             log.error("[transferJsonData] transfer data failed", e);
-            return Mono.error(e);
+            return Mono.just(oldStringData);
         }
     }
 
