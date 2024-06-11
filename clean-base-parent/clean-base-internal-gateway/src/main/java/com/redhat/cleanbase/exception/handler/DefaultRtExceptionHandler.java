@@ -1,19 +1,17 @@
 package com.redhat.cleanbase.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 @Slf4j
-public class DefaultRtExceptionHandler implements ExceptionHandler<RuntimeException> {
+public class DefaultRtExceptionHandler implements ExceptionHandler<RuntimeException, Map<String, Object>> {
+
     @Override
-    public Mono<Void> process(ServerWebExchange exchange, RuntimeException runtimeException) {
-        return Mono.fromRunnable(() -> {
-            log.error("do nothing for rt exception", runtimeException);
-            val response = exchange.getResponse();
-            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
-        });
+    public ResponseEntity<Map<String, Object>> getResponseEntity(ServerWebExchange exchange, RuntimeException throwable) {
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

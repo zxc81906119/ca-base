@@ -22,9 +22,9 @@ import java.util.*;
 @Component
 public class ExceptionFilter implements GlobalFilter {
 
-    private final Map<Class<? extends Throwable>, ExceptionHandler<?>> exceptionHandlerMap = new HashMap<>();
+    private final Map<Class<? extends Throwable>, ExceptionHandler<?, ?>> exceptionHandlerMap = new HashMap<>();
 
-    public ExceptionFilter(List<ExceptionHandler<?>> exceptionHandlers) {
+    public ExceptionFilter(List<ExceptionHandler<?, ?>> exceptionHandlers) {
         exceptionHandlers.forEach((exceptionHandler) -> {
             val processException = getProcessException(exceptionHandler);
             if (exceptionHandlerMap.get(processException) != null) {
@@ -43,7 +43,7 @@ public class ExceptionFilter implements GlobalFilter {
                                 .orElseGet(() -> Mono.error(throwable)));
     }
 
-    private Optional<? extends ExceptionHandler<?>> getExceptionHandler(Throwable throwable) {
+    private Optional<? extends ExceptionHandler<?, ?>> getExceptionHandler(Throwable throwable) {
         return Optional.ofNullable(exceptionHandlerMap.get(throwable.getClass()))
                 .or(() ->
                         exceptionHandlerMap.entrySet().stream()
@@ -63,7 +63,7 @@ public class ExceptionFilter implements GlobalFilter {
     }
 
 
-    private static Class<? extends Throwable> getProcessException(ExceptionHandler<?> exceptionHandler) {
+    private static Class<? extends Throwable> getProcessException(ExceptionHandler<?, ?> exceptionHandler) {
         return CastUtil.cast(
                 Optional.of(exceptionHandler.getClass())
                         .map(Class::getGenericInterfaces)
