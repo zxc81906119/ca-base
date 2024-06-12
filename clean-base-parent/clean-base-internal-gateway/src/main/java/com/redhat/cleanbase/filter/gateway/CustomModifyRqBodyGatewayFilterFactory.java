@@ -28,8 +28,8 @@ public class CustomModifyRqBodyGatewayFilterFactory extends AbstractGatewayFilte
     public GatewayFilter apply(Config inputConfig) {
         return (serverWebExchange, filterChain) -> {
             val headers = serverWebExchange.getRequest().getHeaders();
-            val first = headers.getFirst(HttpHeaders.CONTENT_TYPE);
-            if (first != null && first.contains(MediaType.APPLICATION_JSON_VALUE)) {
+            val contentType = headers.getFirst(HttpHeaders.CONTENT_TYPE);
+            if (contentType != null && contentType.contains(MediaType.APPLICATION_JSON_VALUE)) {
                 return modifyRequestBodyGatewayFilterFactory
                         .apply((config) -> {
                             config.setContentType(MediaType.APPLICATION_JSON_VALUE);
