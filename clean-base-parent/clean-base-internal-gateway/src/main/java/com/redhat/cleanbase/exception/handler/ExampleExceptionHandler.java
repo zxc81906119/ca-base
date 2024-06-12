@@ -14,12 +14,12 @@ import java.util.Map;
 @Component
 public class ExampleExceptionHandler implements ExceptionHandler<ExampleException, Map<String, Object>> {
 
-    public static final String ERROR_MESSAGE = "errorMessage";
+    public static final String ERR_MSG = "errMsg";
 
     @Override
     public ResponseEntity<Map<String, Object>> getResponseEntity(ServerWebExchange exchange, ExampleException throwable) {
         val message = throwable.getMessage();
-        val data = Map.<String, Object>of(ERROR_MESSAGE, message);
+        val data = Map.<String, Object>of(ERR_MSG, message);
         return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

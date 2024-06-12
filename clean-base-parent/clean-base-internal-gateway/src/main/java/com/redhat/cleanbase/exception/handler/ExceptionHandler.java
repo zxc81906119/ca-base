@@ -46,8 +46,6 @@ public interface ExceptionHandler<T extends Throwable, K> {
         }
     }
 
-    ResponseEntity<K> getResponseEntity(ServerWebExchange exchange, T throwable);
-
     default Mono<DataBuffer> getMonoDataBuffer(K data) throws JsonProcessingException {
 
         val responseData = new ObjectMapper()
@@ -60,5 +58,7 @@ public interface ExceptionHandler<T extends Throwable, K> {
 
         return Mono.just(dataBuffer);
     }
+
+    ResponseEntity<K> getResponseEntity(ServerWebExchange exchange, T throwable);
 
 }
