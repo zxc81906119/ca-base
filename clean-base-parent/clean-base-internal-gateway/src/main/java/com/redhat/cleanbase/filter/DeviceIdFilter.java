@@ -31,7 +31,7 @@ public class DeviceIdFilter implements GlobalFilter {
                 .map(deviceId ->
                         Mono.just(deviceId)
                                 .flatMap(this::verifyDeviceId)
-                                .then(chain.filter(exchange)))
+                                .then(Mono.defer(() -> chain.filter(exchange))))
                 .orElseGet(() -> Mono.error(new ExampleException("deviceId not found")));
 
     }
