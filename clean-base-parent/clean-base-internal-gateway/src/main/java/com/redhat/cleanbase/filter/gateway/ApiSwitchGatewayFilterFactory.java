@@ -4,7 +4,6 @@ import com.redhat.cleanbase.constant.ProfileConstants;
 import com.redhat.cleanbase.exception.ExampleException;
 import com.redhat.cleanbase.util.ReactiveUtil;
 import io.micrometer.observation.annotation.Observed;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -15,10 +14,16 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.CompletableFuture;
 
 @Observed
-@RequiredArgsConstructor
 @Slf4j
 @Component
 public class ApiSwitchGatewayFilterFactory extends AbstractGatewayFilterFactory<ApiSwitchGatewayFilterFactory.Config> {
+
+    public ApiSwitchGatewayFilterFactory(
+            Environment environment
+    ) {
+        super(ApiSwitchGatewayFilterFactory.Config.class);
+        this.environment = environment;
+    }
 
     private final Environment environment;
 
@@ -26,6 +31,10 @@ public class ApiSwitchGatewayFilterFactory extends AbstractGatewayFilterFactory<
     public GatewayFilter apply(Config config) {
 
         return (serverWebExchange, filterChain) -> {
+
+            if (true) {
+                return Mono.error(new ExampleException("gg"));
+            }
 
             if (environment.acceptsProfiles(ProfileConstants.PILOT_PROFILES)) {
                 return filterChain.filter(serverWebExchange);

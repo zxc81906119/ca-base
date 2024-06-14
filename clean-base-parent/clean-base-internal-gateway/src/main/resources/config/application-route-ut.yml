@@ -3,6 +3,9 @@ spring:
   cloud:
     gateway:
       default-filters:
+        - name: CacheRequestBody
+          args:
+            bodyClass: java.lang.String
         - StripPrefix=2
       routes:
         # bff

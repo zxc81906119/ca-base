@@ -2,7 +2,6 @@ package com.redhat.cleanbase.filter.gateway;
 
 import com.redhat.cleanbase.exception.ExampleException;
 import io.micrometer.observation.annotation.Observed;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -13,10 +12,14 @@ import reactor.core.publisher.Mono;
 import java.util.Optional;
 
 @Observed
-@RequiredArgsConstructor
 @Slf4j
 @Component
 public class DeviceIdGatewayFilterFactory extends AbstractGatewayFilterFactory<DeviceIdGatewayFilterFactory.Config> {
+
+    public DeviceIdGatewayFilterFactory(
+    ) {
+        super(DeviceIdGatewayFilterFactory.Config.class);
+    }
 
     @Override
     public GatewayFilter apply(Config config) {
@@ -32,9 +35,6 @@ public class DeviceIdGatewayFilterFactory extends AbstractGatewayFilterFactory<D
                         .orElseGet(() -> Mono.error(new ExampleException("deviceId not found")));
     }
 
-    public static class Config {
-
-    }
 
     // todo
     public String getDeviceId(String body) {
@@ -46,4 +46,7 @@ public class DeviceIdGatewayFilterFactory extends AbstractGatewayFilterFactory<D
         return Mono.empty();
     }
 
+    public static class Config {
+
+    }
 }

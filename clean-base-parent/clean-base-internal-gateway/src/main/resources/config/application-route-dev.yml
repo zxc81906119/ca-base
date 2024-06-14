@@ -13,6 +13,11 @@ spring:
           uri: http://localhost:8082
           predicates:
             - Path=/bff/tax-fee/**
+          filters:
+            - ApiSwitch
+            - DeviceId
+            - CustomModifyRqBody
+            - CustomModifyRsBody
 
           # biz
         - id: biz-tax-fee
@@ -20,7 +25,10 @@ spring:
           predicates:
             - Path=/biz/tax-fee/**
           filters:
+            - ApiSwitch
+            - DeviceId
             - CustomModifyRqBody
+            - CustomModifyRsBody
 
         - id: biz-card
           uri: http://localhost:8084
