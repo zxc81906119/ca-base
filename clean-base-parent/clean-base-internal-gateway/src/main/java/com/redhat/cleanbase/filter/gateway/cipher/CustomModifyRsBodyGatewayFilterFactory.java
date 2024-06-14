@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.filter.gateway;
+package com.redhat.cleanbase.filter.gateway.cipher;
 
-import com.redhat.cleanbase.func.rewrite.EncRsBodyRewriteFunc;
+import com.redhat.cleanbase.filter.gateway.cipher.rewritefunc.EncRsBodyRewriteFunc;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -44,7 +44,6 @@ public class CustomModifyRsBodyGatewayFilterFactory extends AbstractGatewayFilte
     @RequiredArgsConstructor
     public static class CustomModifyRsBodyGatewayFilter implements GatewayFilter, Ordered {
         private final ModifyResponseBodyGatewayFilterFactory modifyResponseBodyGatewayFilterFactory;
-        // todo 未來再加上想要設定之參數
         private final CustomModifyRsBodyGatewayFilterFactory.Config config;
         private final EncRsBodyRewriteFunc encRsBodyRewriteFunc;
 

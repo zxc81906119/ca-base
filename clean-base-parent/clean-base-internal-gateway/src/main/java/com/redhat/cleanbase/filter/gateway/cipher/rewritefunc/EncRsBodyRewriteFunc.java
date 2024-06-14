@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.func.rewrite;
+package com.redhat.cleanbase.filter.gateway.cipher.rewritefunc;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;

@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class BizExampleExceptionHandler implements ExceptionHandler<ExampleException, Map<String, Object>> {
+public class BizExampleExceptionHandler implements BaseExceptionHandler<ExampleException, Map<String, Object>> {
 
     public static final String ERR_MSG = "errMsg";
 

@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.filter.gateway;
+package com.redhat.cleanbase.filter.gateway.cipher;
 
-import com.redhat.cleanbase.func.rewrite.DecRqBodyRewriteFunc;
+import com.redhat.cleanbase.filter.gateway.cipher.rewritefunc.DecRqBodyRewriteFunc;
 import lombok.Data;
 import lombok.val;
 import org.springframework.cloud.gateway.filter.GatewayFilter;

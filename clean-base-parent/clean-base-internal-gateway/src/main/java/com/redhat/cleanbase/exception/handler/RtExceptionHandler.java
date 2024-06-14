@@ -8,7 +8,7 @@ import org.springframework.web.server.ServerWebExchange;
 import java.util.Map;
 
 @Slf4j
-public class DefaultRtExceptionHandler implements ExceptionHandler<RuntimeException, Map<String, Object>> {
+public class RtExceptionHandler implements BaseExceptionHandler<RuntimeException, Map<String, Object>> {
 
     @Override
     public ResponseEntity<Map<String, Object>> getResponseEntity(ServerWebExchange exchange, RuntimeException throwable) {

@@ -2,6 +2,7 @@ package com.redhat.cleanbase.filter;
 
 import com.redhat.cleanbase.base.BaseGatewayTest;
 import com.redhat.cleanbase.exception.ExampleException;
+import com.redhat.cleanbase.filter.gateway.ApiSwitchGatewayFilterFactory;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -12,23 +13,24 @@ import reactor.test.StepVerifier;
 
 import static org.mockito.Mockito.doReturn;
 
-public class ApiSwitchFilterNonPilotGatewayTest extends BaseGatewayTest {
+public class ApiSwitchGatewayFilterFactoryNonPilotGatewayTest extends BaseGatewayTest {
 
     @SpyBean
-    private ApiSwitchFilter filter;
+    private ApiSwitchGatewayFilterFactory filterFactory;
 
     @Test
     public void filter_non_pilot_enable() {
 
         doReturn(Mono.just(Boolean.TRUE.toString()))
-                .when(filter)
+                .when(filterFactory)
                 .findEnabledFlag();
 
         val exchange = MockServerWebExchange.from(
                 MockServerHttpRequest.get("/endpoint")
         );
-
-        val result = filter.filter(exchange, GATEWAY_FILTER_CHAIN);
+        val config = new ApiSwitchGatewayFilterFactory.Config();
+        val result = filterFactory.apply(config)
+                .filter(exchange, GATEWAY_FILTER_CHAIN);
 
         StepVerifier.create(result)
                 .verifyComplete();
@@ -38,14 +40,15 @@ public class ApiSwitchFilterNonPilotGatewayTest extends BaseGatewayTest {
     public void filter_non_pilot_not_enable() {
 
         doReturn(Mono.just(Boolean.FALSE.toString()))
-                .when(filter)
+                .when(filterFactory)
                 .findEnabledFlag();
 
         val exchange = MockServerWebExchange.from(
                 MockServerHttpRequest.get("/endpoint")
         );
-
-        val result = filter.filter(exchange, GATEWAY_FILTER_CHAIN);
+        val config = new ApiSwitchGatewayFilterFactory.Config();
+        val result = filterFactory.apply(config)
+                .filter(exchange, GATEWAY_FILTER_CHAIN);
 
         StepVerifier.create(result)
                 .verifyError(ExampleException.class);

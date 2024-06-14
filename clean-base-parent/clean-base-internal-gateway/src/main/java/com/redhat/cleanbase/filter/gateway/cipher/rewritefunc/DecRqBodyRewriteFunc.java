@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.func.rewrite;
+package com.redhat.cleanbase.filter.gateway.cipher.rewritefunc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

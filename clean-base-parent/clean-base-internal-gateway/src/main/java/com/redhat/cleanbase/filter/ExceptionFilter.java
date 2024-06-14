@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.filter;
 
 import com.redhat.cleanbase.constant.OrderConstants;
-import com.redhat.cleanbase.exception.handler.ExceptionHandler;
+import com.redhat.cleanbase.exception.handler.BaseExceptionHandler;
 import com.redhat.cleanbase.util.CastUtil;
 import io.micrometer.observation.annotation.Observed;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +22,9 @@ import java.util.*;
 @Component
 public class ExceptionFilter implements GlobalFilter {
 
-    private final Map<Class<? extends Throwable>, List<ExceptionHandler<?, ?>>> exceptionHandlerMap = new HashMap<>();
+    private final Map<Class<? extends Throwable>, List<BaseExceptionHandler<?, ?>>> exceptionHandlerMap = new HashMap<>();
 
-    public ExceptionFilter(List<ExceptionHandler<?, ?>> exceptionHandlers) {
+    public ExceptionFilter(List<BaseExceptionHandler<?, ?>> exceptionHandlers) {
         exceptionHandlers.forEach((exceptionHandler) -> {
             val processException = getProcessException(exceptionHandler);
             exceptionHandlerMap.computeIfAbsent(processException, (key) -> new ArrayList<>())
@@ -46,7 +46,7 @@ public class ExceptionFilter implements GlobalFilter {
                                 .orElseGet(() -> Mono.error(throwable)));
     }
 
-    private Optional<? extends ExceptionHandler<?, ?>> getExceptionHandler(ServerWebExchange serverWebExchange, Throwable throwable) {
+    private Optional<? extends BaseExceptionHandler<?, ?>> getExceptionHandler(ServerWebExchange serverWebExchange, Throwable throwable) {
         val throwableClass = throwable.getClass();
         val exceptionHandlers = exceptionHandlerMap.get(throwableClass);
         if (exceptionHandlers != null) {
@@ -68,7 +68,7 @@ public class ExceptionFilter implements GlobalFilter {
         }
     }
 
-    private Optional<List<ExceptionHandler<?, ?>>> getCandidateExceptionHandlers(Throwable throwable) {
+    private Optional<List<BaseExceptionHandler<?, ?>>> getCandidateExceptionHandlers(Throwable throwable) {
         return exceptionHandlerMap.entrySet().stream()
                 .filter((exceptionHandlerEntry) ->
                         exceptionHandlerEntry.getKey().isInstance(throwable)
@@ -86,7 +86,7 @@ public class ExceptionFilter implements GlobalFilter {
                 .map(Map.Entry::getValue);
     }
 
-    private static Optional<ExceptionHandler<?, ?>> getProcessExceptionHandler(List<ExceptionHandler<?, ?>> exceptionHandlers, ServerWebExchange serverWebExchange, Throwable throwable) {
+    private static Optional<BaseExceptionHandler<?, ?>> getProcessExceptionHandler(List<BaseExceptionHandler<?, ?>> exceptionHandlers, ServerWebExchange serverWebExchange, Throwable throwable) {
         return exceptionHandlers.stream()
                 .filter((exceptionHandler) ->
                         exceptionHandler.isSupported(
@@ -97,7 +97,7 @@ public class ExceptionFilter implements GlobalFilter {
                 .findFirst();
     }
 
-    private static Class<? extends Throwable> getProcessException(ExceptionHandler<?, ?> exceptionHandler) {
+    private static Class<? extends Throwable> getProcessException(BaseExceptionHandler<?, ?> exceptionHandler) {
         return CastUtil.cast(
                 Optional.of(exceptionHandler.getClass())
                         .map(Class::getGenericInterfaces)
@@ -106,7 +106,7 @@ public class ExceptionFilter implements GlobalFilter {
                                         .filter(ParameterizedType.class::isInstance)
                                         .map(ParameterizedType.class::cast)
                                         .filter((parameterizedType) ->
-                                                ExceptionHandler.class.equals(parameterizedType.getRawType()))
+                                                BaseExceptionHandler.class.equals(parameterizedType.getRawType()))
                                         .findFirst()
                         )
                         .map(ParameterizedType::getActualTypeArguments)

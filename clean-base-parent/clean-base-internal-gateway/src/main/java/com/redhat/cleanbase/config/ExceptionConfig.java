@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.config;
 
-import com.redhat.cleanbase.exception.handler.DefaultExceptionHandler;
-import com.redhat.cleanbase.exception.handler.DefaultRtExceptionHandler;
+import com.redhat.cleanbase.exception.handler.ExceptionHandler;
+import com.redhat.cleanbase.exception.handler.RtExceptionHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,13 +14,13 @@ public class ExceptionConfig {
 
     @ConditionalOnMissingBean(name = EXCEPTION_HANDLER_BEAN_NAME)
     @Bean(EXCEPTION_HANDLER_BEAN_NAME)
-    public DefaultExceptionHandler defaultExceptionHandler() {
-        return new DefaultExceptionHandler();
+    public ExceptionHandler defaultExceptionHandler() {
+        return new ExceptionHandler();
     }
 
     @ConditionalOnMissingBean(name = RT_EXCEPTION_HANDLER_BEAN_NAME)
     @Bean(RT_EXCEPTION_HANDLER_BEAN_NAME)
-    public DefaultRtExceptionHandler defaultRtExceptionHandler() {
-        return new DefaultRtExceptionHandler();
+    public RtExceptionHandler defaultRtExceptionHandler() {
+        return new RtExceptionHandler();
     }
 }
