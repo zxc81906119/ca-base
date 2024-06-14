@@ -47,33 +47,53 @@ public class ExceptionFilter implements GlobalFilter {
     }
 
     private Optional<? extends ExceptionHandler<?, ?>> getExceptionHandler(ServerWebExchange serverWebExchange, Throwable throwable) {
-        return Optional.ofNullable(exceptionHandlerMap.get(throwable.getClass()))
-                .or(() -> exceptionHandlerMap.entrySet().stream()
-                        .filter((exceptionHandlerEntry) ->
-                                exceptionHandlerEntry.getKey().isInstance(throwable)
-                        )
-                        .min(
-                                Map.Entry.comparingByKey(
-                                        (e1, e2) -> {
-                                            if (e1.equals(e2)) {
-                                                return 0;
-                                            }
-                                            return e1.isAssignableFrom(e2) ? 1 : -1;
-                                        }
-                                )
-                        )
-                        .map(Map.Entry::getValue)
+        val throwableClass = throwable.getClass();
+        var exceptionHandlers = exceptionHandlerMap.get(throwableClass);
+        if (exceptionHandlers != null) {
+            return getProcessExceptionHandler(exceptionHandlers, serverWebExchange, throwable);
+        }
+        synchronized (exceptionHandlerMap) {
+            if ((exceptionHandlers = exceptionHandlerMap.get(throwableClass)) != null) {
+                return getProcessExceptionHandler(exceptionHandlers, serverWebExchange, throwable);
+            }
+            val candidateExceptionHandlers = getCandidateExceptionHandlers(throwable);
+            candidateExceptionHandlers.ifPresentOrElse(
+                    (exceptionHandlerList) -> exceptionHandlerMap.put(throwableClass, exceptionHandlerList),
+                    () -> exceptionHandlerMap.put(throwableClass, List.of())
+            );
+            return candidateExceptionHandlers.flatMap(
+                    (exceptionHandlerList) -> getProcessExceptionHandler(exceptionHandlerList, serverWebExchange, throwable)
+            );
+        }
+    }
+
+    private Optional<List<ExceptionHandler<?, ?>>> getCandidateExceptionHandlers(Throwable throwable) {
+        return exceptionHandlerMap.entrySet().stream()
+                .filter((exceptionHandlerEntry) ->
+                        exceptionHandlerEntry.getKey().isInstance(throwable)
                 )
-                .flatMap((exceptionHandlers) ->
-                        exceptionHandlers.stream()
-                                .filter((exceptionHandler) ->
-                                        exceptionHandler.isSupported(
-                                                serverWebExchange
-                                                , CastUtil.cast(throwable)
-                                        )
-                                )
-                                .findFirst()
-                );
+                .min(
+                        Map.Entry.comparingByKey(
+                                (e1, e2) -> {
+                                    if (e1.equals(e2)) {
+                                        return 0;
+                                    }
+                                    return e1.isAssignableFrom(e2) ? 1 : -1;
+                                }
+                        )
+                )
+                .map(Map.Entry::getValue);
+    }
+
+    private static Optional<ExceptionHandler<?, ?>> getProcessExceptionHandler(List<ExceptionHandler<?, ?>> exceptionHandlers, ServerWebExchange serverWebExchange, Throwable throwable) {
+        return exceptionHandlers.stream()
+                .filter((exceptionHandler) ->
+                        exceptionHandler.isSupported(
+                                serverWebExchange
+                                , CastUtil.cast(throwable)
+                        )
+                )
+                .findFirst();
     }
 
     private static Class<? extends Throwable> getProcessException(ExceptionHandler<?, ?> exceptionHandler) {
