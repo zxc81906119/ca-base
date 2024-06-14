@@ -38,7 +38,7 @@ public class ExceptionFilter implements GlobalFilter {
                 .onErrorResume((throwable) ->
                         getExceptionHandler(exchange, throwable)
                                 .map((handler) ->
-                                        handler.process(exchange, CastUtil.cast(throwable))
+                                        Mono.defer(() -> handler.process(exchange, CastUtil.cast(throwable)))
                                                 .onErrorMap((handlerThrowable) -> {
                                                     log.error("handler process occur exception", handlerThrowable);
                                                     return throwable;
@@ -48,13 +48,14 @@ public class ExceptionFilter implements GlobalFilter {
 
     private Optional<? extends ExceptionHandler<?, ?>> getExceptionHandler(ServerWebExchange serverWebExchange, Throwable throwable) {
         val throwableClass = throwable.getClass();
-        var exceptionHandlers = exceptionHandlerMap.get(throwableClass);
+        val exceptionHandlers = exceptionHandlerMap.get(throwableClass);
         if (exceptionHandlers != null) {
             return getProcessExceptionHandler(exceptionHandlers, serverWebExchange, throwable);
         }
         synchronized (exceptionHandlerMap) {
-            if ((exceptionHandlers = exceptionHandlerMap.get(throwableClass)) != null) {
-                return getProcessExceptionHandler(exceptionHandlers, serverWebExchange, throwable);
+            val handlerList = exceptionHandlerMap.get(throwableClass);
+            if (handlerList != null) {
+                return getProcessExceptionHandler(handlerList, serverWebExchange, throwable);
             }
             val candidateExceptionHandlers = getCandidateExceptionHandlers(throwable);
             candidateExceptionHandlers.ifPresentOrElse(
