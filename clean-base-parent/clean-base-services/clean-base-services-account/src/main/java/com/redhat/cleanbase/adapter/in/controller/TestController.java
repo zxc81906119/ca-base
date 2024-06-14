@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/fee-tax")
+@RequestMapping("/test")
 @RequiredArgsConstructor
 public class TestController {
     private final ConvenientMsgSource convenientMsgSource;

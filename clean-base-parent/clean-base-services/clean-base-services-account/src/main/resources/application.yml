@@ -9,5 +9,5 @@ spring:
     name: clean-base
 
 server:
-  port: 8081
+  port: 8083
 

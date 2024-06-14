@@ -32,6 +32,10 @@ public class ApiSwitchFilter implements GlobalFilter {
             return chain.filter(exchange);
         }
 
+//        if (true) {
+//            return Mono.error(new ExampleException());
+//        }
+
         return Mono.defer(this::findEnabledFlag)
                 .map(ApiSwitchFilter::isEnabled)
                 .flatMap((enabled) ->

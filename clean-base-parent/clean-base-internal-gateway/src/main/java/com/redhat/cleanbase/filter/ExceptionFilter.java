@@ -22,15 +22,13 @@ import java.util.*;
 @Component
 public class ExceptionFilter implements GlobalFilter {
 
-    private final Map<Class<? extends Throwable>, ExceptionHandler<?, ?>> exceptionHandlerMap = new HashMap<>();
+    private final Map<Class<? extends Throwable>, List<ExceptionHandler<?, ?>>> exceptionHandlerMap = new HashMap<>();
 
     public ExceptionFilter(List<ExceptionHandler<?, ?>> exceptionHandlers) {
         exceptionHandlers.forEach((exceptionHandler) -> {
             val processException = getProcessException(exceptionHandler);
-            if (exceptionHandlerMap.get(processException) != null) {
-                throw new UnsupportedOperationException("不支援同一個例外有多個處理器!!!");
-            }
-            exceptionHandlerMap.put(processException, exceptionHandler);
+            exceptionHandlerMap.computeIfAbsent(processException, (key) -> new ArrayList<>())
+                    .add(exceptionHandler);
         });
     }
 
@@ -38,30 +36,45 @@ public class ExceptionFilter implements GlobalFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         return chain.filter(exchange)
                 .onErrorResume((throwable) ->
-                        getExceptionHandler(throwable)
-                                .map((handler) -> handler.process(exchange, CastUtil.cast(throwable)))
+                        getExceptionHandler(exchange, throwable)
+                                .map((handler) ->
+                                        handler.process(exchange, CastUtil.cast(throwable))
+                                                .onErrorMap((handlerThrowable) -> {
+                                                    log.error("handler process occur exception", handlerThrowable);
+                                                    return throwable;
+                                                }))
                                 .orElseGet(() -> Mono.error(throwable)));
     }
 
-    private Optional<? extends ExceptionHandler<?, ?>> getExceptionHandler(Throwable throwable) {
+    private Optional<? extends ExceptionHandler<?, ?>> getExceptionHandler(ServerWebExchange serverWebExchange, Throwable throwable) {
         return Optional.ofNullable(exceptionHandlerMap.get(throwable.getClass()))
-                .or(() ->
-                        exceptionHandlerMap.entrySet().stream()
-                                .filter((exceptionHandlerEntry) ->
-                                        exceptionHandlerEntry.getKey().isInstance(throwable))
-                                .min(Map.Entry.comparingByKey(
+                .or(() -> exceptionHandlerMap.entrySet().stream()
+                        .filter((exceptionHandlerEntry) ->
+                                exceptionHandlerEntry.getKey().isInstance(throwable)
+                        )
+                        .min(
+                                Map.Entry.comparingByKey(
                                         (e1, e2) -> {
                                             if (e1.equals(e2)) {
                                                 return 0;
                                             }
                                             return e1.isAssignableFrom(e2) ? 1 : -1;
                                         }
-                                ))
-                                .map(Map.Entry::getValue)
-                                .map(CastUtil::cast)
+                                )
+                        )
+                        .map(Map.Entry::getValue)
+                )
+                .flatMap((exceptionHandlers) ->
+                        exceptionHandlers.stream()
+                                .filter((exceptionHandler) ->
+                                        exceptionHandler.isSupported(
+                                                serverWebExchange
+                                                , CastUtil.cast(throwable)
+                                        )
+                                )
+                                .findFirst()
                 );
     }
-
 
     private static Class<? extends Throwable> getProcessException(ExceptionHandler<?, ?> exceptionHandler) {
         return CastUtil.cast(
@@ -81,7 +94,7 @@ public class ExceptionFilter implements GlobalFilter {
                         .filter(Class.class::isInstance)
                         .map(Class.class::cast)
                         .filter(Throwable.class::isAssignableFrom)
-                        .orElse(Throwable.class)
+                        .orElseThrow()
         );
     }
 

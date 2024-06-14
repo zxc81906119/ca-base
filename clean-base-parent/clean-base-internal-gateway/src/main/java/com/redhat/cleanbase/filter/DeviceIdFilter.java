@@ -1,15 +1,19 @@
 package com.redhat.cleanbase.filter;
 
 import com.redhat.cleanbase.constant.OrderConstants;
+import com.redhat.cleanbase.exception.ExampleException;
 import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.util.Optional;
 
 @Observed
 @RequiredArgsConstructor
@@ -17,10 +21,27 @@ import reactor.core.publisher.Mono;
 @Component
 @Order(OrderConstants.DEVICE_ID_FILTER_ORDER)
 public class DeviceIdFilter implements GlobalFilter {
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        log.info(getClass().getSimpleName());
-        return chain.filter(exchange);
+        return Optional.ofNullable(exchange.getAttribute(ServerWebExchangeUtils.CACHED_REQUEST_BODY_ATTR))
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .map(this::getDeviceId)
+                .map(this::verifyDeviceId)
+                .map((result) -> chain.filter(exchange))
+                // todo for exception handler 處理
+                .orElseGet(() -> Mono.error(new ExampleException("tid 驗證失敗")));
+    }
+
+    // todo
+    public String getDeviceId(String body) {
+        return null;
+    }
+
+    // todo
+    public String verifyDeviceId(String deviceId) {
+        return null;
     }
 
 }

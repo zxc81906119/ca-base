@@ -12,14 +12,21 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class ExampleExceptionHandler implements ExceptionHandler<ExampleException, Map<String, Object>> {
+public class BizExampleExceptionHandler implements ExceptionHandler<ExampleException, Map<String, Object>> {
 
     public static final String ERR_MSG = "errMsg";
 
     @Override
+    public boolean isSupported(ServerWebExchange exchange, ExampleException throwable) {
+        return exchange.getRequest()
+                .getPath()
+                .value()
+                .contains("biz");
+    }
+
+    @Override
     public ResponseEntity<Map<String, Object>> getResponseEntity(ServerWebExchange exchange, ExampleException throwable) {
-        val message = throwable.getMessage();
-        val data = Map.<String, Object>of(ERR_MSG, message);
+        val data = Map.<String, Object>of(ERR_MSG, "biz");
         return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

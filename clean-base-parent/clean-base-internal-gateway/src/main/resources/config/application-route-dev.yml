@@ -3,6 +3,9 @@ spring:
   cloud:
     gateway:
       default-filters:
+        - name: CacheRequestBody
+          args:
+            bodyClass: java.lang.String
         - StripPrefix=2
       routes:
         # bff
@@ -16,6 +19,8 @@ spring:
           uri: http://localhost:8083
           predicates:
             - Path=/biz/tax-fee/**
+          filters:
+            - CustomModifyRqBody
 
         - id: biz-card
           uri: http://localhost:8084

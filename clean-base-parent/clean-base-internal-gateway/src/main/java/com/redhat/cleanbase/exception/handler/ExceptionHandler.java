@@ -6,7 +6,7 @@ import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DefaultDataBufferFactory;
+import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -16,6 +16,10 @@ public interface ExceptionHandler<T extends Throwable, K> {
 
     Logger LOGGER = LoggerFactory.getLogger(ExceptionHandler.class);
 
+    default boolean isSupported(ServerWebExchange exchange, T throwable) {
+        return true;
+    }
+
     default Mono<Void> process(ServerWebExchange exchange, T throwable) {
 
         val classSimpleName = getClass().getSimpleName();
@@ -24,6 +28,7 @@ public interface ExceptionHandler<T extends Throwable, K> {
 
         val response = exchange.getResponse();
 
+        // todo 未來效能瓶頸,要改成 mono 回傳
         val responseEntity = getResponseEntity(exchange, throwable);
 
         val statusCode = responseEntity.getStatusCode();
@@ -36,7 +41,7 @@ public interface ExceptionHandler<T extends Throwable, K> {
         try {
             val body = responseEntity.getBody();
             if (body != null) {
-                val dataBuffer = getMonoDataBuffer(body);
+                val dataBuffer = getMonoDataBuffer(response.bufferFactory(), body);
                 return response.writeWith(dataBuffer);
             }
             return Mono.empty();
@@ -46,17 +51,14 @@ public interface ExceptionHandler<T extends Throwable, K> {
         }
     }
 
-    default Mono<DataBuffer> getMonoDataBuffer(K data) throws JsonProcessingException {
-
-        val responseData = new ObjectMapper()
+    default Mono<DataBuffer> getMonoDataBuffer(DataBufferFactory dataBufferFactory, K data) throws JsonProcessingException {
+        val responseData = getObjectMapper()
                 .writeValueAsBytes(data);
+        return Mono.just(dataBufferFactory.wrap(responseData));
+    }
 
-        val dataBufferFactory = new DefaultDataBufferFactory();
-
-        val dataBuffer = dataBufferFactory
-                .wrap(responseData);
-
-        return Mono.just(dataBuffer);
+    default ObjectMapper getObjectMapper() {
+        return new ObjectMapper();
     }
 
     ResponseEntity<K> getResponseEntity(ServerWebExchange exchange, T throwable);
