@@ -28,10 +28,12 @@ public class DeviceIdFilter implements GlobalFilter {
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .map(this::getDeviceId)
-                .map(this::verifyDeviceId)
-                .map((result) -> chain.filter(exchange))
-                // todo for exception handler 處理
-                .orElseGet(() -> Mono.error(new ExampleException("tid 驗證失敗")));
+                .map(deviceId ->
+                        Mono.just(deviceId)
+                                .flatMap(this::verifyDeviceId)
+                                .then(chain.filter(exchange)))
+                .orElseGet(() -> Mono.error(new ExampleException("deviceId not found")));
+
     }
 
     // todo
@@ -40,8 +42,8 @@ public class DeviceIdFilter implements GlobalFilter {
     }
 
     // todo
-    public String verifyDeviceId(String deviceId) {
-        return null;
+    public Mono<Void> verifyDeviceId(String deviceId) {
+        return Mono.empty();
     }
 
 }
