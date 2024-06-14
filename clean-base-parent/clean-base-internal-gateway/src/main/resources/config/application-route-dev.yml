@@ -18,7 +18,15 @@ spring:
             - DeviceId
             - CustomModifyRqBody
             - CustomModifyRsBody
-
+        # biz
+        - id: biz-tax-fee-common
+          uri: http://localhost:8083
+          predicates:
+            - Path=/biz/tax-fee/common/**
+          filters:
+            - DeviceId
+            - CustomModifyRqBody
+            - CustomModifyRsBody
           # biz
         - id: biz-tax-fee
           uri: http://localhost:8083
