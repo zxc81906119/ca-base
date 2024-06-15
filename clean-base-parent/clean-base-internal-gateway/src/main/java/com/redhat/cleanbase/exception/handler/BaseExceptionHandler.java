@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 
 public interface BaseExceptionHandler<T extends Throwable, K> {
 
@@ -26,41 +28,43 @@ public interface BaseExceptionHandler<T extends Throwable, K> {
 
         LOGGER.error("[handler: {}] process exception...", classSimpleName, throwable);
 
-        val response = exchange.getResponse();
+        return Mono.defer(
+                        () -> getResponseEntity(exchange, throwable)
+                )
+                .flatMap((responseEntity) -> {
 
-        // todo 未來效能瓶頸,要改成 mono 回傳
-        val responseEntity = getResponseEntity(exchange, throwable);
+                    val response = exchange.getResponse();
 
-        val statusCode = responseEntity.getStatusCode();
-        response.setStatusCode(statusCode);
+                    val statusCode = responseEntity.getStatusCode();
+                    response.setStatusCode(statusCode);
 
-        val headers = responseEntity.getHeaders();
-        val responseHeaders = response.getHeaders();
-        responseHeaders.putAll(headers);
+                    val headers = responseEntity.getHeaders();
+                    val responseHeaders = response.getHeaders();
+                    responseHeaders.putAll(headers);
 
+                    return Optional.ofNullable(responseEntity.getBody())
+                            .map((body) ->
+                                    getDataBuffer(response.bufferFactory(), body)
+                                            .transform(response::writeWith)
+                            )
+                            .orElseGet(Mono::empty);
+                })
+                .onErrorMap((otherException) -> throwable);
+    }
+
+    default Mono<DataBuffer> getDataBuffer(DataBufferFactory dataBufferFactory, K data) {
         try {
-            val body = responseEntity.getBody();
-            if (body != null) {
-                val dataBuffer = getMonoDataBuffer(response.bufferFactory(), body);
-                return response.writeWith(dataBuffer);
-            }
-            return Mono.empty();
+            val responseData = getObjMapper().writeValueAsBytes(data);
+            return Mono.just(dataBufferFactory.wrap(responseData));
         } catch (JsonProcessingException e) {
-            LOGGER.error("parse body exception...", e);
-            return Mono.error(throwable);
+            return Mono.error(e);
         }
     }
 
-    default Mono<DataBuffer> getMonoDataBuffer(DataBufferFactory dataBufferFactory, K data) throws JsonProcessingException {
-        val responseData = getObjectMapper()
-                .writeValueAsBytes(data);
-        return Mono.just(dataBufferFactory.wrap(responseData));
-    }
-
-    default ObjectMapper getObjectMapper() {
+    default ObjectMapper getObjMapper() {
         return new ObjectMapper();
     }
 
-    ResponseEntity<K> getResponseEntity(ServerWebExchange exchange, T throwable);
+    Mono<ResponseEntity<K>> getResponseEntity(ServerWebExchange exchange, T throwable);
 
 }

@@ -24,7 +24,6 @@ spring:
           predicates:
             - Path=/biz/tax-fee/common/**
           filters:
-            - DeviceId
             - CustomModifyRqBody
             - CustomModifyRsBody
           # biz

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import java.util.Map;
 public class RtExceptionHandler implements BaseExceptionHandler<RuntimeException, Map<String, Object>> {
 
     @Override
-    public ResponseEntity<Map<String, Object>> getResponseEntity(ServerWebExchange exchange, RuntimeException throwable) {
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public Mono<ResponseEntity<Map<String, Object>>> getResponseEntity(ServerWebExchange exchange, RuntimeException throwable) {
+        return Mono.just(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }

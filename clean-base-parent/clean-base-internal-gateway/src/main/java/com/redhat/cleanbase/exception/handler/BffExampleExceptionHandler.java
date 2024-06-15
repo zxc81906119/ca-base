@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
@@ -25,9 +26,9 @@ public class BffExampleExceptionHandler implements BaseExceptionHandler<ExampleE
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getResponseEntity(ServerWebExchange exchange, ExampleException throwable) {
+    public Mono<ResponseEntity<Map<String, Object>>> getResponseEntity(ServerWebExchange exchange, ExampleException throwable) {
         val data = Map.<String, Object>of(ERR_MSG, "bff");
-        return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
+        return Mono.just(new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
 }
