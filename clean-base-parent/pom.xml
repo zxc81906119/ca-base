@@ -33,6 +33,7 @@
         <springdoc-openapi-starter-webmvc-ui.version>2.0.2</springdoc-openapi-starter-webmvc-ui.version>
 
         <logstash-logback-encoder.version>7.4</logstash-logback-encoder.version>
+        <openpdf.version>2.0.2</openpdf.version>
     </properties>
 
     <dependencies>
@@ -71,6 +72,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.github.librepdf</groupId>
+                <artifactId>openpdf</artifactId>
+                <version>${openpdf.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
