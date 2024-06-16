@@ -35,13 +35,14 @@ public class DeviceIdGatewayFilterFactory extends AbstractGatewayFilterFactory<D
                         .orElseGet(() -> Mono.error(new ExampleException("deviceId not found")));
     }
 
-
     // todo
     public String getDeviceId(String body) {
         return null;
     }
 
     // todo
+    //  驗證失敗 -> 回傳錯誤的 mono, 由 exception handler 處理
+    //  驗證成功 -> 回傳已完成的 mono, 對我來說回傳值不重要
     public Mono<Void> verifyDeviceId(String deviceId) {
         return Mono.empty();
     }
