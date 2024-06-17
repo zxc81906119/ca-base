@@ -1,9 +1,9 @@
 package com.redhat.cleanbase.common.i18n.msg_source;
 
-import com.redhat.cleanbase.common.i18n.msg_source.condition.I18nProcessCondition;
 import com.redhat.cleanbase.common.i18n.msg_source.input.GenericI18nInput;
 import com.redhat.cleanbase.common.i18n.msg_source.input.I18nInput;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.AbstractResourceBasedMessageSource;
@@ -38,8 +38,10 @@ public class CustomPropMsgSource implements CustomMsgSource {
 
     @Override
     public String getMessage(I18nInput input, boolean forceDefaultNull, Locale locale) {
+        val code = input.getCode();
+        val arguments = input.getArguments();
         return forceDefaultNull ?
-                getMessage(input.getCode(), input.getArguments(), null, locale)
-                : getMessage(input, locale);
+                getMessage(code, arguments, null, locale)
+                : getMessage(code, arguments, input.getDefaultMessage(), locale);
     }
 }
