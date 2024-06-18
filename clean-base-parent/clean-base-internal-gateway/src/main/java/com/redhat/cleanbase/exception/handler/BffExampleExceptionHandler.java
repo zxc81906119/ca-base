@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.server.PathContainer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -19,10 +20,12 @@ public class BffExampleExceptionHandler implements BaseExceptionHandler<ExampleE
 
     @Override
     public boolean isSupported(ServerWebExchange exchange, ExampleException throwable) {
-        return exchange.getRequest()
-                .getPath()
-                .value()
-                .contains("bff");
+        return exchange.getRequest().getPath().elements().stream()
+                .filter(PathContainer.PathSegment.class::isInstance)
+                .findFirst()
+                .map(PathContainer.Element::value)
+                .map((firstPath) -> firstPath.startsWith("bff"))
+                .orElse(false);
     }
 
     @Override
