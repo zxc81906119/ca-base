@@ -28,9 +28,7 @@ public interface BaseExceptionHandler<T extends Throwable, K> {
 
         LOGGER.error("[handler: {}] process exception...", classSimpleName, throwable);
 
-        return Mono.defer(
-                        () -> getResponseEntity(exchange, throwable)
-                )
+        return Mono.defer(() -> getResponseEntity(exchange, throwable))
                 .flatMap((responseEntity) -> {
 
                     val response = exchange.getResponse();
@@ -49,7 +47,10 @@ public interface BaseExceptionHandler<T extends Throwable, K> {
                             )
                             .orElseGet(Mono::empty);
                 })
-                .onErrorMap((otherException) -> throwable);
+                .onErrorMap((otherException) -> {
+                    LOGGER.error("process occur exception", otherException);
+                    return throwable;
+                });
     }
 
     default Mono<DataBuffer> getDataBuffer(DataBufferFactory dataBufferFactory, K data) {
