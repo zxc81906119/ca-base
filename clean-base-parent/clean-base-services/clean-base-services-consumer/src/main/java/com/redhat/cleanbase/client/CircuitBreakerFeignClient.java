@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.client.fallback;
+package com.redhat.cleanbase.client;
 
 import com.redhat.cleanbase.client.fallback.factory.CircuitBreakerFallBackFeignClientFactory;
 import org.springframework.cloud.openfeign.FeignClient;

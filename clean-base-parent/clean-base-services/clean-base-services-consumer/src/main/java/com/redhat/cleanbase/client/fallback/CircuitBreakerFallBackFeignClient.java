@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.client;
+package com.redhat.cleanbase.client.fallback;
 
-import com.redhat.cleanbase.client.fallback.CircuitBreakerFeignClient;
+import com.redhat.cleanbase.client.CircuitBreakerFeignClient;
 
 public class CircuitBreakerFallBackFeignClient implements CircuitBreakerFeignClient {
 

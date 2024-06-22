@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.controller;
 
 import com.redhat.cleanbase.client.NonCircuitBreakerFeignClient;
-import com.redhat.cleanbase.client.fallback.CircuitBreakerFeignClient;
+import com.redhat.cleanbase.client.CircuitBreakerFeignClient;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.web.bind.annotation.RequestMapping;

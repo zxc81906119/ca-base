@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.client.fallback.factory;
 
-import com.redhat.cleanbase.client.CircuitBreakerFallBackFeignClient;
+import com.redhat.cleanbase.client.fallback.CircuitBreakerFallBackFeignClient;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
