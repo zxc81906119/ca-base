@@ -1,0 +1,16 @@
+package com.redhat.cleanbase.client.fallback.factory;
+
+import com.redhat.cleanbase.client.CircuitBreakerFallBackFeignClient;
+import org.springframework.cloud.openfeign.FallbackFactory;
+import org.springframework.stereotype.Component;
+
+// todo 確定是否有問題
+@Component
+public class CircuitBreakerFallBackFeignClientFactory implements FallbackFactory<CircuitBreakerFallBackFeignClient> {
+
+    @Override
+    public CircuitBreakerFallBackFeignClient create(Throwable cause) {
+        return new CircuitBreakerFallBackFeignClient();
+    }
+
+}

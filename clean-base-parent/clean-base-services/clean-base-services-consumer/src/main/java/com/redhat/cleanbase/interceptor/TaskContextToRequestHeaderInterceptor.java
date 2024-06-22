@@ -1,28 +1,27 @@
 package com.redhat.cleanbase.interceptor;
 
-import com.redhat.cleanbase.aware.GlobalApplicationContextAware;
 import com.redhat.cleanbase.context.TaskContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 
 import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class TaskContextRequestHeaderInterceptor implements RequestInterceptor {
+public abstract class TaskContextToRequestHeaderInterceptor implements RequestInterceptor {
+
+    private final ApplicationContext applicationContext;
 
     @Override
     public void apply(RequestTemplate template) {
-
         try {
             val taskContext =
-                    GlobalApplicationContextAware
-                            .getApplicationContext()
-                            .getBean(TaskContext.class);
+                    applicationContext.getBean(TaskContext.class);
 
             Optional.ofNullable(getHeaders(taskContext))
                     .ifPresent((headers) ->
@@ -30,6 +29,7 @@ public abstract class TaskContextRequestHeaderInterceptor implements RequestInte
                     );
 
         } catch (RuntimeException e) {
+            log.error("task context to request header occur exception", e);
             if (isThrow(e)) {
                 throw e;
             }
