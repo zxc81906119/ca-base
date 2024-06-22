@@ -12,5 +12,4 @@ public class TaskContextConfig {
     public TaskContext taskContext() {
         return new TaskContext();
     }
-
 }

@@ -43,4 +43,15 @@ public abstract class TaskContextToRequestHeaderInterceptor implements RequestIn
     }
 
 
+    public static class Default extends TaskContextToRequestHeaderInterceptor {
+
+        public Default(ApplicationContext applicationContext) {
+            super(applicationContext);
+        }
+
+        @Override
+        protected HttpHeaders getHeaders(TaskContext taskContext) {
+            return null;
+        }
+    }
 }

@@ -1,37 +1,39 @@
 package com.redhat.cleanbase.data.source;
 
 
-import com.redhat.cleanbase.data.base.FeignClientData;
-import lombok.RequiredArgsConstructor;
+import com.redhat.cleanbase.data.FeignClientData;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@RequiredArgsConstructor
 public class FeignClientDataSource {
 
-    private final boolean isInherit;
 
     private final ThreadLocal<FeignClientData> threadLocal = new ThreadLocal<>();
     private final ThreadLocal<FeignClientData> inheritableThreadLocal = new InheritableThreadLocal<>();
 
-    private final Consumer<FeignClientData> setDataFunc = (t) -> {
-        if (isInherit) {
-            inheritableThreadLocal.set(t);
-            threadLocal.remove();
-        } else {
-            threadLocal.set(t);
-            inheritableThreadLocal.remove();
-        }
-    };
+    private final Consumer<FeignClientData> setDataFunc;
+    private final Supplier<FeignClientData> getDataFunc;
 
-    private final Supplier<FeignClientData> getDataFunc = () -> {
-        if (isInherit) {
-            return inheritableThreadLocal.get();
-        }
-        return threadLocal.get();
-    };
+    public FeignClientDataSource(boolean isInherit) {
+        this.getDataFunc = () -> {
+            if (isInherit) {
+                return inheritableThreadLocal.get();
+            }
+            return threadLocal.get();
+        };
+
+        this.setDataFunc = (t) -> {
+            if (isInherit) {
+                inheritableThreadLocal.set(t);
+                threadLocal.remove();
+            } else {
+                threadLocal.set(t);
+                inheritableThreadLocal.remove();
+            }
+        };
+    }
 
     public void setData(FeignClientData t) {
         setDataFunc.accept(t);

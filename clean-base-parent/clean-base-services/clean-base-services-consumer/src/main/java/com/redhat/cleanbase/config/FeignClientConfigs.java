@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.config;
 
-import com.redhat.cleanbase.interceptor.DefaultTaskContextToRequestHeaderInterceptor;
+import com.redhat.cleanbase.interceptor.TaskContextToRequestHeaderInterceptor;
 import feign.Feign;
 import feign.RequestInterceptor;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -18,10 +18,10 @@ public class FeignClientConfigs {
         }
     }
 
-    public static class TaskContextToRequestHeaderConfig {
+    public static class DefaultTaskContextToRequestHeaderInterceptorConfig {
         @Bean
         public RequestInterceptor requestInterceptor(ApplicationContext applicationContext) {
-            return new DefaultTaskContextToRequestHeaderInterceptor(applicationContext);
+            return new TaskContextToRequestHeaderInterceptor.Default(applicationContext);
         }
     }
 }
