@@ -5,7 +5,7 @@ import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FeignClientAspect extends BaseFeignClientAspect {
+public class ExampleFeignClientAspect extends BaseFeignClientAspect {
 
     @Override
     protected Exception convertException(MethodInvocationProceedingJoinPoint methodInvocationProceedingJoinPoint, Exception e) {
