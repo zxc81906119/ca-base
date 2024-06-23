@@ -5,3 +5,6 @@ spring:
     import: classpath:application-common.yml
 server:
   port: 8083
+producer:
+  url: 'http://localhost:8888/gg'
+

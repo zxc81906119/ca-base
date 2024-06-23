@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  com.redhat.cleanbase.api.env.postprocessor.FeignClientEnvLoader

@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.controller;
+package com.redhat.cleanbase.provider.controller;
 
 import com.redhat.cleanbase.api.client.CircuitBreakerFeignClient;
 import com.redhat.cleanbase.api.client.proxy.FeignClientProxy;
@@ -23,6 +23,7 @@ public class FeignServerController {
     @RequestMapping("/test")
     public String test() {
         val feignClientData = new FeignClientData.Default();
+        feignClientData.setSystemId("biz");
         val proxy = feignClientProxy.proxy(circuitBreakerFeignClient, feignClientData);
         return proxy.test83();
     }

@@ -17,7 +17,6 @@ public abstract class FeignClientAspect {
 
     protected abstract Exception convertException(MethodInvocationProceedingJoinPoint methodInvocationProceedingJoinPoint, Exception e);
 
-
     public static class Default extends FeignClientAspect {
         @Override
         protected Exception convertException(MethodInvocationProceedingJoinPoint methodInvocationProceedingJoinPoint, Exception e) {

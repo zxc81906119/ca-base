@@ -16,16 +16,6 @@
             <artifactId>clean-base-services-common</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
-        </dependency>
-
         <!-- h2 db 記憶體資料庫 -->
         <dependency>
             <groupId>com.h2database</groupId>

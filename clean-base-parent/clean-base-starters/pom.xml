@@ -15,9 +15,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-api</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.redhat</groupId>
                 <artifactId>clean-base-starters-pdf</artifactId>
@@ -33,6 +42,6 @@
     <modules>
         <module>clean-base-starters-ftl</module>
         <module>clean-base-starters-pdf</module>
-        <module>clean-base-stater-api</module>
+        <module>clean-base-starters-api</module>
     </modules>
 </project>

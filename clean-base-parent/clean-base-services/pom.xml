@@ -30,11 +30,6 @@
             </dependency>
             <dependency>
                 <groupId>com.redhat</groupId>
-                <artifactId>clean-base-stater-api</artifactId>
-                <version>${clean-base.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.redhat</groupId>
                 <artifactId>clean-base-services-provider</artifactId>
                 <version>${clean-base.version}</version>
             </dependency>
