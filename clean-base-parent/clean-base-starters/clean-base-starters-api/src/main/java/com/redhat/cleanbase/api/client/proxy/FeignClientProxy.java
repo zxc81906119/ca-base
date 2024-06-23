@@ -33,6 +33,7 @@ public class FeignClientProxy {
                         feignClientDataSource.clear();
                     }
                 });
+
         return (T) enhancer.create();
     }
 
