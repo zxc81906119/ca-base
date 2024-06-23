@@ -33,5 +33,6 @@
     <modules>
         <module>clean-base-starters-ftl</module>
         <module>clean-base-starters-pdf</module>
+        <module>clean-base-stater-api</module>
     </modules>
 </project>
