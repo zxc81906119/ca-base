@@ -1,70 +1,21 @@
 package com.redhat.cleanbase.api.data.source;
 
-
 import com.redhat.cleanbase.api.data.FeignClientData;
 
-import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class FeignClientDataSource {
+public interface FeignClientDataSource {
+    void setData(FeignClientData t);
 
-    private final ThreadLocal<FeignClientData> threadLocal = new ThreadLocal<>();
-    private final ThreadLocal<FeignClientData> inheritableThreadLocal = new InheritableThreadLocal<>();
+    void setDataIfAbsent(FeignClientData t);
 
-    private final Consumer<FeignClientData> setDataFunc;
-    private final Supplier<FeignClientData> getDataFunc;
+    void setDataIfPresent(FeignClientData t);
 
-    public FeignClientDataSource(boolean isInherit) {
-        this.getDataFunc = () -> {
-            if (isInherit) {
-                return inheritableThreadLocal.get();
-            }
-            return threadLocal.get();
-        };
+    FeignClientData getDataOr(FeignClientData t);
 
-        this.setDataFunc = (t) -> {
-            if (isInherit) {
-                inheritableThreadLocal.set(t);
-                threadLocal.remove();
-            } else {
-                threadLocal.set(t);
-                inheritableThreadLocal.remove();
-            }
-        };
-    }
+    FeignClientData getDataOr(Supplier<FeignClientData> supplier);
 
-    public void setData(FeignClientData t) {
-        setDataFunc.accept(t);
-    }
+    FeignClientData getData();
 
-    public void setDataIfAbsent(FeignClientData t) {
-        if (getData() == null) {
-            setData(t);
-        }
-    }
-
-    public void setDataIfPresent(FeignClientData t) {
-        Optional.ofNullable(getData())
-                .ifPresent((noUse) -> setData(t));
-    }
-
-    public FeignClientData getDataOr(FeignClientData t) {
-        return Optional.ofNullable(getData())
-                .orElse(t);
-    }
-
-    public FeignClientData getDataOr(Supplier<FeignClientData> supplier) {
-        return Optional.ofNullable(getData())
-                .orElseGet(supplier);
-    }
-
-    public FeignClientData getData() {
-        return getDataFunc.get();
-    }
-
-    public void clear() {
-        threadLocal.remove();
-        inheritableThreadLocal.remove();
-    }
+    void clear();
 }
