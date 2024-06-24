@@ -1,6 +1,7 @@
 package com.redhat.cleanbase.api.client;
 
 import com.redhat.cleanbase.api.client.fallback.factory.CircuitBreakerFallBackFeignClientFactory;
+import com.redhat.cleanbase.api.config.FeignClientConfigs;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
         , name = "clean-base-services-producer"
         , url = "${producer.url}"
         , fallbackFactory = CircuitBreakerFallBackFeignClientFactory.class
+        , configuration = FeignClientConfigs.TaskContextToRequestHeaderInterceptorConfig.class
 )
 public interface CircuitBreakerFeignClient {
 

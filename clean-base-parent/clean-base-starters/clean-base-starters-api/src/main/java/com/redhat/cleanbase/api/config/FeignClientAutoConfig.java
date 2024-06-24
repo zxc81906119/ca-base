@@ -12,12 +12,14 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
+@RequiredArgsConstructor
+@Configuration
 @ComponentScan("com.redhat.cleanbase.api.client")
 @EnableFeignClients("com.redhat.cleanbase.api.client")
-@RequiredArgsConstructor
 @EnableConfigurationProperties(FeignClientDataSourceProp.class)
-@Configuration
+@Import(TaskContextConfig.class)
 public class FeignClientAutoConfig {
 
     private final FeignClientDataSourceProp feignClientDataSourceProp;
