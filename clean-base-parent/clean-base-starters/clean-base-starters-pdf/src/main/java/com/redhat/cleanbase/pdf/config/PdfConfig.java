@@ -1,6 +1,6 @@
-package com.redhat.cleanbasestarterspdf.config;
+package com.redhat.cleanbase.pdf.config;
 
-import com.redhat.cleanbasestarterspdf.processor.PdfProcessor;
+import com.redhat.cleanbase.pdf.processor.PdfProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

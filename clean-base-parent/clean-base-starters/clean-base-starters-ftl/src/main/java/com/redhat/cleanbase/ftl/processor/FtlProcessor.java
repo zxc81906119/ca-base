@@ -1,4 +1,4 @@
-package com.redhat.cleanbasestartersftl.processor;
+package com.redhat.cleanbase.ftl.processor;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;

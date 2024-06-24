@@ -1,4 +1,4 @@
-package com.redhat.cleanbasestarterspdf.processor;
+package com.redhat.cleanbase.pdf.processor;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.html.simpleparser.HTMLWorker;

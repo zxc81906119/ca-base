@@ -1,6 +1,6 @@
-package com.redhat.cleanbasestartersftl.config;
+package com.redhat.cleanbase.ftl.config;
 
-import com.redhat.cleanbasestartersftl.processor.FtlProcessor;
+import com.redhat.cleanbase.ftl.processor.FtlProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

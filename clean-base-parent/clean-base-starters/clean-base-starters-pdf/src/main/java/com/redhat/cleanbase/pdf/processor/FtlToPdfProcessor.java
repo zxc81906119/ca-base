@@ -1,6 +1,6 @@
-package com.redhat.cleanbasestarterspdf.processor;
+package com.redhat.cleanbase.pdf.processor;
 
-import com.redhat.cleanbasestartersftl.processor.FtlProcessor;
+import com.redhat.cleanbase.ftl.processor.FtlProcessor;
 import freemarker.template.TemplateException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
