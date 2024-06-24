@@ -6,7 +6,8 @@ import lombok.val;
 import org.redisson.api.RCountDownLatch;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
-import java.util.function.BiConsumer;
+
+import java.util.function.Consumer;
 
 @Component
 @RequiredArgsConstructor
@@ -80,10 +81,18 @@ public class RedissonLockComponent {
         }
     }
 
-    public void countDownLatch(@NonNull String key, @NonNull Integer count, @NonNull BiConsumer<RCountDownLatch, Integer> countDownLatchConsumer) throws InterruptedException {
+    public void countDownLatch(@NonNull String key, @NonNull Consumer<RCountDownLatch>... countDownLatchConsumer) throws InterruptedException {
+        val length = countDownLatchConsumer.length;
+        if (length == 0) {
+            return;
+        }
         val countDownLatch = redissonClient.getCountDownLatch(key);
-        countDownLatch.trySetCount(count);
-        countDownLatchConsumer.accept(countDownLatch, count);
+        if (!countDownLatch.trySetCount(length)) {
+            return;
+        }
+        for (Consumer<RCountDownLatch> rCountDownLatchConsumer : countDownLatchConsumer) {
+            rCountDownLatchConsumer.accept(countDownLatch);
+        }
         countDownLatch.await();
     }
 
