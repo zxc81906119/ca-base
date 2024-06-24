@@ -1,3 +1,38 @@
 ---
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          cbYes:
+            connectTimeout: 4000
+            readTimeout: 4000
+          cbNo:
+            connectTimeout: 4000
+            readTimeout: 4000
+      circuitbreaker:
+        enabled: true
+    circuitbreaker:
+      resilience4j:
+        disable-time-limiter: true
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        minimumNumberOfCalls: 100
+        slowCallRateThreshold: 100
+        slowCallDurationThreshold: 60000
+        slidingWindowSize: 100
+        slidingWindowType: COUNT_BASED
+        waitDurationInOpenState: 60000
+    instances:
+      CircuitBreakerFeignClient#test83():
+        minimumNumberOfCalls: 2
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: 60000
+        slidingWindowSize: 2
+        slidingWindowType: COUNT_BASED
+        waitDurationInOpenState: 20000
+---
 producer:
   url: http://localhost:8083
