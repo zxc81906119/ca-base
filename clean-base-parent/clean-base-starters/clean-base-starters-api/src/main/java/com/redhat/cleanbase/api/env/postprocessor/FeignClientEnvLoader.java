@@ -17,6 +17,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FeignClientEnvLoader implements EnvironmentPostProcessor {
 
+    public static final String API_STARTER_APPLICATION_CONFIG = "api-starter-application-config";
+
     private final YamlPropertySourceLoader loader =
             new YamlPropertySourceLoader();
 
@@ -27,7 +29,7 @@ public class FeignClientEnvLoader implements EnvironmentPostProcessor {
     ) {
         try {
             val resource = new ClassPathResource("config/application-openfeign.yml");
-            val sourceList = loader.load("api-starter-application-config", resource);
+            val sourceList = loader.load(API_STARTER_APPLICATION_CONFIG, resource);
             val propertySources = environment.getPropertySources();
             sourceList.forEach(propertySources::addFirst);
         } catch (IOException e) {
