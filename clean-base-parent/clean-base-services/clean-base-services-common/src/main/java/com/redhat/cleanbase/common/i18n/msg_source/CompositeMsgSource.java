@@ -1,6 +1,5 @@
 package com.redhat.cleanbase.common.i18n.msg_source;
 
-import com.redhat.cleanbase.common.i18n.msg_source.condition.I18nProcessCondition;
 import com.redhat.cleanbase.common.i18n.msg_source.input.I18nInput;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
