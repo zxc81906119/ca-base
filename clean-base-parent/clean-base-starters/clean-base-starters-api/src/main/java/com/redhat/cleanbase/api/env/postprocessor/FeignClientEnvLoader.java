@@ -27,7 +27,7 @@ public class FeignClientEnvLoader implements EnvironmentPostProcessor {
     ) {
         try {
             val resource = new ClassPathResource("config/application-openfeign.yml");
-            val sourceList = loader.load("openfeign-starter-config", resource);
+            val sourceList = loader.load("api-starter-application-config", resource);
             val propertySources = environment.getPropertySources();
             sourceList.forEach(propertySources::addFirst);
         } catch (IOException e) {
