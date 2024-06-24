@@ -1,10 +1,10 @@
 package com.redhat.cleanbase.api.config;
 
-import com.redhat.cleanbase.api.aop.FeignClientAspect;
-import com.redhat.cleanbase.api.client.proxy.FeignClientProxy;
+import com.redhat.cleanbase.api.aspect.DefaultFeignClientAspect;
+import com.redhat.cleanbase.api.aspect.FeignClientAspect;
 import com.redhat.cleanbase.api.config.prop.FeignClientDataSourceProp;
-import com.redhat.cleanbase.api.constant.Constants;
 import com.redhat.cleanbase.api.data.source.FeignClientDataSource;
+import com.redhat.cleanbase.api.proxy.FeignClientProxy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -13,10 +13,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+@ComponentScan("com.redhat.cleanbase.api.client")
+@EnableFeignClients("com.redhat.cleanbase.api.client")
 @RequiredArgsConstructor
-@ComponentScan({Constants.FEIGN_CLIENT_BASE_PACKAGES})
 @EnableConfigurationProperties(FeignClientDataSourceProp.class)
-@EnableFeignClients({Constants.FEIGN_CLIENT_BASE_PACKAGES})
 @Configuration
 public class FeignClientAutoConfig {
 
@@ -28,14 +28,14 @@ public class FeignClientAutoConfig {
     }
 
     @Bean
-    @ConditionalOnMissingBean(FeignClientAspect.class)
-    public FeignClientAspect feignClientAspect() {
-        return new FeignClientAspect.Default();
+    public FeignClientProxy feignClientProxy() {
+        return new FeignClientProxy(feignClientDataSource());
     }
 
     @Bean
-    public FeignClientProxy feignClientProxy() {
-        return new FeignClientProxy(feignClientDataSource());
+    @ConditionalOnMissingBean(FeignClientAspect.class)
+    public FeignClientAspect feignClientAspect() {
+        return new DefaultFeignClientAspect();
     }
 
 }

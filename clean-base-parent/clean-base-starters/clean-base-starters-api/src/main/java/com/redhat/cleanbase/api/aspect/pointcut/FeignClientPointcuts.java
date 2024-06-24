@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.api.aop.pointcut;
+package com.redhat.cleanbase.api.aspect.pointcut;
 
 import org.aspectj.lang.annotation.Pointcut;
 

@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.api.config;
+package com.redhat.cleanbase.provider.config;
 
-import com.redhat.cleanbase.api.context.TaskContext;
+import com.redhat.cleanbase.provider.context.TaskContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.RequestScope;

@@ -1,6 +1,5 @@
 package com.redhat.cleanbase.api.interceptor;
 
-import com.redhat.cleanbase.api.context.TaskContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +20,10 @@ public abstract class BeanToRqHeaderInterceptor<T> implements RequestInterceptor
     @Override
     public void apply(RequestTemplate template) {
         try {
-            val taskContext =
+            val bean =
                     applicationContext.getBean(beanType);
 
-            Optional.ofNullable(getHeaders(taskContext))
+            Optional.ofNullable(getHeaders(bean))
                     .ifPresent((headers) ->
                             headers.forEach(template::header)
                     );
@@ -43,16 +42,4 @@ public abstract class BeanToRqHeaderInterceptor<T> implements RequestInterceptor
         return false;
     }
 
-
-    public static class Default extends BeanToRqHeaderInterceptor<TaskContext> {
-
-        public Default(ApplicationContext applicationContext) {
-            super(applicationContext, TaskContext.class);
-        }
-
-        @Override
-        protected HttpHeaders getHeaders(TaskContext taskContext) {
-            return null;
-        }
-    }
 }

@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
         , name = "clean-base-services-producer"
         , url = "${producer.url}"
         , configuration = {
-                FeignClientConfigs.DefaultFeignClientBuilderConfig.class
+        FeignClientConfigs.DefaultFeignClientBuilderConfig.class
         ,}
 )
 public interface NonCircuitBreakerFeignClient {
 
     //8083
     @RequestMapping(value = "/test")
-    String test83();
+    String test83() throws Exception;
 
 }

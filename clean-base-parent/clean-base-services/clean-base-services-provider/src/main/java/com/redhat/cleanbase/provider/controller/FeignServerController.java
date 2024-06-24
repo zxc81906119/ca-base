@@ -1,8 +1,8 @@
 package com.redhat.cleanbase.provider.controller;
 
 import com.redhat.cleanbase.api.client.CircuitBreakerFeignClient;
-import com.redhat.cleanbase.api.client.proxy.FeignClientProxy;
-import com.redhat.cleanbase.api.data.FeignClientData;
+import com.redhat.cleanbase.api.data.DefaultFeignClientData;
+import com.redhat.cleanbase.api.proxy.FeignClientProxy;
 import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +21,8 @@ public class FeignServerController {
     private final CircuitBreakerFeignClient circuitBreakerFeignClient;
 
     @RequestMapping("/test")
-    public String test() {
-        val feignClientData = new FeignClientData.Default();
-        feignClientData.setSystemId("biz");
+    public String test() throws Exception {
+        val feignClientData = new DefaultFeignClientData("fuck");
         val proxy = feignClientProxy.proxy(circuitBreakerFeignClient, feignClientData);
         return proxy.test83();
     }
