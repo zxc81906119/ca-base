@@ -5,9 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @FeignClient(
-        contextId = "cbNo"
+        contextId = "clean-base-services-provider-cb-no"
         , name = "clean-base-services-provider"
-        , url = "${producer.url}"
         , configuration = {
         FeignClientConfigs.DefaultFeignClientBuilderConfig.class
         ,}

@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @FeignClient(
-        contextId = "cbYes"
+        contextId = "clean-base-services-provider-cb-yes"
         , name = "clean-base-services-provider"
-        , url = "${producer.url}"
         , fallbackFactory = CircuitBreakerFallBackFeignClientFactory.class
         , configuration = FeignClientConfigs.TaskContextToRequestHeaderInterceptorConfig.class
 )
