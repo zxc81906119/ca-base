@@ -22,7 +22,7 @@ public class FeignServerController {
 
     @RequestMapping("/test")
     public String test() throws Exception {
-        val feignClientData = new DefaultFeignClientData("fuck");
+        val feignClientData = new DefaultFeignClientData("systemId");
         val proxy = feignClientProxy.proxy(circuitBreakerFeignClient, feignClientData);
         return proxy.test83();
     }
