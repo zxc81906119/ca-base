@@ -3,7 +3,13 @@ spring:
     name: clean-base-services-consumer
   config:
     import: classpath:application-common.yml
+
+  cloud:
+    openfeign:
+      client:
+        additional-feign-base-packages: com.redhat,com.cub
 server:
   port: 8083
+
 
 
