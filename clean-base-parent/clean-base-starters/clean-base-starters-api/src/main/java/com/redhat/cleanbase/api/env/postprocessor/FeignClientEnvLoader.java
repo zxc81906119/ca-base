@@ -1,11 +1,11 @@
 package com.redhat.cleanbase.api.env.postprocessor;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.boot.env.YamlPropertySourceLoader;
+import org.springframework.boot.logging.DeferredLog;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -13,13 +13,14 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-@Slf4j
 @RequiredArgsConstructor
 public class FeignClientEnvLoader implements EnvironmentPostProcessor {
 
     public static final String API_STARTER_APPLICATION_CONFIG = "api-starter-application-config";
     public static final String CONFIG_CLASS_PATH_ROOT_PATH = "config";
     public static final String OPENFEIGN_CONFIG_NAME_FORMAT = "application-openfeign%s.yml";
+
+    private static final DeferredLog DEFERRED_LOG = new DeferredLog();
 
     private final YamlPropertySourceLoader loader =
             new YamlPropertySourceLoader();
@@ -29,6 +30,8 @@ public class FeignClientEnvLoader implements EnvironmentPostProcessor {
             ConfigurableEnvironment environment
             , SpringApplication application
     ) {
+        application.addInitializers(ctx -> DEFERRED_LOG.replayTo(FeignClientEnvLoader.class));
+
         val activeProfiles = new ArrayList<>(Arrays.asList(environment.getActiveProfiles()));
         activeProfiles.add("");
 
@@ -42,7 +45,7 @@ public class FeignClientEnvLoader implements EnvironmentPostProcessor {
                 Collections.reverse(propertySourceList);
                 propertySourceList.forEach(propertySources::addFirst);
             } catch (Exception e) {
-                log.warn("open feign config path: {} not found or read fail", configPath, e);
+                DEFERRED_LOG.warn("config path: %s , load failed !!!".formatted(configPath), e);
             }
         }
 
@@ -60,4 +63,5 @@ public class FeignClientEnvLoader implements EnvironmentPostProcessor {
                 .map((configName) -> CONFIG_CLASS_PATH_ROOT_PATH + "/" + configName)
                 .toList();
     }
+
 }
