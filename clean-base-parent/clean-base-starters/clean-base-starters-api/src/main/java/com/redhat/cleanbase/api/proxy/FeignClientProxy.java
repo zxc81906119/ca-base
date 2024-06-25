@@ -23,6 +23,7 @@ public class FeignClientProxy {
         val delegateClass = openfeignClient.getClass();
         val interfaces = delegateClass.getInterfaces();
         val enhancer = new Enhancer();
+        enhancer.setInterfaces(interfaces);
         enhancer.setCallback((MethodInterceptor)
                 (obj, method, args, proxy) -> {
                     try {
@@ -39,7 +40,6 @@ public class FeignClientProxy {
                     }
                 });
 
-        enhancer.setInterfaces(interfaces);
         return (T) enhancer.create();
     }
 

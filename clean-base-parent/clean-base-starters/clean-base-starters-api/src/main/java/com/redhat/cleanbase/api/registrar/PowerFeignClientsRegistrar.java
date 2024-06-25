@@ -16,6 +16,7 @@
 
 package com.redhat.cleanbase.api.registrar;
 
+import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -136,7 +137,7 @@ public class PowerFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
     }
 
     protected void registerDefaultConfiguration(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
-        Map<String, Object> defaultAttrs = metadata.getAnnotationAttributes(EnablePowerFeignClients.class.getName(), true);
+        Map<String, Object> defaultAttrs = metadata.getAnnotationAttributes(getEnableFeignClientsClass().getName(), true);
 
         if (defaultAttrs != null && defaultAttrs.containsKey("defaultConfiguration")) {
             String name;
@@ -151,7 +152,7 @@ public class PowerFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
 
     public void registerFeignClients(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
         LinkedHashSet<BeanDefinition> candidateComponents = new LinkedHashSet<>();
-        Map<String, Object> attrs = metadata.getAnnotationAttributes(EnablePowerFeignClients.class.getName());
+        Map<String, Object> attrs = metadata.getAnnotationAttributes(getEnableFeignClientsClass().getName());
         final Class<?>[] clients = attrs == null ? null : (Class<?>[]) attrs.get("clients");
         if (clients == null || clients.length == 0) {
             ClassPathScanningCandidateComponentProvider scanner = getScanner();
@@ -183,6 +184,10 @@ public class PowerFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
                 registerFeignClient(registry, annotationMetadata, attributes);
             }
         }
+    }
+
+    protected Class<? extends Annotation> getEnableFeignClientsClass() {
+        return EnablePowerFeignClients.class;
     }
 
     protected void registerFeignClient(BeanDefinitionRegistry registry, AnnotationMetadata annotationMetadata,
@@ -373,7 +378,7 @@ public class PowerFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
 
     protected Set<String> getBasePackages(AnnotationMetadata importingClassMetadata) {
         Map<String, Object> attributes = importingClassMetadata
-                .getAnnotationAttributes(EnablePowerFeignClients.class.getCanonicalName());
+                .getAnnotationAttributes(getEnableFeignClientsClass().getCanonicalName());
 
         Set<String> basePackages = new HashSet<>();
         for (String pkg : (String[]) attributes.get("value")) {
