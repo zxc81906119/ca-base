@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
         contextId = "clean-base-services-provider-cb-yes"
         , name = "clean-base-services-provider"
         , fallbackFactory = CircuitBreakerFallBackFeignClientFactory.class
-        , configuration = FeignClientConfigs.TaskContextToRequestHeaderInterceptorConfig.class
+        , configuration = {
+        FeignClientConfigs.TaskContextToRequestHeaderInterceptorConfig.class
+        ,
+}
 )
 public interface CircuitBreakerFeignClient {
 
