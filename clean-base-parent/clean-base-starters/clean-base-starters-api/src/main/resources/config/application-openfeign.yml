@@ -29,7 +29,7 @@ resilience4j:
         slidingWindowSize: 100
         slidingWindowType: COUNT_BASED
         waitDurationInOpenState: 60000
-      cbYes:
+      clean-base-services-provider-cb-yes:
         minimumNumberOfCalls: 100
         slowCallRateThreshold: 100
         slowCallDurationThreshold: 60000
