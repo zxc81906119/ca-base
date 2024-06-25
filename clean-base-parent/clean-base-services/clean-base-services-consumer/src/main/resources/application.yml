@@ -1,6 +1,6 @@
 spring:
   application:
-    name: clean-base-services-producer
+    name: clean-base-services-consumer
   config:
     import: classpath:application-common.yml
 server:

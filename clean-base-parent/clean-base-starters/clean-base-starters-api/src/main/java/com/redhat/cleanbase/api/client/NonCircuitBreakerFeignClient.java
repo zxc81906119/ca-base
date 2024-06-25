@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @FeignClient(
         contextId = "cbNo"
-        , name = "clean-base-services-producer"
+        , name = "clean-base-services-provider"
         , url = "${producer.url}"
         , configuration = {
         FeignClientConfigs.DefaultFeignClientBuilderConfig.class
