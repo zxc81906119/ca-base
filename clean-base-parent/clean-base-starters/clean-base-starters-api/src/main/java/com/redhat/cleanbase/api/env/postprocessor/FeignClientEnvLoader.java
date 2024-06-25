@@ -16,7 +16,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class FeignClientEnvLoader implements EnvironmentPostProcessor {
 
-    public static final String API_STARTER_APPLICATION_CONFIG = "api-starter-application-config";
+    public static final String API_STARTER_CONFIG = "api-starter-config";
+    public static final String PROPERTY_SOURCE_NAME_FORMAT = "[" + API_STARTER_CONFIG + "] -> [%s]";
     public static final String CONFIG_CLASS_PATH_ROOT_PATH = "config";
     public static final String OPENFEIGN_CONFIG_NAME_FORMAT = "application-openfeign%s.yml";
 
@@ -41,7 +42,8 @@ public class FeignClientEnvLoader implements EnvironmentPostProcessor {
 
         for (String configPath : openfeignConfigPaths) {
             try {
-                val propertySourceList = loader.load(API_STARTER_APPLICATION_CONFIG, new ClassPathResource(configPath));
+                val propertySourceName = PROPERTY_SOURCE_NAME_FORMAT.formatted(configPath);
+                val propertySourceList = loader.load(propertySourceName, new ClassPathResource(configPath));
                 Collections.reverse(propertySourceList);
                 propertySourceList.forEach(propertySources::addFirst);
             } catch (Exception e) {
@@ -53,12 +55,12 @@ public class FeignClientEnvLoader implements EnvironmentPostProcessor {
 
     private static List<String> getOpenfeignConfigPaths(List<String> activeProfiles) {
         return activeProfiles.stream()
+                .distinct()
                 .map((activeProfile) ->
                         activeProfile.isEmpty()
                                 ? activeProfile
                                 : "-" + activeProfile
                 )
-                .distinct()
                 .map(OPENFEIGN_CONFIG_NAME_FORMAT::formatted)
                 .map((configName) -> CONFIG_CLASS_PATH_ROOT_PATH + "/" + configName)
                 .toList();
