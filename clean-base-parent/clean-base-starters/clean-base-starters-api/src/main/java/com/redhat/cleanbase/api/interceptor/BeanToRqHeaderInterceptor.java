@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public abstract class BeanToRqHeaderInterceptor<T> implements RequestInterceptor {
 
-    private final ApplicationContext applicationContext;
+    protected final ApplicationContext applicationContext;
     private final Class<T> beanType;
 
     @Override

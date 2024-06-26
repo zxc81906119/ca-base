@@ -8,6 +8,8 @@ spring:
     openfeign:
       client:
         additional-feign-base-packages: com.redhat,com.cub
+        datasource:
+          is-inherited: true
 server:
   port: 8083
 

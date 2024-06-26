@@ -21,7 +21,7 @@ public class FeignClientEnvLoader implements EnvironmentPostProcessor {
     public static final String CONFIG_CLASS_PATH_ROOT_PATH = "config";
     public static final String OPENFEIGN_CONFIG_NAME_FORMAT = "application-openfeign%s.yml";
 
-    private static final DeferredLog DEFERRED_LOG = new DeferredLog();
+    private final DeferredLog DEFERRED_LOG = new DeferredLog();
 
     private final YamlPropertySourceLoader loader =
             new YamlPropertySourceLoader();
