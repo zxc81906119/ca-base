@@ -17,7 +17,7 @@ public class CallTestApiPortAdapter implements CallTestApiPort {
 
     @Override
     public String callApi() throws Exception {
-        val feignClientData = new DefaultFeignClientData("feignClientData");
+        val feignClientData = new DefaultFeignClientData("系統代號 777");
         val proxy = feignClientProxy.proxy(circuitBreakerFeignClient, feignClientData);
         return proxy.test83();
     }
