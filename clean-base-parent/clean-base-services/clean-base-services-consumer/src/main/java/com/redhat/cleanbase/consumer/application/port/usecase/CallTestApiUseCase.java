@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.provider.application.port.usecase;
+package com.redhat.cleanbase.consumer.application.port.usecase;
 
 public interface CallTestApiUseCase {
     String callApi() throws Exception;

@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.provider.common.exception;
+package com.redhat.cleanbase.consumer.common.exception;
 
 import lombok.Getter;
 

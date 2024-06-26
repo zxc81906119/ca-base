@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.provider.application.port.out;
+package com.redhat.cleanbase.consumer.application.port.out;
 
 public interface CallTestApiPort {
     String callApi() throws Exception;

@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.provider;
+package com.redhat.cleanbase.consumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

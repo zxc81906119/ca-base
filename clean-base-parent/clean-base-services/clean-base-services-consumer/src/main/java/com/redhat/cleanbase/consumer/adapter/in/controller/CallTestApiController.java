@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.provider.adapter.in.controller;
+package com.redhat.cleanbase.consumer.adapter.in.controller;
 
-import com.redhat.cleanbase.provider.application.port.usecase.CallTestApiUseCase;
+import com.redhat.cleanbase.consumer.application.port.usecase.CallTestApiUseCase;
 import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

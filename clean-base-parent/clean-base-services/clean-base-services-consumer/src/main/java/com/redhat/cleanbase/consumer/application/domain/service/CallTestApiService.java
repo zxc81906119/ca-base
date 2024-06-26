@@ -1,7 +1,7 @@
-package com.redhat.cleanbase.provider.application.domain.service;
+package com.redhat.cleanbase.consumer.application.domain.service;
 
-import com.redhat.cleanbase.provider.application.port.out.CallTestApiPort;
-import com.redhat.cleanbase.provider.application.port.usecase.CallTestApiUseCase;
+import com.redhat.cleanbase.consumer.application.port.out.CallTestApiPort;
+import com.redhat.cleanbase.consumer.application.port.usecase.CallTestApiUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
