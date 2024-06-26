@@ -1,8 +1,8 @@
-package com.redhat.cleanbase.provider.aspect;
+package com.redhat.cleanbase.provider.common.aspect;
 
 import com.redhat.cleanbase.api.aspect.FeignClientAspect;
 import com.redhat.cleanbase.api.data.source.FeignClientDataSource;
-import com.redhat.cleanbase.provider.exception.ActionException;
+import com.redhat.cleanbase.provider.common.exception.ActionException;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
