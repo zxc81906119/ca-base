@@ -2,7 +2,6 @@ package com.redhat.cleanbase.filter.gateway;
 
 import com.redhat.cleanbase.constant.ProfileConstants;
 import com.redhat.cleanbase.exception.ExampleException;
-import com.redhat.cleanbase.util.ReactiveUtil;
 import io.micrometer.observation.annotation.Observed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -21,7 +20,7 @@ public class ApiSwitchGatewayFilterFactory extends AbstractGatewayFilterFactory<
     public ApiSwitchGatewayFilterFactory(
             Environment environment
     ) {
-        super(ApiSwitchGatewayFilterFactory.Config.class);
+        super(Config.class);
         this.environment = environment;
     }
 
@@ -44,7 +43,7 @@ public class ApiSwitchGatewayFilterFactory extends AbstractGatewayFilterFactory<
                     .map(ApiSwitchGatewayFilterFactory::isEnabled)
                     .flatMap((enabled) ->
                             enabled ? filterChain.filter(serverWebExchange) :
-                                    ReactiveUtil.callFuncAndGetMono(() -> {
+                                    Mono.fromCallable(() -> {
                                         throw new ExampleException();
                                     })
                     );
@@ -62,7 +61,8 @@ public class ApiSwitchGatewayFilterFactory extends AbstractGatewayFilterFactory<
                             }
                             return "true";
                         }
-                ));
+                )
+        );
     }
 
     private static boolean isEnabled(String enabledFlag) {

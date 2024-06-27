@@ -18,7 +18,7 @@ public class DeviceIdGatewayFilterFactory extends AbstractGatewayFilterFactory<D
 
     public DeviceIdGatewayFilterFactory(
     ) {
-        super(DeviceIdGatewayFilterFactory.Config.class);
+        super(Config.class);
     }
 
     @Override
