@@ -2,14 +2,21 @@ package com.redhat.cleanbase.api.aspect;
 
 import feign.*;
 import feign.codec.DecodeException;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import lombok.val;
 import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 
 public class DefaultFeignClientAspect extends FeignClientAspect {
 
     @Override
     protected Exception convertException(MethodInvocationProceedingJoinPoint methodInvocationProceedingJoinPoint, Exception e) {
-        if (e instanceof RetryableException retryableException) {
+        if (e instanceof CallNotPermittedException callNotPermittedException) {
+            // todo 斷路器開啟狀態,直接拋出此例外
+        } else if (e instanceof RetryableException retryableException) {
+            // todo 可以拿到被包裝的例外
+            val cause = retryableException.getCause();
             // todo call api 發生 io exception or 子 exception
+            // todo java.net.SocketTimeoutException 是 timeout 時會拋出之例外,也是 io exception 子類
             // todo default error decoder 看到 response header 有 Retry-After 就會包裝成 RetryableException
             // todo retryer 接到此例外會進行重試判斷,
             //  如未讓 feign client 掛其他 retryer , 預設是不 retry, 直接拋出相同 retryableException
