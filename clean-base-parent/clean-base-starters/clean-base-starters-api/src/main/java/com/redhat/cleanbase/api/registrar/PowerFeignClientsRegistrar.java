@@ -154,12 +154,16 @@ public class PowerFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
         LinkedHashSet<BeanDefinition> candidateComponents = new LinkedHashSet<>();
         Map<String, Object> attrs = metadata.getAnnotationAttributes(getEnableFeignClientsClass().getName());
         final Class<?>[] clients = attrs == null ? null : (Class<?>[]) attrs.get("clients");
+        // todo 推薦放空的
         if (clients == null || clients.length == 0) {
             ClassPathScanningCandidateComponentProvider scanner = getScanner();
             scanner.setResourceLoader(this.resourceLoader);
+            // todo 找到掛 FeignClient 這個 annotation 的類
             scanner.addIncludeFilter(new AnnotationTypeFilter(FeignClient.class));
+            // todo 抓出所有 base packages
             Set<String> basePackages = getBasePackages(metadata);
             for (String basePackage : basePackages) {
+                // todo 載入所有候選之 bean definition
                 candidateComponents.addAll(scanner.findCandidateComponents(basePackage));
             }
         } else {
@@ -169,15 +173,19 @@ public class PowerFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
         }
 
         for (BeanDefinition candidateComponent : candidateComponents) {
+            // todo 此 bean 是有掛 annotation
             if (candidateComponent instanceof AnnotatedBeanDefinition beanDefinition) {
                 // verify annotated class is an interface
                 AnnotationMetadata annotationMetadata = beanDefinition.getMetadata();
+                // todo 一定要是 interface
                 Assert.isTrue(annotationMetadata.isInterface(), "@FeignClient can only be specified on an interface");
 
+                // todo 抓出 feign client annotation 的屬性名稱和值
                 Map<String, Object> attributes = annotationMetadata
                         .getAnnotationAttributes(FeignClient.class.getCanonicalName());
-
+                // todo context id  > value > name > serviceId
                 String name = getClientName(attributes);
+                // todo feign client interface 之類名
                 String className = annotationMetadata.getClassName();
                 registerClientConfiguration(registry, name, className, attributes.get("configuration"));
 
@@ -392,6 +400,8 @@ public class PowerFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
             }
         }
 
+        // todo 客製化部份,抓 application yml 裡面的
+        //  spring.cloud.openfeign.client.additional-feign-base-packages 對應之值
         val additionalFeignClientBasePackages = getAdditionalFeignClientBasePackages();
         if (additionalFeignClientBasePackages != null) {
             for (String additionalFeignClientBasePackage : additionalFeignClientBasePackages) {
@@ -459,9 +469,14 @@ public class PowerFeignClientsRegistrar implements ImportBeanDefinitionRegistrar
     protected void registerClientConfiguration(BeanDefinitionRegistry registry, Object name, Object className,
                                                Object configuration) {
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(FeignClientSpecification.class);
+        // todo default.FeignClientAutoConfig
         builder.addConstructorArgValue(name);
+        // todo default
         builder.addConstructorArgValue(className);
+        // todo 配置類陣列
+        //  Class<?>[] defaultConfiguration() default {};
         builder.addConstructorArgValue(configuration);
+        // todo bean-name: default.FeignClientAutoConfig.FeignClientSpecification
         registry.registerBeanDefinition(name + "." + FeignClientSpecification.class.getSimpleName(),
                 builder.getBeanDefinition());
     }
