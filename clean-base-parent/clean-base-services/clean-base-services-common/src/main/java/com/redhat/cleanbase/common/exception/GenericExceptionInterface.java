@@ -2,7 +2,7 @@ package com.redhat.cleanbase.common.exception;
 
 import com.redhat.cleanbase.common.exception.content.GenericExceptionContent;
 import com.redhat.cleanbase.common.exception.context.GenericExceptionContext;
-import com.redhat.cleanbase.common.util.CastUtil;
+import com.redhat.cleanbase.common.util.CastUtils;
 import lombok.val;
 
 public interface GenericExceptionInterface<T extends Exception> {
@@ -11,7 +11,7 @@ public interface GenericExceptionInterface<T extends Exception> {
     String getMessage();
 
     default T toRealType() {
-        return CastUtil.cast(this);
+        return CastUtils.cast(this);
     }
 
     default GenericExceptionContent initContent() {

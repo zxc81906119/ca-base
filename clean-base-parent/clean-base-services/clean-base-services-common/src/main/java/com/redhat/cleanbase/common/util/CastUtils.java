@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.common.util;
 
-public final class CastUtil {
-    private CastUtil() {
+public final class CastUtils {
+    private CastUtils() {
         throw new UnsupportedOperationException();
     }
 
