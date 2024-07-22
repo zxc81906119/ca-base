@@ -1,0 +1,58 @@
+---
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - name: CacheRequestBody
+          args:
+            bodyClass: java.lang.String
+        - StripPrefix=2
+      routes:
+        # bff
+        - id: bff-tax-fee
+          uri: http://bff-tax-fee:8080
+          predicates:
+            - Path=/bff/tax-fee/**
+
+          # biz
+        - id: biz-tax-fee
+          uri: http://biz-tax-fee:8080
+          predicates:
+            - Path=/biz/tax-fee/**
+
+        - id: biz-card
+          uri: http://biz-card:8080
+          predicates:
+            - Path=/biz/card/**
+
+        - id: biz-audit-log
+          uri: http://biz-audit-log:8080
+          predicates:
+            - Path=/biz/audit-log/**
+
+        - id: biz-notification
+          uri: http://biz-notification:8080
+          predicates:
+            - Path=/biz/notification/**
+
+        - id: biz-nps
+          uri: http://biz-nps:8080
+          predicates:
+            - Path=/biz/nps/**
+
+        - id: biz-twd-account
+          uri: http://biz-twd-account:8080
+          predicates:
+            - Path=/biz/twd-account/**
+
+        - id: biz-user
+          uri: http://biz-user:8080
+          predicates:
+            - Path=/biz/user/**
+
+        - id: biz-security-verification
+          uri: http://biz-security-verification:8080
+          predicates:
+            - Path=/biz/security-verification/**
+
+

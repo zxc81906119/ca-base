@@ -9,5 +9,51 @@
 
     <artifactId>clean-base-starters</artifactId>
     <packaging>pom</packaging>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.redhat</groupId>
+            <artifactId>clean-base-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-validation</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-i18n</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-api</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-pdf</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-ftl</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <modules>
+        <module>clean-base-starters-ftl</module>
+        <module>clean-base-starters-pdf</module>
+        <module>clean-base-starters-api</module>
+        <module>clean-base-starters-i18n</module>
+        <module>clean-base-starters-validation</module>
+    </modules>
 </project>

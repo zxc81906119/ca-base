@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: clean-base-services-producer
-  config:
-    import: classpath:application-common.yml
-server:
-  port: 8083

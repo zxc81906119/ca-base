@@ -1,5 +1,6 @@
 package com.redhat.cleanbase.common.exception.info;
 
+
 import com.redhat.cleanbase.common.response.code.ResponseCodeEnum;
 
 import java.lang.annotation.ElementType;

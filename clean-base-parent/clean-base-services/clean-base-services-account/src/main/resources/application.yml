@@ -11,3 +11,8 @@ spring:
 server:
   port: 8081
 
+---
+generic:
+  exception:
+    extra-packages: 'com.redhat.cleanbase.account'
+

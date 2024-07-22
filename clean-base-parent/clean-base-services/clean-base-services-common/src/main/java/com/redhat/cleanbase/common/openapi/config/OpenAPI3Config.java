@@ -121,16 +121,18 @@ public class OpenAPI3Config {
                 """;
 
         val annoExample = exceptionInfo.example();
-        return exceptionRespBodyTemplate.formatted(responseCodeEnum.getValue(), message,
-                StringUtils.hasText(annoExample)
-                        ? annoExample
+        return exceptionRespBodyTemplate.formatted(
+                responseCodeEnum.getValue()
+                , message
+                , StringUtils.hasText(annoExample) ?
+                        annoExample
                         : "{}"
         );
     }
 
     private static String getTitle(ExceptionInfoDetail exceptionInfoDetail, String message, String title) {
-        return StringUtils.hasText(title)
-                ? title
+        return StringUtils.hasText(title) ?
+                title
                 : exceptionInfoDetail.clazz().getSimpleName() + "-" + message;
     }
 

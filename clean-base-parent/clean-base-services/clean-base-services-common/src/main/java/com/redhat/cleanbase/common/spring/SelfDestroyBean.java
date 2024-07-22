@@ -1,6 +1,7 @@
 package com.redhat.cleanbase.common.spring;
 
 import jakarta.annotation.PostConstruct;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
@@ -13,10 +14,9 @@ public abstract class SelfDestroyBean {
 
     @PostConstruct
     public void destroy() {
-        final String[] beanNames = context.getBeanNamesForType(getClass());
-        final BeanDefinitionRegistry registry =
-                ((BeanDefinitionRegistry) context.getAutowireCapableBeanFactory());
-
+        val beanNames = context.getBeanNamesForType(getClass());
+        val registry =
+                (BeanDefinitionRegistry) context.getAutowireCapableBeanFactory();
         Arrays.stream(beanNames)
                 .forEach(registry::removeBeanDefinition);
     }

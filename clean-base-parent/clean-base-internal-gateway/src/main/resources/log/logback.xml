@@ -1,7 +1,12 @@
 <configuration>
     <springProperty name="svc.name" source="spring.application.name" scope="context"/>
     <springProperty name="svc.profile" source="proj.profile" scope="context"/>
-    <appender name="jsonAppender" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d [%-28.28logger{28}] [%thread] [%-5level] [%X{traceId}] [%X{spanId}] %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <timestamp/>
@@ -23,7 +28,14 @@
             </providers>
         </encoder>
     </appender>
-    <root level="info">
-        <appender-ref ref="jsonAppender"/>
-    </root>
+    <springProfile name="local,dev">
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+    <springProfile name="!(local|dev)">
+        <root level="info">
+            <appender-ref ref="JSON_CONSOLE"/>
+        </root>
+    </springProfile>
 </configuration>

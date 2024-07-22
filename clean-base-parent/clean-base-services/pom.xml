@@ -9,6 +9,13 @@
     <artifactId>clean-base-services</artifactId>
     <packaging>pom</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.redhat</groupId>
+            <artifactId>clean-base-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -31,11 +38,6 @@
             <dependency>
                 <groupId>com.redhat</groupId>
                 <artifactId>clean-base-services-consumer</artifactId>
-                <version>${clean-base.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.redhat</groupId>
-                <artifactId>clean-base-services-producer</artifactId>
                 <version>${clean-base.version}</version>
             </dependency>
         </dependencies>
@@ -84,28 +86,8 @@
         </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-devtools</artifactId>
-                    <scope>runtime</scope>
-                    <optional>true</optional>
-                </dependency>
-            </dependencies>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-
-    </profiles>
-
-
     <modules>
         <module>clean-base-services-consumer</module>
-        <module>clean-base-services-producer</module>
         <module>clean-base-services-common</module>
         <module>clean-base-services-account</module>
     </modules>

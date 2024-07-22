@@ -1,9 +1,10 @@
 package com.redhat.cleanbase.common.response;
 
 
-import com.redhat.cleanbase.common.i18n.msg_source.MessageSourceContext;
+import com.redhat.cleanbase.common.i18n.context.I18nContext;
 import com.redhat.cleanbase.common.response.code.ResponseCode;
 import com.redhat.cleanbase.common.response.code.ResponseCodeEnum;
+import com.redhat.cleanbase.i18n.msg_source.input.GenericI18nInput;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,8 +39,8 @@ public class GenericResponse<T> {
     }
 
     public static <T> GenericResponse<T> body(ResponseCode responseCode, T data, String traceId) {
-        val i18nValue = MessageSourceContext.getMessageSource()
-                .getMessage(responseCode.getRoot().getI18nKey());
+        val i18nValue = I18nContext.getMessageSource()
+                .getMessage(new GenericI18nInput(responseCode.getRoot().getI18nKey()));
         return GenericResponse.body(responseCode.getValue(), i18nValue, data, traceId);
     }
 

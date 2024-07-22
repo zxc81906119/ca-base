@@ -1,0 +1,46 @@
+---
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          clean-base-services-provider-cb-yes:
+            url: http://localhost:8083
+            connectTimeout: 4000
+            readTimeout: 4000
+          clean-base-services-provider-cb-no:
+            url: http://localhost:8083
+            connectTimeout: 4000
+            readTimeout: 4000
+      circuitbreaker:
+        group:
+          enabled: true
+        enabled: true
+    circuitbreaker:
+      resilience4j:
+        disable-time-limiter: true
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        minimumNumberOfCalls: 100
+        slowCallRateThreshold: 100
+        slowCallDurationThreshold: 60000
+        slidingWindowSize: 100
+        slidingWindowType: COUNT_BASED
+        waitDurationInOpenState: 60000
+      clean-base-services-provider-cb-yes:
+        minimumNumberOfCalls: 100
+        slowCallRateThreshold: 100
+        slowCallDurationThreshold: 60000
+        slidingWindowSize: 100
+        slidingWindowType: COUNT_BASED
+        waitDurationInOpenState: 60000
+    instances:
+      CircuitBreakerFeignClient#test83():
+        minimumNumberOfCalls: 2
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: 60000
+        slidingWindowSize: 2
+        slidingWindowType: COUNT_BASED
+        waitDurationInOpenState: 20000

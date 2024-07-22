@@ -9,30 +9,21 @@
     </parent>
     <artifactId>clean-base-services-consumer</artifactId>
     <dependencies>
+
         <dependency>
             <groupId>com.redhat</groupId>
             <artifactId>clean-base-services-common</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+            <groupId>com.redhat</groupId>
+            <artifactId>clean-base-starters-api</artifactId>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.hibernate.orm.tooling</groupId>
@@ -51,10 +42,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.graalvm.buildtools</groupId>
-                <artifactId>native-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

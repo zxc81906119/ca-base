@@ -1,21 +1,23 @@
 ---
+proj:
+  profile: ${proj_profile:dev}
+
 server:
-  port: 8080
+  port: 8087
 
 spring:
+  profiles:
+    active: ${proj.profile}
+    group:
+      dev:
+        - route-dev
+
   application:
     name: cube-api-internal-gateway
 
-  cloud:
-    gateway:
-      routes:
-        - id: fee-tax
-          uri: http://localhost:8081
-          predicates:
-            - Path=/fee-tax/**
-
   reactor:
     context-propagation: auto
+---
 # Tracing & Metrics & Probe
 management:
   observations:
@@ -37,5 +39,6 @@ management:
         include:
           - health
           - prometheus
+---
 logging:
   config: classpath:log/logback.xml

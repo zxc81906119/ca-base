@@ -1,0 +1,75 @@
+---
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - name: CacheRequestBody
+          args:
+            bodyClass: java.lang.String
+        - StripPrefix=2
+      routes:
+        # bff
+        - id: bff-tax-fee
+          uri: http://localhost:8082
+          predicates:
+            - Path=/bff/tax-fee/**
+          filters:
+            - ApiSwitch
+            - DeviceId
+            - CustomModifyRqBody
+            - CustomModifyRsBody
+        # biz
+        - id: biz-tax-fee-common
+          uri: http://localhost:8083
+          predicates:
+            - Path=/biz/tax-fee/common/**
+          filters:
+            - CustomModifyRqBody
+            - CustomModifyRsBody
+          # biz
+        - id: biz-tax-fee
+          uri: http://localhost:8083
+          predicates:
+            - Path=/biz/tax-fee/**
+          filters:
+            - ApiSwitch
+            - DeviceId
+            - CustomModifyRqBody
+            - CustomModifyRsBody
+
+        - id: biz-card
+          uri: http://localhost:8084
+          predicates:
+            - Path=/biz/card/**
+
+        - id: biz-audit-log
+          uri: http://localhost:8085
+          predicates:
+            - Path=/biz/audit-log/**
+
+        - id: biz-notification
+          uri: http://localhost:8086
+          predicates:
+            - Path=/biz/notification/**
+
+        - id: biz-nps
+          uri: http://localhost:8087
+          predicates:
+            - Path=/biz/nps/**
+
+        - id: biz-twd-account
+          uri: http://localhost:8088
+          predicates:
+            - Path=/biz/twd-account/**
+
+        - id: biz-user
+          uri: http://localhost:8089
+          predicates:
+            - Path=/biz/user/**
+
+        - id: biz-security-verification
+          uri: http://localhost:8090
+          predicates:
+            - Path=/biz/security-verification/**
+
+
