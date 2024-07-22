@@ -23,10 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @AutoConfigureMockMvc
 public abstract class BaseMvcTest extends BaseTest {
@@ -53,6 +50,7 @@ public abstract class BaseMvcTest extends BaseTest {
                         .orElseThrow();
 
         val mvcInfo = mvcTestInfo.mvcInfo();
+
         val uri = mvcInfo.url();
         val httpMethod = mvcInfo.httpMethod().asHttpMethod();
         val fileUploadInfos = mvcInfo.fileUploadInfos();
@@ -199,13 +197,11 @@ public abstract class BaseMvcTest extends BaseTest {
             Class<? extends BaseMvcTest> thisClass
             , String methodName
     ) {
-        val mvcInfoOpt = Arrays.stream(thisClass.getMethods())
+        return Arrays.stream(thisClass.getMethods())
                 .filter((method) -> method.getName().equals(methodName))
                 .map((method) -> method.getAnnotation(MvcInfo.class))
                 .filter(Objects::nonNull)
-                .findFirst();
-
-        return mvcInfoOpt
+                .findFirst()
                 .map(mvcInfo ->
                         new MvcTestInfo(
                                 methodName
@@ -214,13 +210,12 @@ public abstract class BaseMvcTest extends BaseTest {
                         )
                 )
                 .orElse(null);
-
     }
 
     @SneakyThrows
     private static boolean isTestClass(
             Class<? extends BaseMvcTest> thisClass, StackTraceElement stackTraceElement) {
-        return thisClass.equals(Class.forName(stackTraceElement.getClassName()));
+        return thisClass.getName().equals(stackTraceElement.getClassName());
     }
 
 
