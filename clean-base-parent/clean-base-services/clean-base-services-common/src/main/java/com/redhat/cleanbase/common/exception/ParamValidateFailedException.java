@@ -13,11 +13,15 @@ import java.util.Map;
         desc = "輸入參數驗證失敗",
         example = """
                 {
-                    "violations": {
-                        "someFiled": [
-                            "reason"
-                        ]
-                    }
+                  "violations": {
+                    "field1": [
+                      "reason11",
+                      "reason12"
+                    ],
+                    "field2": [
+                      "reason21"
+                    ]
+                  }
                 }
                 """
 )
