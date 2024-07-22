@@ -1,0 +1,10 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "spring.cloud.openfeign.client.additional-feign-base-packages",
+      "description": "專案 openfeign client base packages",
+      "type": "java.lang.String[]"
+    }
+  ]
+}
