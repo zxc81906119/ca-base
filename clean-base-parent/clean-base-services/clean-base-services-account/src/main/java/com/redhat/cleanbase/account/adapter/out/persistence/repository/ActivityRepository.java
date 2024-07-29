@@ -15,7 +15,7 @@ public interface ActivityRepository extends JpaRepository<ActivityPo, Long> {
 
     @Query("""
             select a from ActivityPo a
-            where a.ownerAccountId = :ownerAccountId\s
+            where a.ownerAccountId = :ownerAccountId
             and a.timestamp >= :since
             """)
     List<ActivityPo> findByOwnerSince(
