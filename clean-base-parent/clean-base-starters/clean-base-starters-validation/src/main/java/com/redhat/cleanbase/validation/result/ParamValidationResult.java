@@ -7,11 +7,11 @@ import lombok.val;
 import java.util.*;
 import java.util.function.Function;
 
-public class ValidationResult {
+public class ParamValidationResult {
 
     private final Map<String, List<String>> errorMap;
 
-    public ValidationResult(Set<ConstraintViolation<Object>> constraintViolations) {
+    public ParamValidationResult(Set<ConstraintViolation<Object>> constraintViolations) {
         this.errorMap = groupViolationMessages(constraintViolations);
     }
 
