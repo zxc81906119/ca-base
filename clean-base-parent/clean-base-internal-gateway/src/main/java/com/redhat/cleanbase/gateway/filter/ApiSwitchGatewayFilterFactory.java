@@ -29,20 +29,18 @@ public class ApiSwitchGatewayFilterFactory extends AbstractGatewayFilterFactory<
     @Override
     public GatewayFilter apply(Config config) {
 
-        return (serverWebExchange, filterChain) -> {
+        return (exchange, chain) -> {
 
             if (environment.acceptsProfiles(ProfileConstants.PILOT_PROFILES)) {
-                return filterChain.filter(serverWebExchange);
+                return chain.filter(exchange);
             }
 
             return Mono.defer(this::findEnabledFlag)
                     .map(ApiSwitchGatewayFilterFactory::isEnabled)
                     .defaultIfEmpty(false)
                     .flatMap((enabled) ->
-                            enabled ? filterChain.filter(serverWebExchange) :
-                                    Mono.fromCallable(() -> {
-                                        throw new ExampleException();
-                                    })
+                            enabled ? chain.filter(exchange) :
+                                    Mono.error(ExampleException::new)
                     );
         };
     }
@@ -55,6 +53,7 @@ public class ApiSwitchGatewayFilterFactory extends AbstractGatewayFilterFactory<
                                 Thread.sleep(4000);
                             } catch (InterruptedException e) {
                                 log.error("[findEnabledFlag] interrupted exception", e);
+                                Thread.currentThread().interrupt();
                             }
                             return "true";
                         }
