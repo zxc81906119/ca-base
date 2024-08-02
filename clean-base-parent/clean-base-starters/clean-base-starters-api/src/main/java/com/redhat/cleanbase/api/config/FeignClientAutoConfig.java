@@ -26,20 +26,20 @@ public class FeignClientAutoConfig {
     private final FeignClientDataSourceProp feignClientDataSourceProp;
 
     @Bean
-    public FeignClientProxy feignClientProxy() {
-        return new FeignClientProxy(feignClientDataSource());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(FeignClientDataSource.class)
+    @ConditionalOnMissingBean
     public FeignClientDataSource feignClientDataSource() {
         return new DefaultFeignClientDataSource(feignClientDataSourceProp.getIsInherited());
     }
 
     @Bean
-    @ConditionalOnMissingBean(FeignClientAspect.class)
+    @ConditionalOnMissingBean
     public FeignClientAspect feignClientAspect() {
         return new DefaultFeignClientAspect();
+    }
+
+    @Bean
+    public FeignClientProxy feignClientProxy(FeignClientDataSource feignClientDataSource) {
+        return new FeignClientProxy(feignClientDataSource);
     }
 
 }
