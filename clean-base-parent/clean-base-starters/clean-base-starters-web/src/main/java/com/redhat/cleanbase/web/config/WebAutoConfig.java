@@ -19,7 +19,6 @@ public class WebAutoConfig {
 
     @Configuration
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-    // todo 自行決定要怎麼配置
     @Import(ServletWebAutoConfig.class)
     static class Servlet {
     }
