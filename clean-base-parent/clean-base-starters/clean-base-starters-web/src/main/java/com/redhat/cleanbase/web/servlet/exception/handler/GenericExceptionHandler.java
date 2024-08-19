@@ -1,8 +1,8 @@
 package com.redhat.cleanbase.web.servlet.exception.handler;
 
-import com.redhat.cleanbase.exception.GenericException;
-import com.redhat.cleanbase.exception.GenericExceptionInterface;
-import com.redhat.cleanbase.exception.GenericRtException;
+import com.redhat.cleanbase.exception.base.GenericException;
+import com.redhat.cleanbase.exception.base.GenericExceptionInterface;
+import com.redhat.cleanbase.exception.base.GenericRtException;
 import com.redhat.cleanbase.web.response.GenericResponse;
 import com.redhat.cleanbase.web.tracing.TracerWrapper;
 import com.redhat.cleanbase.web.servlet.util.WebUtils;

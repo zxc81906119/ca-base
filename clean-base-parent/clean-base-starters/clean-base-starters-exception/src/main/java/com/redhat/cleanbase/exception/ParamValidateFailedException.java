@@ -2,6 +2,7 @@ package com.redhat.cleanbase.exception;
 
 
 import com.redhat.cleanbase.code.response.ResponseCodeEnum;
+import com.redhat.cleanbase.exception.base.GenericRtException;
 import com.redhat.cleanbase.exception.info.ExceptionInfo;
 
 import java.util.List;

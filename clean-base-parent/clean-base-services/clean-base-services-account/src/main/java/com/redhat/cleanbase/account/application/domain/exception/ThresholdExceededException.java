@@ -3,7 +3,7 @@ package com.redhat.cleanbase.account.application.domain.exception;
 
 import com.redhat.cleanbase.account.application.domain.model.MoneyVo;
 import com.redhat.cleanbase.code.response.ResponseCodeEnum;
-import com.redhat.cleanbase.exception.GenericRtException;
+import com.redhat.cleanbase.exception.base.GenericRtException;
 import com.redhat.cleanbase.exception.info.ExceptionInfo;
 
 @ExceptionInfo(

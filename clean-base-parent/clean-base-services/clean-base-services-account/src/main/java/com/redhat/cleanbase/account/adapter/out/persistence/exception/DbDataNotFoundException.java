@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.account.adapter.out.persistence.exception;
 
 import com.redhat.cleanbase.code.response.ResponseCodeEnum;
-import com.redhat.cleanbase.exception.GenericRtException;
+import com.redhat.cleanbase.exception.base.GenericRtException;
 import com.redhat.cleanbase.exception.info.ExceptionInfo;
 import lombok.experimental.StandardException;
 

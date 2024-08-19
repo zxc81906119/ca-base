@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.exception.context;
 
-import com.redhat.cleanbase.exception.GenericException;
-import com.redhat.cleanbase.exception.GenericRtException;
+import com.redhat.cleanbase.exception.base.GenericException;
+import com.redhat.cleanbase.exception.base.GenericRtException;
 import com.redhat.cleanbase.exception.info.ExceptionInfo;
 import com.redhat.cleanbase.common.spring.SelfDestroyBean;
 import com.redhat.cleanbase.common.util.ReflectionUtils;

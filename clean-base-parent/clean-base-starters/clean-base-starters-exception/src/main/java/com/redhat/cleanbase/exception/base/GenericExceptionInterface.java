@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.exception;
+package com.redhat.cleanbase.exception.base;
 
 import com.redhat.cleanbase.exception.content.GenericExceptionContent;
 import com.redhat.cleanbase.exception.context.GenericExceptionContext;
