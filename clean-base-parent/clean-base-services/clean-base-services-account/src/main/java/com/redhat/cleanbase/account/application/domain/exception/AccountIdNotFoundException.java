@@ -1,8 +1,8 @@
 package com.redhat.cleanbase.account.application.domain.exception;
 
-import com.redhat.cleanbase.common.exception.base.GenericRtException;
-import com.redhat.cleanbase.common.exception.info.ExceptionInfo;
-import com.redhat.cleanbase.common.response.code.ResponseCodeEnum;
+import com.redhat.cleanbase.code.response.ResponseCodeEnum;
+import com.redhat.cleanbase.exception.GenericRtException;
+import com.redhat.cleanbase.exception.info.ExceptionInfo;
 import lombok.experimental.StandardException;
 
 @StandardException

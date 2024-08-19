@@ -24,6 +24,31 @@
         <dependencies>
             <dependency>
                 <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-code</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-exception</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-web</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-openapi</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-common</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
                 <artifactId>clean-base-starters-validation</artifactId>
                 <version>${clean-base.version}</version>
             </dependency>
@@ -50,10 +75,15 @@
         </dependencies>
     </dependencyManagement>
     <modules>
+        <module>clean-base-starters-web</module>
+        <module>clean-base-starters-code</module>
+        <module>clean-base-starters-exception</module>
+        <module>clean-base-starters-common</module>
         <module>clean-base-starters-ftl</module>
         <module>clean-base-starters-pdf</module>
         <module>clean-base-starters-api</module>
         <module>clean-base-starters-i18n</module>
         <module>clean-base-starters-validation</module>
+        <module>clean-base-starters-openapi</module>
     </modules>
 </project>

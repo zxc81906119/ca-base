@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.account.application.domain.model;
 
-import com.redhat.cleanbase.common.convert.Default;
+import com.redhat.cleanbase.common.mapstruct.constructor.Default;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.Value;

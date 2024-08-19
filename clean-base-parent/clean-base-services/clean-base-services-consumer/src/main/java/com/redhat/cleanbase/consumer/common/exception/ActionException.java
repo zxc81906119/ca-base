@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.consumer.common.exception;
 
-import com.redhat.cleanbase.common.exception.base.GenericException;
-import com.redhat.cleanbase.common.exception.info.ExceptionInfo;
+import com.redhat.cleanbase.exception.GenericException;
+import com.redhat.cleanbase.exception.info.ExceptionInfo;
 import lombok.Getter;
 
 @ExceptionInfo(

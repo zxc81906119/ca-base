@@ -8,7 +8,6 @@
     </parent>
 
     <artifactId>clean-base-services-common</artifactId>
-    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -20,8 +19,16 @@
             <artifactId>clean-base-starters-i18n</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <groupId>com.redhat</groupId>
+            <artifactId>clean-base-starters-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.redhat</groupId>
+            <artifactId>clean-base-starters-exception</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.redhat</groupId>
+            <artifactId>clean-base-starters-openapi</artifactId>
         </dependency>
 
         <dependency>
@@ -34,23 +41,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- micrometer -->
-        <!-- prometheus 監控使用 -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!-- 分佈式追蹤使用 -->
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing-bridge-otel</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-exporter-otlp</artifactId>
-        </dependency>
-        <!-- Logback 產生 json 格式 log -->
         <dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>

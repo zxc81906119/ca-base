@@ -2,8 +2,8 @@ package com.redhat.cleanbase.account.application.port.usecase.model;
 
 import com.redhat.cleanbase.account.application.domain.model.AccountDo;
 import com.redhat.cleanbase.account.application.domain.model.MoneyVo;
-import com.redhat.cleanbase.common.exception.ParamValidateFailedException;
-import com.redhat.cleanbase.common.validation.context.GenericValidationContext;
+import com.redhat.cleanbase.exception.ParamValidateFailedException;
+import com.redhat.cleanbase.validation.context.GenericValidationContext;
 import jakarta.validation.constraints.NotNull;
 
 public record SendMoneyCommand(
