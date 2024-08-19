@@ -22,7 +22,7 @@ import java.util.List;
 @AutoConfigureBefore(MessageSourceAutoConfiguration.class)
 @Configuration
 @ComponentScan("com.redhat.cleanbase.i18n.msg_source")
-public class MsgSourceConfig {
+public class MsgSourceAutoConfig {
 
     public static final String DEFAULT_CUSTOM_MSG_SOURCE_BEAN_NAME = "defaultCustomMsgSource";
 

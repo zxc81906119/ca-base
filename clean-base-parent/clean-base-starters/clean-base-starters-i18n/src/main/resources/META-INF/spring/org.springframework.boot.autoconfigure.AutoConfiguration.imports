@@ -1,2 +1,2 @@
-com.redhat.cleanbase.i18n.locale.config.LocaleConfig
-com.redhat.cleanbase.i18n.msg_source.config.MsgSourceConfig
+com.redhat.cleanbase.i18n.locale.config.LocaleAutoConfig
+com.redhat.cleanbase.i18n.msg_source.config.MsgSourceAutoConfig

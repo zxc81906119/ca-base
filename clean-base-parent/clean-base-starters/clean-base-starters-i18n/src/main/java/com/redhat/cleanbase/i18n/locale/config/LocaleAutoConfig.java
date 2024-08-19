@@ -16,7 +16,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(LocaleProperties.class)
-public class LocaleConfig implements WebMvcConfigurer {
+public class LocaleAutoConfig implements WebMvcConfigurer {
 
     private final LocaleProperties localeProperties;
 

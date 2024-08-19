@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class FtlConfig {
+public class FtlAutoConfig {
 
     private final freemarker.template.Configuration configuration;
 

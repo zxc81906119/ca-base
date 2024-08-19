@@ -5,11 +5,9 @@ import io.micrometer.tracing.Span;
 import io.micrometer.tracing.TraceContext;
 import io.micrometer.tracing.Tracer;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component
 @RequiredArgsConstructor
 public class TracerWrapper implements Wrapper<Tracer> {
 

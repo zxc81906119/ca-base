@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan("com.redhat.cleanbase.validation")
-public class ValidationConfig {
+public class ValidationAutoConfig {
     @Bean
     public GenericValidator genericValidator(Validator validator) {
         return new GenericValidatorImpl(validator);

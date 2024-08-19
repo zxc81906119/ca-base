@@ -1,9 +1,10 @@
-package com.redhat.cleanbase.exception.config;
+package com.redhat.cleanbase.web.servlet.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-@ComponentScan("com.redhat.cleanbase.exception")
+
 @Configuration
-public class ExceptionAutoConfig {
+@ComponentScan("com.redhat.cleanbase.web.servlet")
+public class ServletWebAutoConfig {
 }

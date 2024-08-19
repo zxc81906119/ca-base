@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Configuration
-public class OpenAPI3Config {
+public class OpenApiAutoConfig {
 
     @Bean
     public OperationCustomizer operationCustomizer() {
