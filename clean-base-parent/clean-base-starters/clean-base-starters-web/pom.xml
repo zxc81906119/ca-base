@@ -8,7 +8,10 @@
     </parent>
     <artifactId>clean-base-starters-web</artifactId>
     <dependencies>
-
+        <dependency>
+            <groupId>com.redhat</groupId>
+            <artifactId>clean-base-starters-exception</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.redhat</groupId>
             <artifactId>clean-base-starters-code</artifactId>
