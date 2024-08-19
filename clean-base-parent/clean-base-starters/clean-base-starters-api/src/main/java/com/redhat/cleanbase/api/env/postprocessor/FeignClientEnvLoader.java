@@ -46,7 +46,7 @@ public class FeignClientEnvLoader implements EnvironmentPostProcessor {
                 Collections.reverse(propertySourceList);
                 propertySourceList.forEach(propertySources::addFirst);
             } catch (Exception e) {
-                deferredLog.warn("config path: %s , load failed !!!".formatted(configPath), e);
+                deferredLog.warn("config path: %s , load failed !".formatted(configPath));
             }
         }
 
