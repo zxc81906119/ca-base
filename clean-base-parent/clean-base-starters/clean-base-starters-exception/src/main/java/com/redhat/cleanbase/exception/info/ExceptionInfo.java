@@ -12,7 +12,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface ExceptionInfo {
 
-    // todo 小缺陷,只能中央管理 code
     ResponseCodeEnum code() default ResponseCodeEnum.API_FAILED;
 
     String title() default "";

@@ -12,6 +12,10 @@
     <dependencies>
         <dependency>
             <groupId>com.redhat</groupId>
+            <artifactId>clean-base-starters-ca</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.redhat</groupId>
             <artifactId>clean-base-starters-validation</artifactId>
         </dependency>
         <dependency>

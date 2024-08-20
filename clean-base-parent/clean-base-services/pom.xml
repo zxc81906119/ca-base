@@ -90,5 +90,10 @@
         <module>clean-base-services-consumer</module>
         <module>clean-base-services-common</module>
         <module>clean-base-services-account</module>
+        <module>clean-base-services-card</module>
+        <module>clean-base-services-digital-voucher</module>
+        <module>clean-base-services-digital-wallet</module>
+        <module>clean-base-services-device</module>
+        <module>clean-base-services-notify</module>
     </modules>
 </project>

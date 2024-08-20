@@ -72,6 +72,11 @@
                 <artifactId>clean-base-starters-ftl</artifactId>
                 <version>${clean-base.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-ca</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
@@ -85,5 +90,6 @@
         <module>clean-base-starters-i18n</module>
         <module>clean-base-starters-validation</module>
         <module>clean-base-starters-openapi</module>
+        <module>clean-base-starters-ca</module>
     </modules>
 </project>

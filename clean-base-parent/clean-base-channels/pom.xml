@@ -30,11 +30,17 @@
                 <artifactId>clean-base-channels-fee-tax</artifactId>
                 <version>${clean-base.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-channels-digital-voucher-transaction</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <modules>
         <module>clean-base-channels-fee-tax</module>
+        <module>clean-base-channels-digital-voucher-transaction</module>
     </modules>
 
 </project>
