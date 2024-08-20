@@ -7,7 +7,7 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>clean-base-services-digital-wallet</artifactId>
+    <artifactId>clean-base-services-wallet</artifactId>
 
     <dependencies>
         <dependency>

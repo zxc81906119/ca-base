@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.ca.share.digital_vocher_digital_wallet.entity;
+package com.redhat.cleanbase.ca.share.digital_voucher_digital_wallet.entity;
 
 import com.redhat.cleanbase.ca.entity.DomainEntity;
 

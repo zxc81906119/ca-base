@@ -1,9 +1,9 @@
 package com.redhat.cleanbase.ca.entity;
 
-import com.redhat.cleanbase.ca.vo.IdVo;
+import com.redhat.cleanbase.ca.vo.IdValueObject;
 
 public interface BaseDomainEntity<ID> {
-    IdVo<ID> getIdVo();
+    IdValueObject<ID> getIdVo();
 
-    void setIdVo(IdVo<ID> id);
+    void setIdVo(IdValueObject<ID> id);
 }

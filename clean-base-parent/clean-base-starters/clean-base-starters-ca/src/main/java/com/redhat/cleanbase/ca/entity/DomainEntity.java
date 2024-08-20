@@ -1,18 +1,19 @@
 package com.redhat.cleanbase.ca.entity;
 
 
-import com.redhat.cleanbase.ca.vo.IdVo;
+import com.redhat.cleanbase.ca.vo.IdValueObject;
 
 public abstract class DomainEntity<ID> implements BaseDomainEntity<ID> {
-    private IdVo<ID> idVo;
+
+    private IdValueObject<ID> idVo;
 
     @Override
-    public IdVo<ID> getIdVo() {
+    public IdValueObject<ID> getIdVo() {
         return idVo;
     }
 
     @Override
-    public void setIdVo(IdVo<ID> idVo) {
+    public void setIdVo(IdValueObject<ID> idVo) {
         if (this.idVo == null) {
             throw new IllegalStateException("id can't change");
         }
