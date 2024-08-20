@@ -1,6 +1,12 @@
 package com.redhat.cleanbase.ca.vo;
 
+
 import lombok.NonNull;
 
-public record LongIdValueObject(@NonNull Long id) implements IdValueObject<Long> {
+public class LongIdValueObject extends IdValueObject<Long> {
+
+    public LongIdValueObject(@NonNull Long id) {
+        super(id);
+    }
+
 }
