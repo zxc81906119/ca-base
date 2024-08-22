@@ -1,6 +1,5 @@
 package com.redhat.cleanbase.account.application.domain.model;
 
-import com.redhat.cleanbase.common.mapstruct.constructor.Default;
 import com.redhat.cleanbase.ddd.entity.DomainEntity;
 import com.redhat.cleanbase.ddd.vo.IdValueObject;
 import lombok.EqualsAndHashCode;
@@ -28,37 +27,6 @@ public class ActivityDo extends DomainEntity<ActivityDo.ActivityIdVo> {
 
     @NonNull
     MoneyVo moneyVo;
-
-    public ActivityDo(
-            @NonNull AccountDo.AccountId ownerAccountId,
-            @NonNull AccountDo.AccountId sourceAccountId,
-            @NonNull AccountDo.AccountId targetAccountId,
-            @NonNull LocalDateTime timestamp,
-            @NonNull MoneyVo moneyVo
-    ) {
-        this.ownerAccountId = ownerAccountId;
-        this.sourceAccountId = sourceAccountId;
-        this.targetAccountId = targetAccountId;
-        this.timestamp = timestamp;
-        this.moneyVo = moneyVo;
-    }
-
-    @Default
-    public ActivityDo(
-            ActivityIdVo id,
-            @NonNull AccountDo.AccountId ownerAccountId,
-            @NonNull AccountDo.AccountId sourceAccountId,
-            @NonNull AccountDo.AccountId targetAccountId,
-            @NonNull LocalDateTime timestamp,
-            @NonNull MoneyVo moneyVo
-    ) {
-        setIdVO(id);
-        this.ownerAccountId = ownerAccountId;
-        this.sourceAccountId = sourceAccountId;
-        this.targetAccountId = targetAccountId;
-        this.timestamp = timestamp;
-        this.moneyVo = moneyVo;
-    }
 
     @SuperBuilder
     public static class ActivityIdVo extends IdValueObject<Long> {

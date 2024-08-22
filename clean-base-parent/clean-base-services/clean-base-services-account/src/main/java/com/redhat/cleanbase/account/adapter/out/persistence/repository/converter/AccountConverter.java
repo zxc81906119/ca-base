@@ -53,7 +53,7 @@ public class AccountConverter {
     public interface ActivityConverter {
         ActivityConverter INSTANCE = Mappers.getMapper(ActivityConverter.class);
 
-        @Mapping(ignore = true, target = "idVO")
+        @Mapping(source = "id", target = "idVO")
         @Mapping(source = "ownerAccountId", target = "ownerAccountId.value")
         @Mapping(source = "sourceAccountId", target = "sourceAccountId.value")
         @Mapping(source = "targetAccountId", target = "targetAccountId.value")
@@ -75,7 +75,8 @@ public class AccountConverter {
         ActivityPo voToPo(ActivityDo activityDo);
 
         default Long map(ActivityDo.ActivityIdVo activityIdVo) {
-            return activityIdVo.getValue();
+            return activityIdVo == null ? null
+                    : activityIdVo.getValue();
         }
 
         List<ActivityDo> posToVos(List<ActivityPo> activityPos);
