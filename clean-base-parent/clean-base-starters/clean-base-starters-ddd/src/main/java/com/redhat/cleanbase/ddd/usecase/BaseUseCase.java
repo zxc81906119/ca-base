@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.ca.usecase;
+package com.redhat.cleanbase.ddd.usecase;
 
-import com.redhat.cleanbase.ca.readmodel.ReadModel;
+import com.redhat.cleanbase.ddd.readmodel.ReadModel;
 import com.redhat.cleanbase.exception.base.GenericException;
 
 public interface BaseUseCase<I extends ReadModel, O> {

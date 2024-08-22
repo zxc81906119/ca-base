@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.ca.readmodel;
+package com.redhat.cleanbase.ddd.readmodel;
 
-import com.redhat.cleanbase.ca.readmodel.exception.FlavorNotRightException;
+import com.redhat.cleanbase.ddd.readmodel.exception.FlavorNotRightException;
 import lombok.val;
 
 public record AirwavesReadModel(String flavor) implements ReadModel {

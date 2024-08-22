@@ -1,7 +1,7 @@
-package com.redhat.cleanbase.ca.entity;
+package com.redhat.cleanbase.ddd.entity;
 
 
-import com.redhat.cleanbase.ca.vo.IdValueObject;
+import com.redhat.cleanbase.ddd.vo.IdValueObject;
 
 public abstract class DomainEntity<IdVO extends IdValueObject<?>> implements BaseDomainEntity<IdVO> {
 

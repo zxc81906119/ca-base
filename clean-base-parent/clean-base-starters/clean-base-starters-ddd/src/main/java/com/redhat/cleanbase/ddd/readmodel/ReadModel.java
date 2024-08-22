@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.ca.readmodel;
+package com.redhat.cleanbase.ddd.readmodel;
 
 import com.redhat.cleanbase.exception.base.GenericException;
 

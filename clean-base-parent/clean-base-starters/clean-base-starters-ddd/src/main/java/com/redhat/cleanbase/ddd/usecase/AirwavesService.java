@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.ca.usecase;
+package com.redhat.cleanbase.ddd.usecase;
 
-import com.redhat.cleanbase.ca.readmodel.AirwavesReadModel;
+import com.redhat.cleanbase.ddd.readmodel.AirwavesReadModel;
 import org.springframework.stereotype.Service;
 
 @Service

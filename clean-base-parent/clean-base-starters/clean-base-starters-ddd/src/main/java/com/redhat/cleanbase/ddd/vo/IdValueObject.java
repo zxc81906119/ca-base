@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.ca.vo;
+package com.redhat.cleanbase.ddd.vo;
 
 import lombok.Getter;
 import lombok.NonNull;
