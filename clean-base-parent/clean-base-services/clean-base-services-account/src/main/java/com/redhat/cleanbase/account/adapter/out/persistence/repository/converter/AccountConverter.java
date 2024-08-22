@@ -53,19 +53,30 @@ public class AccountConverter {
     public interface ActivityConverter {
         ActivityConverter INSTANCE = Mappers.getMapper(ActivityConverter.class);
 
-        @Mapping(source = "id", target = "idVO.value")
+        @Mapping(ignore = true, target = "idVO")
         @Mapping(source = "ownerAccountId", target = "ownerAccountId.value")
         @Mapping(source = "sourceAccountId", target = "sourceAccountId.value")
         @Mapping(source = "targetAccountId", target = "targetAccountId.value")
         @Mapping(source = "amount", target = "moneyVo.amount")
         ActivityDo poToVo(ActivityPo activityPo);
 
-        @Mapping(source = "idVO.value", target = "id")
+        default ActivityDo.ActivityIdVo map(Long value) {
+            return ActivityDo.ActivityIdVo.builder()
+                    .value(value)
+                    .build();
+        }
+
+
+        @Mapping(source = "idVO", target = "id")
         @Mapping(source = "ownerAccountId.value", target = "ownerAccountId")
         @Mapping(source = "sourceAccountId.value", target = "sourceAccountId")
         @Mapping(source = "targetAccountId.value", target = "targetAccountId")
         @Mapping(source = "moneyVo.amount", target = "amount")
         ActivityPo voToPo(ActivityDo activityDo);
+
+        default Long map(ActivityDo.ActivityIdVo activityIdVo) {
+            return activityIdVo.getValue();
+        }
 
         List<ActivityDo> posToVos(List<ActivityPo> activityPos);
 

@@ -64,7 +64,7 @@ public class AccountPersistenceAdapter implements
     @Override
     public void updateActivities(AccountDo accountDo) {
         for (ActivityDo activity : accountDo.getActivityWindowVo().activities()) {
-            if (activity.getId() == null) {
+            if (activity.getIdVO() == null) {
                 activityRepository.save(accountConverter.mapToJpaEntity(activity));
             }
         }

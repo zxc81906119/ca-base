@@ -78,6 +78,9 @@ public class AccountDo extends DomainEntity<AccountDo.AccountId> {
         return true;
     }
 
+    @EqualsAndHashCode(callSuper = true)
+    @ToString(callSuper = true)
+    @Data
     @SuperBuilder
     public static class AccountId extends IdValueObject<Long> {
     }

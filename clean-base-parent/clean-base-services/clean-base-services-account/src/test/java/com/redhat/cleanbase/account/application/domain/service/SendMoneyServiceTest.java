@@ -90,7 +90,7 @@ public class SendMoneyServiceTest extends BaseTest {
         Assertions.assertEquals(1, sourceAccountActivityVos.size());
 
         val sourceAccountActivityVo = sourceAccountActivityVos.get(0);
-        Assertions.assertNull(sourceAccountActivityVo.getId());
+        Assertions.assertNull(sourceAccountActivityVo.getIdVO());
         Assertions.assertEquals(moneyVo, sourceAccountActivityVo.getMoneyVo());
         Assertions.assertEquals(sourceAccountId, sourceAccountActivityVo.getOwnerAccountId());
         Assertions.assertEquals(sourceAccountId, sourceAccountActivityVo.getSourceAccountId());
@@ -100,7 +100,7 @@ public class SendMoneyServiceTest extends BaseTest {
         Assertions.assertEquals(1, targetAccountActivityVos.size());
 
         val targetAccountActivityVo = targetAccountActivityVos.get(0);
-        Assertions.assertNull(targetAccountActivityVo.getId());
+        Assertions.assertNull(targetAccountActivityVo.getIdVO());
         Assertions.assertEquals(moneyVo, targetAccountActivityVo.getMoneyVo());
         Assertions.assertEquals(targetAccountId, targetAccountActivityVo.getOwnerAccountId());
         Assertions.assertEquals(sourceAccountId, targetAccountActivityVo.getSourceAccountId());

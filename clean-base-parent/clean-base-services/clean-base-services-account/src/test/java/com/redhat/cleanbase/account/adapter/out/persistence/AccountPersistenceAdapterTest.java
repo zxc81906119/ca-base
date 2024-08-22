@@ -77,7 +77,7 @@ public class AccountPersistenceAdapterTest extends BaseTest {
         for (int i = 0; i < activityPos.size(); i++) {
             val activityPo = activityPos.get(i);
             val activityVo = activityVos.get(i);
-            Assertions.assertEquals(activityPo.getId(), activityVo.getId().value());
+            Assertions.assertEquals(activityPo.getId(), activityVo.getIdVO().getValue());
             Assertions.assertEquals(activityPo.getTimestamp(), activityVo.getTimestamp());
             Assertions.assertEquals(activityPo.getOwnerAccountId(), activityVo.getOwnerAccountId().getValue());
             Assertions.assertEquals(activityPo.getSourceAccountId(), activityVo.getSourceAccountId().getValue());

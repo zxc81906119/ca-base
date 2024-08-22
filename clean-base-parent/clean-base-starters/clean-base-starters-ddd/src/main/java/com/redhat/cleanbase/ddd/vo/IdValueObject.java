@@ -1,10 +1,10 @@
 package com.redhat.cleanbase.ddd.vo;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 
-@Getter
+@Data
 @SuperBuilder
 public abstract class IdValueObject<Id> implements ValueObject {
 
