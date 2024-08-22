@@ -31,7 +31,10 @@ public class AccountPersistenceAdapterTest extends BaseTest {
     @Test
     public void test_loadAccount_happy() {
         val accountIdValue = 30L;
-        val accountId = new AccountDo.AccountId(accountIdValue);
+        val accountId =
+                AccountDo.AccountId.builder()
+                        .value(accountIdValue)
+                        .build();
         val accountPo = new AccountPo(accountIdValue);
 
         Mockito.doReturn(Optional.of(accountPo))
@@ -63,7 +66,7 @@ public class AccountPersistenceAdapterTest extends BaseTest {
         val accountDo = accountPersistenceAdapter.loadAccount(accountId, LocalDateTime.now());
         Assertions.assertEquals(accountIdValue,
                 accountDo.getId()
-                        .map(AccountDo.AccountId::value)
+                        .map(AccountDo.AccountId::getValue)
                         .orElse(null)
         );
 
@@ -76,9 +79,9 @@ public class AccountPersistenceAdapterTest extends BaseTest {
             val activityVo = activityVos.get(i);
             Assertions.assertEquals(activityPo.getId(), activityVo.getId().value());
             Assertions.assertEquals(activityPo.getTimestamp(), activityVo.getTimestamp());
-            Assertions.assertEquals(activityPo.getOwnerAccountId(), activityVo.getOwnerAccountId().value());
-            Assertions.assertEquals(activityPo.getSourceAccountId(), activityVo.getSourceAccountId().value());
-            Assertions.assertEquals(activityPo.getTargetAccountId(), activityVo.getTargetAccountId().value());
+            Assertions.assertEquals(activityPo.getOwnerAccountId(), activityVo.getOwnerAccountId().getValue());
+            Assertions.assertEquals(activityPo.getSourceAccountId(), activityVo.getSourceAccountId().getValue());
+            Assertions.assertEquals(activityPo.getTargetAccountId(), activityVo.getTargetAccountId().getValue());
             Assertions.assertEquals(activityPo.getAmount(), activityVo.getMoneyVo().amount().longValue());
         }
     }
@@ -92,14 +95,22 @@ public class AccountPersistenceAdapterTest extends BaseTest {
 
         val accountId = 30L;
         val accountDo = AccountDo.withId(
-                new AccountDo.AccountId(accountId),
+                AccountDo.AccountId.builder()
+                        .value(accountId)
+                        .build(),
                 MoneyVo.of(0L),
                 new ActivityWindowVo(
                         List.of(
                                 new ActivityDo(
-                                        new AccountDo.AccountId(accountId),
-                                        new AccountDo.AccountId(31L),
-                                        new AccountDo.AccountId(accountId),
+                                        AccountDo.AccountId.builder()
+                                                .value(accountId)
+                                                .build(),
+                                        AccountDo.AccountId.builder()
+                                                .value(31L)
+                                                .build(),
+                                        AccountDo.AccountId.builder()
+                                                .value(accountId)
+                                                .build(),
                                         LocalDateTime.now(),
                                         MoneyVo.of(300L)
                                 )

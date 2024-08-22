@@ -1,47 +1,31 @@
 package com.redhat.cleanbase.account.application.domain.model;
 
 import com.redhat.cleanbase.common.mapstruct.constructor.Default;
-import jakarta.validation.constraints.NotNull;
+import com.redhat.cleanbase.ddd.entity.DomainEntity;
+import com.redhat.cleanbase.ddd.vo.IdValueObject;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Value;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
-/**
- * A money transfer activity between {@link AccountDo}s.
- */
+@EqualsAndHashCode(callSuper = true)
 @Value
-public class ActivityDo {
+public class ActivityDo extends DomainEntity<ActivityDo.ActivityIdVo> {
 
-    ActivityIdVo id;
-
-    /**
-     * The account that owns this activity.
-     */
     @NonNull
     AccountDo.AccountId ownerAccountId;
 
-    /**
-     * The debited account.
-     */
     @NonNull
     AccountDo.AccountId sourceAccountId;
 
-    /**
-     * The credited account.
-     */
     @NonNull
     AccountDo.AccountId targetAccountId;
 
-    /**
-     * The timestamp of the activity.
-     */
     @NonNull
     LocalDateTime timestamp;
 
-    /**
-     * The money that was transferred between the accounts.
-     */
     @NonNull
     MoneyVo moneyVo;
 
@@ -50,8 +34,8 @@ public class ActivityDo {
             @NonNull AccountDo.AccountId sourceAccountId,
             @NonNull AccountDo.AccountId targetAccountId,
             @NonNull LocalDateTime timestamp,
-            @NonNull MoneyVo moneyVo) {
-        this.id = null;
+            @NonNull MoneyVo moneyVo
+    ) {
         this.ownerAccountId = ownerAccountId;
         this.sourceAccountId = sourceAccountId;
         this.targetAccountId = targetAccountId;
@@ -60,8 +44,15 @@ public class ActivityDo {
     }
 
     @Default
-    public ActivityDo(ActivityIdVo id, @NonNull AccountDo.AccountId ownerAccountId, @NonNull AccountDo.AccountId sourceAccountId, @NonNull AccountDo.AccountId targetAccountId, @NonNull LocalDateTime timestamp, @NonNull MoneyVo moneyVo) {
-        this.id = id;
+    public ActivityDo(
+            ActivityIdVo id,
+            @NonNull AccountDo.AccountId ownerAccountId,
+            @NonNull AccountDo.AccountId sourceAccountId,
+            @NonNull AccountDo.AccountId targetAccountId,
+            @NonNull LocalDateTime timestamp,
+            @NonNull MoneyVo moneyVo
+    ) {
+        setIdVO(id);
         this.ownerAccountId = ownerAccountId;
         this.sourceAccountId = sourceAccountId;
         this.targetAccountId = targetAccountId;
@@ -69,7 +60,8 @@ public class ActivityDo {
         this.moneyVo = moneyVo;
     }
 
-    public record ActivityIdVo(@NotNull Long value) {
+    @SuperBuilder
+    public static class ActivityIdVo extends IdValueObject<Long> {
     }
 
 }

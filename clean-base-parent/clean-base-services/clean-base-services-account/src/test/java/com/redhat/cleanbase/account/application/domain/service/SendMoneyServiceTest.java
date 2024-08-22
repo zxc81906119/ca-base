@@ -7,6 +7,7 @@ import com.redhat.cleanbase.account.application.port.out.AccountLockPort;
 import com.redhat.cleanbase.account.application.port.out.LoadAccountPort;
 import com.redhat.cleanbase.account.application.port.out.UpdateAccountStatePort;
 import com.redhat.cleanbase.account.application.port.usecase.model.SendMoneyCommand;
+import com.redhat.cleanbase.exception.base.GenericException;
 import com.redhat.cleanbase.test.base.BaseTest;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
@@ -29,9 +30,15 @@ public class SendMoneyServiceTest extends BaseTest {
     private AccountLockPort accountLockPort;
 
     @Test
-    public void test_sendMoney_happy() {
-        val sourceAccountId = new AccountDo.AccountId(41L);
-        val targetAccountId = new AccountDo.AccountId(42L);
+    public void test_sendMoney_happy() throws GenericException {
+        val sourceAccountId =
+                AccountDo.AccountId.builder()
+                        .value(41L)
+                        .build();
+        val targetAccountId =
+                AccountDo.AccountId.builder()
+                        .value(42L)
+                        .build();
 
         val moneyVo = MoneyVo.of(1000L);
 
@@ -76,7 +83,7 @@ public class SendMoneyServiceTest extends BaseTest {
                 .when(updateAccountStatePort)
                 .updateActivities(Mockito.any(AccountDo.class));
 
-        val sendMoney = sendMoneyService.sendMoney(sendMoneyCommand);
+        val sendMoney = sendMoneyService.action(sendMoneyCommand);
         Assertions.assertTrue(sendMoney);
 
         val sourceAccountActivityVos = sourceAccountDo.getActivityWindowVo().activities();

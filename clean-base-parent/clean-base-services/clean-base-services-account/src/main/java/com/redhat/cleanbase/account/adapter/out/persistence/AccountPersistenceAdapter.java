@@ -33,23 +33,23 @@ public class AccountPersistenceAdapter implements
             LocalDateTime baselineDate) {
 
         val account =
-                accountRepository.findById(accountId.value())
+                accountRepository.findById(accountId.getValue())
                         .orElseThrow(DbDataNotFoundException::new);
 
         val activities =
                 activityRepository.findByOwnerSince(
-                        accountId.value(),
+                        accountId.getValue(),
                         baselineDate);
 
         val withdrawalBalance = activityRepository
                 .getWithdrawalBalanceUntil(
-                        accountId.value(),
+                        accountId.getValue(),
                         baselineDate)
                 .orElse(0L);
 
         val depositBalance = activityRepository
                 .getDepositBalanceUntil(
-                        accountId.value(),
+                        accountId.getValue(),
                         baselineDate)
                 .orElse(0L);
 

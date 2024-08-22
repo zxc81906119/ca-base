@@ -8,6 +8,8 @@ import com.redhat.cleanbase.account.application.port.out.LoadAccountPort;
 import com.redhat.cleanbase.account.application.port.out.UpdateAccountStatePort;
 import com.redhat.cleanbase.account.application.domain.exception.AccountIdNotFoundException;
 import com.redhat.cleanbase.account.application.domain.exception.ThresholdExceededException;
+import com.redhat.cleanbase.ddd.service.DomainService;
+import com.redhat.cleanbase.exception.base.GenericException;
 import io.micrometer.observation.annotation.Observed;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,20 +18,22 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+@Observed
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class SendMoneyService implements SendMoneyUseCase {
-    
+public class SendMoneyService extends SendMoneyUseCase implements DomainService {
+
     private final MoneyVo maximumTransferThreshold = MoneyVo.of(1_000_000L);
 
     private final UpdateAccountStatePort updateAccountStatePort;
     private final LoadAccountPort loadAccountPort;
     private final AccountLockPort accountLockPort;
 
-    @Observed
+    // todo 驗證業務規則
+    // todo 操作領域服務或模型操作
     @Override
-    public boolean sendMoney(SendMoneyCommand sendMoneyCommand) {
+    protected Boolean process(SendMoneyCommand sendMoneyCommand) {
         // 檢查轉帳金額是否超過上限
         checkThreshold(sendMoneyCommand);
         // 十天前為基準日 , 這只是為了效能考量所定的一個邏輯
@@ -84,7 +88,6 @@ public class SendMoneyService implements SendMoneyUseCase {
             throw new ThresholdExceededException(maximumTransferThreshold, command.moneyVo());
         }
     }
-
 }
 
 

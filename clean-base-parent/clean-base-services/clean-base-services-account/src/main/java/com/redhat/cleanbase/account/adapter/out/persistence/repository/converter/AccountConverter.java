@@ -30,7 +30,9 @@ public class AccountConverter {
                 MoneyVo.of(withdrawalBalance));
 
         return AccountDo.withId(
-                new AccountId(account.getId()),
+                AccountId.builder()
+                        .value(account.getId())
+                        .build(),
                 baselineBalance,
                 mapToActivityWindow(activities));
     }
@@ -51,14 +53,14 @@ public class AccountConverter {
     public interface ActivityConverter {
         ActivityConverter INSTANCE = Mappers.getMapper(ActivityConverter.class);
 
-        @Mapping(source = "id", target = "id.value")
+        @Mapping(source = "id", target = "idVO.value")
         @Mapping(source = "ownerAccountId", target = "ownerAccountId.value")
         @Mapping(source = "sourceAccountId", target = "sourceAccountId.value")
         @Mapping(source = "targetAccountId", target = "targetAccountId.value")
         @Mapping(source = "amount", target = "moneyVo.amount")
         ActivityDo poToVo(ActivityPo activityPo);
 
-        @Mapping(source = "id.value", target = "id")
+        @Mapping(source = "idVO.value", target = "id")
         @Mapping(source = "ownerAccountId.value", target = "ownerAccountId")
         @Mapping(source = "sourceAccountId.value", target = "sourceAccountId")
         @Mapping(source = "targetAccountId.value", target = "targetAccountId")

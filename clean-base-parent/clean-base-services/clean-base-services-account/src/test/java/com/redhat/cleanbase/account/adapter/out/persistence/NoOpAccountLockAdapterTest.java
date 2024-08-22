@@ -15,7 +15,10 @@ public class NoOpAccountLockAdapterTest extends BaseTest {
     @Test
     public void test_lockAccount_happy() {
         Assertions.assertDoesNotThrow(() -> {
-            val accountId = new AccountDo.AccountId(1L);
+            val accountId =
+                    AccountDo.AccountId.builder()
+                            .value(1L)
+                            .build();
             noOpAccountLock.lockAccount(accountId);
         });
     }
@@ -23,7 +26,9 @@ public class NoOpAccountLockAdapterTest extends BaseTest {
     @Test
     public void test_releaseAccount_happy() {
         Assertions.assertDoesNotThrow(() -> {
-            val accountId = new AccountDo.AccountId(1L);
+            val accountId = AccountDo.AccountId.builder()
+                    .value(1L)
+                    .build();
             noOpAccountLock.releaseAccount(accountId);
         });
     }

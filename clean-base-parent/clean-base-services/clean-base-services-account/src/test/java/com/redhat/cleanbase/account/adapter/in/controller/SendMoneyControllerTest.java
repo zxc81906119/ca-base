@@ -4,6 +4,7 @@ import com.redhat.cleanbase.account.adapter.in.controller.model.SendMoneyDto;
 import com.redhat.cleanbase.account.application.port.usecase.SendMoneyUseCase;
 import com.redhat.cleanbase.account.application.port.usecase.model.SendMoneyCommand;
 import com.redhat.cleanbase.code.response.ResponseCodeEnum;
+import com.redhat.cleanbase.exception.base.GenericException;
 import com.redhat.cleanbase.test.base.BaseTest;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
@@ -20,11 +21,11 @@ public class SendMoneyControllerTest extends BaseTest {
     private SendMoneyUseCase sendMoneyUseCase;
 
     @Test
-    public void test_sendMoney_happy() {
+    public void test_sendMoney_happy() throws GenericException {
 
         Mockito.doReturn(true)
                 .when(sendMoneyUseCase)
-                .sendMoney(Mockito.any(SendMoneyCommand.class));
+                .action(Mockito.any(SendMoneyCommand.class));
 
         val req = SendMoneyDto.Req.builder()
                 .sourceAccountId(41L)
