@@ -74,7 +74,7 @@
             </dependency>
             <dependency>
                 <groupId>com.redhat</groupId>
-                <artifactId>clean-base-starters-ca</artifactId>
+                <artifactId>clean-base-starters-ddd</artifactId>
                 <version>${clean-base.version}</version>
             </dependency>
         </dependencies>
@@ -90,6 +90,6 @@
         <module>clean-base-starters-i18n</module>
         <module>clean-base-starters-validation</module>
         <module>clean-base-starters-openapi</module>
-        <module>clean-base-starters-ca</module>
+        <module>clean-base-starters-ddd</module>
     </modules>
 </project>

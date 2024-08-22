@@ -1,12 +1,7 @@
 package com.redhat.cleanbase.ca.vo;
 
+import lombok.experimental.SuperBuilder;
 
-import lombok.NonNull;
-
+@SuperBuilder
 public class LongIdValueObject extends IdValueObject<Long> {
-
-    public LongIdValueObject(@NonNull Long id) {
-        super(id);
-    }
-
 }
