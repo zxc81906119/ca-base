@@ -5,7 +5,7 @@ import com.redhat.cleanbase.ca.vo.IdValueObject;
 
 public abstract class DomainEntity<IdVO extends IdValueObject<?>> implements BaseDomainEntity<IdVO> {
 
-    protected IdVO idVO;
+    private IdVO idVO;
 
     @Override
     public IdVO getIdVO() {
