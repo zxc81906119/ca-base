@@ -33,8 +33,8 @@ public final class GenericExceptionContext {
         public InitClass(@Value("${generic.exception.extra-packages:}") Set<String> extraPackages) throws ClassNotFoundException {
 
             val scanner = new ClassPathScanningCandidateComponentProvider(false);
-            scanner.addIncludeFilter(new AssignableTypeFilter(getGenericExceptionClass()));
-            scanner.addIncludeFilter(new AssignableTypeFilter(getGenericRtExceptionClass()));
+            scanner.addIncludeFilter(new AssignableTypeFilter(GenericException.class));
+            scanner.addIncludeFilter(new AssignableTypeFilter(GenericRtException.class));
 
             extraPackages.add(GenericConstants.BASE_PACKAGE_NAME);
 
@@ -66,12 +66,13 @@ public final class GenericExceptionContext {
 
     public static boolean isGenericException(Class<?> clazz) {
         return isRtException(clazz)
-                || getGenericExceptionClass().isAssignableFrom(clazz);
+                || GenericException.class.isAssignableFrom(clazz)
+                && !GenericException.class.equals(clazz);
     }
 
     public static boolean isRtException(Class<?> beanCls) {
-        return getGenericRtExceptionClass()
-                .isAssignableFrom(beanCls);
+        return GenericRtException.class.isAssignableFrom(beanCls)
+                && !GenericRtException.class.equals(beanCls);
     }
 
     public static ExceptionInfo getExceptionInfoOrThrow(Class<?> clazz) {
