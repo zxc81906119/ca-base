@@ -2,15 +2,12 @@ package com.redhat.cleanbase.ddd.entity;
 
 
 import com.redhat.cleanbase.ddd.vo.IdValueObject;
+import lombok.Data;
 
+@Data
 public abstract class DomainEntity<IdVO extends IdValueObject<?>> implements BaseDomainEntity<IdVO> {
 
     private IdVO idVO;
-
-    @Override
-    public IdVO getIdVO() {
-        return idVO;
-    }
 
     @Override
     public void setIdVO(IdVO idVO) {

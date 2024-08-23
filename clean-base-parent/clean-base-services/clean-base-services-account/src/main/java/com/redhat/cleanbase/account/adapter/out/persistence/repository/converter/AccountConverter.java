@@ -7,6 +7,7 @@ import com.redhat.cleanbase.account.application.domain.model.AccountDo.AccountId
 import com.redhat.cleanbase.account.application.domain.model.ActivityDo;
 import com.redhat.cleanbase.account.application.domain.model.ActivityWindowVo;
 import com.redhat.cleanbase.account.application.domain.model.MoneyVo;
+import com.redhat.cleanbase.ddd.mapstruct.IdIdVOConverter;
 import lombok.val;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -50,7 +51,7 @@ public class AccountConverter {
             unmappedSourcePolicy = ReportingPolicy.ERROR,
             unmappedTargetPolicy = ReportingPolicy.ERROR
     )
-    public interface ActivityConverter {
+    public interface ActivityConverter extends IdIdVOConverter<Long, ActivityDo.ActivityIdVo> {
         ActivityConverter INSTANCE = Mappers.getMapper(ActivityConverter.class);
 
         @Mapping(source = "id", target = "idVO")
@@ -60,12 +61,11 @@ public class AccountConverter {
         @Mapping(source = "amount", target = "moneyVo.amount")
         ActivityDo poToVo(ActivityPo activityPo);
 
-        default ActivityDo.ActivityIdVo map(Long value) {
+        default ActivityDo.ActivityIdVo toIdVO(Long id) {
             return ActivityDo.ActivityIdVo.builder()
-                    .value(value)
+                    .value(id)
                     .build();
         }
-
 
         @Mapping(source = "idVO", target = "id")
         @Mapping(source = "ownerAccountId.value", target = "ownerAccountId")
@@ -73,11 +73,6 @@ public class AccountConverter {
         @Mapping(source = "targetAccountId.value", target = "targetAccountId")
         @Mapping(source = "moneyVo.amount", target = "amount")
         ActivityPo voToPo(ActivityDo activityDo);
-
-        default Long map(ActivityDo.ActivityIdVo activityIdVo) {
-            return activityIdVo == null ? null
-                    : activityIdVo.getValue();
-        }
 
         List<ActivityDo> posToVos(List<ActivityPo> activityPos);
 

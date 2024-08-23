@@ -36,8 +36,7 @@ public class SendMoneyController {
 
     @Operation(description = "轉帳")
     @PostMapping
-    public GenericResponse<SendMoneyDto.Res> sendMoney(
-            @RequestBody SendMoneyDto.Req req) throws GenericException {
+    public GenericResponse<SendMoneyDto.Res> sendMoney(@RequestBody SendMoneyDto.Req req) throws GenericException {
         // todo request dto 驗證資料
         genericValidator.validate(req)
                 .orThrow(ParamValidateFailedException::new);
