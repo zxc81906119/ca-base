@@ -1,0 +1,11 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "generic.exception.extra-packages",
+      "description": "專案 exception base packages",
+      "defaultValue": [],
+      "type": "java.util.Set<java.lang.String>"
+    }
+  ]
+}
