@@ -24,10 +24,10 @@ public final class GenericExceptionContext {
         throw new UnsupportedOperationException();
     }
 
-    public static final String EXCEPTION_SCAN_BASE_PACKAGE = "com.redhat.cleanbase.exception";
-
-    private static final List<Class<?>> GENERIC_RT_EXCEPTIONS = new ArrayList<>();
+    public static final String EXCEPTION_SCAN_BASE_PACKAGE = "com.redhat.cleanbase";
     
+    private static final List<Class<?>> GENERIC_RT_EXCEPTIONS = new ArrayList<>();
+
     @Component
     static class InitClass extends SelfDestroyBean {
 
