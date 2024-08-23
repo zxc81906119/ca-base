@@ -7,11 +7,11 @@ import com.redhat.cleanbase.account.application.domain.model.AccountDo.AccountId
 import com.redhat.cleanbase.account.application.domain.model.ActivityDo;
 import com.redhat.cleanbase.account.application.domain.model.ActivityWindowVo;
 import com.redhat.cleanbase.account.application.domain.model.MoneyVo;
+import com.redhat.cleanbase.common.mapstruct.config.BaseMapperConfig;
 import com.redhat.cleanbase.ddd.mapstruct.IdIdVOConverter;
 import lombok.val;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
@@ -48,8 +48,7 @@ public class AccountConverter {
     }
 
     @Mapper(
-            unmappedSourcePolicy = ReportingPolicy.ERROR,
-            unmappedTargetPolicy = ReportingPolicy.ERROR
+            config = BaseMapperConfig.class
     )
     public interface ActivityConverter extends IdIdVOConverter<Long, ActivityDo.ActivityIdVo> {
         ActivityConverter INSTANCE = Mappers.getMapper(ActivityConverter.class);
