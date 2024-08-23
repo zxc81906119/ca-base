@@ -56,14 +56,6 @@ public final class GenericExceptionContext {
         getExceptionInfoOrThrow(beanCls);
     }
 
-    private static Class<GenericException> getGenericExceptionClass() {
-        return GenericException.class;
-    }
-
-    private static Class<GenericRtException> getGenericRtExceptionClass() {
-        return GenericRtException.class;
-    }
-
     public static boolean isGenericException(Class<?> clazz) {
         return isRtException(clazz)
                 || GenericException.class.isAssignableFrom(clazz)
