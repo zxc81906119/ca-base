@@ -2,7 +2,7 @@ package com.redhat.cleanbase.exception.base;
 
 import com.redhat.cleanbase.exception.content.GenericExceptionContent;
 import com.redhat.cleanbase.exception.context.GenericExceptionContext;
-import com.redhat.cleanbase.common.util.CastUtils;
+import com.redhat.cleanbase.common.utils.CastUtils;
 import lombok.val;
 
 public interface GenericExceptionInterface<T extends Exception> {

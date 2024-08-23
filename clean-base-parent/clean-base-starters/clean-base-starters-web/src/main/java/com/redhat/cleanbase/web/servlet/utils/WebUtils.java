@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.web.servlet.util;
+package com.redhat.cleanbase.web.servlet.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

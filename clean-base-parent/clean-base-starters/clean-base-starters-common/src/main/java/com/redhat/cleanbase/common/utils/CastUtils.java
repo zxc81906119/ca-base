@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.common.util;
+package com.redhat.cleanbase.common.utils;
 
 public final class CastUtils {
     private CastUtils() {

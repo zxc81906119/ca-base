@@ -1,11 +1,11 @@
-package com.redhat.cleanbase.web.servlet.exception.handler;
+package com.redhat.cleanbase.web.servlet.controller.advice.exception.handler;
 
 import com.redhat.cleanbase.exception.base.GenericException;
 import com.redhat.cleanbase.exception.base.GenericExceptionInterface;
 import com.redhat.cleanbase.exception.base.GenericRtException;
 import com.redhat.cleanbase.web.response.GenericResponse;
 import com.redhat.cleanbase.web.tracing.TracerWrapper;
-import com.redhat.cleanbase.web.servlet.util.WebUtils;
+import com.redhat.cleanbase.web.servlet.utils.WebUtils;
 import io.micrometer.observation.annotation.Observed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

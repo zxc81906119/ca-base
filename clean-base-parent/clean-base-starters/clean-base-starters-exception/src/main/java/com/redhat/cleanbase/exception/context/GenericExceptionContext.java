@@ -1,10 +1,11 @@
 package com.redhat.cleanbase.exception.context;
 
+import com.redhat.cleanbase.common.constants.GenericConstants;
 import com.redhat.cleanbase.exception.base.GenericException;
 import com.redhat.cleanbase.exception.base.GenericRtException;
 import com.redhat.cleanbase.exception.info.ExceptionInfo;
 import com.redhat.cleanbase.common.spring.SelfDestroyBean;
-import com.redhat.cleanbase.common.util.ReflectionUtils;
+import com.redhat.cleanbase.common.utils.ReflectionUtils;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,8 +25,6 @@ public final class GenericExceptionContext {
         throw new UnsupportedOperationException();
     }
 
-    public static final String EXCEPTION_SCAN_BASE_PACKAGE = "com.redhat.cleanbase";
-    
     private static final List<Class<?>> GENERIC_RT_EXCEPTIONS = new ArrayList<>();
 
     @Component
@@ -37,7 +36,7 @@ public final class GenericExceptionContext {
             scanner.addIncludeFilter(new AssignableTypeFilter(getGenericExceptionClass()));
             scanner.addIncludeFilter(new AssignableTypeFilter(getGenericRtExceptionClass()));
 
-            extraPackages.add(EXCEPTION_SCAN_BASE_PACKAGE);
+            extraPackages.add(GenericConstants.BASE_PACKAGE_NAME);
 
             for (String extraPackage : extraPackages) {
                 for (BeanDefinition beanDefinition : scanner.findCandidateComponents(extraPackage)) {
