@@ -2,8 +2,10 @@ package com.redhat.cleanbase.gateway.filter;
 
 import com.redhat.cleanbase.gateway.constant.ProfileConstants;
 import com.redhat.cleanbase.gateway.exception.ExampleException;
+import com.redhat.cleanbase.gateway.util.SessionUtil;
 import io.micrometer.observation.annotation.Observed;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.env.Environment;
@@ -30,6 +32,15 @@ public class ApiSwitchGatewayFilterFactory extends AbstractGatewayFilterFactory<
     public GatewayFilter apply(Config config) {
 
         return (exchange, chain) -> {
+
+            val webSessionSync = SessionUtil.getWebSessionSync(exchange);
+            webSessionSync.ifPresent((webSession) -> {
+                val attributes = webSession.getAttributes();
+                val id = webSession.getId();
+                System.out.println(id);
+                System.out.println(attributes);
+                System.out.println(attributes.put("a", "b"));
+            });
 
             if (environment.acceptsProfiles(ProfileConstants.PILOT_PROFILES)) {
                 return chain.filter(exchange);
