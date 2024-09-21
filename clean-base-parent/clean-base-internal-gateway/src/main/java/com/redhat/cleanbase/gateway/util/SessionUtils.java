@@ -10,9 +10,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
-public final class SessionUtil {
-    private SessionUtil() {
+public final class SessionUtils {
+    private SessionUtils() {
         throw new UnsupportedOperationException();
+    }
+
+    public static Optional<WebSession> getWebSessionSync(ServerWebExchange exchange) {
+        return getWebSessionSync(exchange, null);
     }
 
     public static Optional<WebSession> getWebSessionSync(ServerWebExchange exchange, Executor executor) {
@@ -23,10 +27,6 @@ public final class SessionUtil {
             Thread.currentThread().interrupt();
             return Optional.empty();
         }
-    }
-
-    public static Optional<WebSession> getWebSessionSync(ServerWebExchange exchange) {
-        return getWebSessionSync(exchange, null);
     }
 
     public static CompletableFuture<WebSession> getWebSessionAsync(ServerWebExchange exchange, Executor executor) {

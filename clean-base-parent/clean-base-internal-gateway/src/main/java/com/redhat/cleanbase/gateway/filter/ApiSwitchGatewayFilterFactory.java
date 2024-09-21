@@ -2,7 +2,7 @@ package com.redhat.cleanbase.gateway.filter;
 
 import com.redhat.cleanbase.gateway.constant.ProfileConstants;
 import com.redhat.cleanbase.gateway.exception.ExampleException;
-import com.redhat.cleanbase.gateway.util.SessionUtil;
+import com.redhat.cleanbase.gateway.util.SessionUtils;
 import io.micrometer.observation.annotation.Observed;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -33,7 +33,7 @@ public class ApiSwitchGatewayFilterFactory extends AbstractGatewayFilterFactory<
 
         return (exchange, chain) -> {
 
-            val webSessionSync = SessionUtil.getWebSessionSync(exchange);
+            val webSessionSync = SessionUtils.getWebSessionSync(exchange);
             webSessionSync.ifPresent((webSession) -> {
                 val attributes = webSession.getAttributes();
                 val id = webSession.getId();
@@ -57,7 +57,7 @@ public class ApiSwitchGatewayFilterFactory extends AbstractGatewayFilterFactory<
     }
 
     public Mono<String> findEnabledFlag() {
-        return Mono.fromFuture(
+        return Mono.fromFuture(() ->
                 CompletableFuture.supplyAsync(
                         () -> {
                             try {
