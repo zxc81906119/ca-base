@@ -23,8 +23,8 @@ public final class SessionUtils {
         try {
             return exchange.getSession().blockOptional();
         } catch (RuntimeException runtimeException) {
-            val webSessionAsync = getWebSessionAsync(exchange, executor);
             try {
+                val webSessionAsync = getWebSessionAsync(exchange, executor);
                 return Optional.ofNullable(webSessionAsync.get());
             } catch (InterruptedException | ExecutionException e) {
                 Thread.currentThread().interrupt();
