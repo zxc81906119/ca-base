@@ -20,12 +20,16 @@ public final class SessionUtils {
     }
 
     public static Optional<WebSession> getWebSessionSync(ServerWebExchange exchange, Executor executor) {
-        val webSessionAsync = getWebSessionAsync(exchange, executor);
         try {
-            return Optional.ofNullable(webSessionAsync.get());
-        } catch (InterruptedException | ExecutionException e) {
-            Thread.currentThread().interrupt();
-            return Optional.empty();
+            return exchange.getSession().blockOptional();
+        } catch (RuntimeException runtimeException) {
+            val webSessionAsync = getWebSessionAsync(exchange, executor);
+            try {
+                return Optional.ofNullable(webSessionAsync.get());
+            } catch (InterruptedException | ExecutionException e) {
+                Thread.currentThread().interrupt();
+                return Optional.empty();
+            }
         }
     }
 
