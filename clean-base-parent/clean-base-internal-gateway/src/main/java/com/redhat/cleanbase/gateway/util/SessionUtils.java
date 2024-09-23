@@ -3,6 +3,7 @@ package com.redhat.cleanbase.gateway.util;
 import lombok.val;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebSession;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -19,9 +20,11 @@ public final class SessionUtils {
         return getWebSessionSync(exchange, null);
     }
 
+
     public static Optional<WebSession> getWebSessionSync(ServerWebExchange exchange, Executor executor) {
         try {
-            return exchange.getSession().blockOptional();
+            return getWebSessionReactive(exchange)
+                    .blockOptional();
         } catch (RuntimeException runtimeException) {
             try {
                 val webSessionAsync = getWebSessionAsync(exchange, executor);
@@ -34,9 +37,15 @@ public final class SessionUtils {
     }
 
     public static CompletableFuture<WebSession> getWebSessionAsync(ServerWebExchange exchange, Executor executor) {
-        val webSessionSupplier = (Supplier<WebSession>) () -> exchange.getSession().block();
+        val webSessionSupplier = (Supplier<WebSession>)
+                () -> getWebSessionReactive(exchange)
+                        .block();
         return executor != null ?
                 CompletableFuture.supplyAsync(webSessionSupplier, executor)
                 : CompletableFuture.supplyAsync(webSessionSupplier);
+    }
+
+    public static Mono<WebSession> getWebSessionReactive(ServerWebExchange exchange) {
+        return exchange.getSession();
     }
 }
