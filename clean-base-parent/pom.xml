@@ -18,7 +18,7 @@
         <java.version>17</java.version>
 
         <clean-base.version>1.0.0</clean-base.version>
-
+        <jjwt.version>0.11.1</jjwt.version>
         <spring-cloud.version>2023.0.1</spring-cloud.version>
         <redisson-spring-boot-starter.version>3.19.3</redisson-spring-boot-starter.version>
         <spring-boot-configuration-processor.version>3.2.3</spring-boot-configuration-processor.version>
@@ -106,7 +106,21 @@
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>${logstash-logback-encoder.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>

@@ -7,8 +7,8 @@ import com.redhat.cleanbase.account.application.domain.model.AccountDo.AccountId
 import com.redhat.cleanbase.account.application.domain.model.ActivityDo;
 import com.redhat.cleanbase.account.application.domain.model.ActivityWindowVo;
 import com.redhat.cleanbase.account.application.domain.model.MoneyVo;
-import com.redhat.cleanbase.common.mapstruct.config.BaseMapperConfig;
-import com.redhat.cleanbase.ddd.mapstruct.IdIdVOConverter;
+import com.redhat.cleanbase.common.mapper.config.BaseMapperConfig;
+import com.redhat.cleanbase.ddd.mapper.IdIdVOConverter;
 import lombok.val;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

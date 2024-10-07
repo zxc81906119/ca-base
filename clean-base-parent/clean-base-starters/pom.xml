@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -39,6 +39,11 @@
             </dependency>
             <dependency>
                 <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-security</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
                 <artifactId>clean-base-starters-openapi</artifactId>
                 <version>${clean-base.version}</version>
             </dependency>
@@ -59,17 +64,7 @@
             </dependency>
             <dependency>
                 <groupId>com.redhat</groupId>
-                <artifactId>clean-base-starters-api</artifactId>
-                <version>${clean-base.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.redhat</groupId>
-                <artifactId>clean-base-starters-pdf</artifactId>
-                <version>${clean-base.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.redhat</groupId>
-                <artifactId>clean-base-starters-ftl</artifactId>
+                <artifactId>clean-base-starters-api-client</artifactId>
                 <version>${clean-base.version}</version>
             </dependency>
             <dependency>
@@ -77,19 +72,42 @@
                 <artifactId>clean-base-starters-ddd</artifactId>
                 <version>${clean-base.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-jpa</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-cache</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-log</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-convert</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
+        <module>clean-base-starters-convert</module>
+        <module>clean-base-starters-cache</module>
+        <module>clean-base-starters-log</module>
         <module>clean-base-starters-web</module>
         <module>clean-base-starters-code</module>
         <module>clean-base-starters-exception</module>
         <module>clean-base-starters-common</module>
-        <module>clean-base-starters-ftl</module>
-        <module>clean-base-starters-pdf</module>
-        <module>clean-base-starters-api</module>
+        <module>clean-base-starters-api-client</module>
         <module>clean-base-starters-i18n</module>
         <module>clean-base-starters-validation</module>
         <module>clean-base-starters-openapi</module>
         <module>clean-base-starters-ddd</module>
+        <module>clean-base-starters-jpa</module>
+        <module>clean-base-starters-security</module>
     </modules>
 </project>

@@ -2,7 +2,7 @@ package com.redhat.cleanbase.account.adapter.in.controller.converter;
 
 import com.redhat.cleanbase.account.adapter.in.controller.model.SendMoneyDto;
 import com.redhat.cleanbase.account.application.port.usecase.model.SendMoneyCommand;
-import com.redhat.cleanbase.common.mapstruct.config.BaseMapperConfig;
+import com.redhat.cleanbase.common.mapper.config.BaseMapperConfig;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

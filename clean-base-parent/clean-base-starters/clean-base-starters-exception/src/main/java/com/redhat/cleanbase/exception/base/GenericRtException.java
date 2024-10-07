@@ -1,37 +1,32 @@
 package com.redhat.cleanbase.exception.base;
 
 
+import com.redhat.cleanbase.code.response.ResponseCode;
 import com.redhat.cleanbase.exception.content.GenericExceptionContent;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Optional;
+public abstract class GenericRtException extends RuntimeException implements GenericExceptionNamespace<GenericRtException> {
 
-public abstract class GenericRtException extends RuntimeException implements GenericExceptionInterface<GenericRtException> {
     @Getter
     private final GenericExceptionContent content;
 
-    public GenericRtException() {
-        this(null, null);
-    }
+    @Getter
+    @Setter
+    private String selfMsg;
 
-    public GenericRtException(String message) {
-        this(message, null);
-    }
-
-    public GenericRtException(Throwable cause) {
-        this(null, cause);
+    public GenericRtException(String message, Throwable cause, ResponseCode responseCode) {
+        super(message, cause);
+        this.selfMsg = message;
+        this.content = initContent(responseCode);
     }
 
     public GenericRtException(String message, Throwable cause) {
-        super(message, cause);
-        content = initContent();
+        this(message, cause, null);
     }
 
     @Override
     public String getMessage() {
-        return Optional.ofNullable(super.getMessage())
-                .orElseGet(() -> content.getCode().name());
+        return GenericExceptionNamespace.super.getMessage();
     }
-
-
 }

@@ -6,4 +6,5 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("com.redhat.cleanbase.exception")
 @Configuration
 public class ExceptionAutoConfig {
+
 }

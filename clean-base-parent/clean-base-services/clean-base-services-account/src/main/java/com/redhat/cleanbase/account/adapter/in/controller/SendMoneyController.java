@@ -4,9 +4,8 @@ import com.redhat.cleanbase.account.adapter.in.controller.converter.SendMoneyCon
 import com.redhat.cleanbase.account.adapter.in.controller.model.SendMoneyDto;
 import com.redhat.cleanbase.account.application.port.usecase.SendMoneyUseCase;
 import com.redhat.cleanbase.exception.ParamValidateFailedException;
-import com.redhat.cleanbase.exception.base.GenericException;
 import com.redhat.cleanbase.validation.GenericValidator;
-import com.redhat.cleanbase.web.response.GenericResponse;
+import com.redhat.cleanbase.web.model.response.GenericResponse;
 import com.redhat.cleanbase.web.tracing.TracerWrapper;
 import io.micrometer.observation.annotation.Observed;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,10 +35,10 @@ public class SendMoneyController {
 
     @Operation(description = "轉帳")
     @PostMapping
-    public GenericResponse<SendMoneyDto.Res> sendMoney(@RequestBody SendMoneyDto.Req req) throws GenericException {
+    public GenericResponse<SendMoneyDto.Res> sendMoney(@RequestBody SendMoneyDto.Req req) throws Exception {
         // todo request dto 驗證資料
         genericValidator.validate(req)
-                .orThrow(ParamValidateFailedException::new);
+                .orThrowWithErrMsg(ParamValidateFailedException::new);
 
         // todo 將 request dto 轉成　use case method input dto
         val sendMoneyCommand = sendMoneyConverter.dtoToCommand(req);
@@ -51,7 +50,7 @@ public class SendMoneyController {
                 .isSend(Boolean.TRUE.equals(isSendMoney))
                 .build();
 
-        return GenericResponse.ok(res, tracerWrapper.getCurrentSpanTraceId());
+        return GenericResponse.ok(res);
     }
 
 }

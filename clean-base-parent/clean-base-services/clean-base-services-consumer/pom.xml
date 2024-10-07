@@ -16,7 +16,7 @@
         </dependency>
         <dependency>
             <groupId>com.redhat</groupId>
-            <artifactId>clean-base-starters-api</artifactId>
+            <artifactId>clean-base-starters-api-client</artifactId>
         </dependency>
     </dependencies>
     <build>

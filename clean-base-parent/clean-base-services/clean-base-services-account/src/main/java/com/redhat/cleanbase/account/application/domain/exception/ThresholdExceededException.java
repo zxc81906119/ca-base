@@ -13,7 +13,7 @@ import com.redhat.cleanbase.exception.info.ExceptionInfo;
 public class ThresholdExceededException extends GenericRtException {
 
     public ThresholdExceededException(MoneyVo threshold, MoneyVo actual) {
-        super("Maximum threshold for transferring money exceeded: tried to transfer %s but threshold is %s!".formatted(actual, threshold));
+        super("Maximum threshold for transferring money exceeded: tried to transfer %s but threshold is %s!".formatted(actual, threshold), null);
     }
 
 }

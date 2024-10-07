@@ -4,7 +4,6 @@ import com.redhat.cleanbase.account.adapter.in.controller.model.SendMoneyDto;
 import com.redhat.cleanbase.account.application.port.usecase.SendMoneyUseCase;
 import com.redhat.cleanbase.account.application.port.usecase.model.SendMoneyCommand;
 import com.redhat.cleanbase.code.response.ResponseCodeEnum;
-import com.redhat.cleanbase.exception.base.GenericException;
 import com.redhat.cleanbase.test.base.BaseTest;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +20,7 @@ public class SendMoneyControllerTest extends BaseTest {
     private SendMoneyUseCase sendMoneyUseCase;
 
     @Test
-    public void test_sendMoney_happy() throws GenericException {
+    public void test_sendMoney_happy() throws Exception {
 
         Mockito.doReturn(true)
                 .when(sendMoneyUseCase)
@@ -36,7 +35,7 @@ public class SendMoneyControllerTest extends BaseTest {
         val res = genericResponse.getData();
 
         Assertions.assertEquals(Boolean.TRUE, res.getIsSend());
-        Assertions.assertEquals(ResponseCodeEnum.API_SUCCESS.getValue(), genericResponse.getCode());
+        Assertions.assertEquals(ResponseCodeEnum.API_SUCCESS.getValue(), genericResponse.getServiceAppInfo().getCode());
 
     }
 

@@ -1,6 +1,7 @@
 package com.redhat.cleanbase.i18n.msg_source.config;
 
 import com.redhat.cleanbase.i18n.msg_source.CompositeMsgSource;
+import com.redhat.cleanbase.i18n.msg_source.condition.selector.CustomMsgSourceSelector;
 import com.redhat.cleanbase.i18n.msg_source.PropMsgSourceProxy;
 import com.redhat.cleanbase.i18n.msg_source.base.CustomMsgSource;
 import lombok.val;
@@ -60,9 +61,14 @@ public class MsgSourceAutoConfig {
         return new PropMsgSourceProxy(delegate);
     }
 
+    @Bean
+    public CustomMsgSourceSelector customMsgSelector(List<CustomMsgSource> customMsgSources) {
+        return new CustomMsgSourceSelector(customMsgSources);
+    }
+
     @ConditionalOnMissingBean(name = AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME)
     @Bean(AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME)
-    public CompositeMsgSource compositeMsgSource(List<CustomMsgSource> customMsgSources) {
-        return new CompositeMsgSource(customMsgSources);
+    public CompositeMsgSource compositeMsgSource(CustomMsgSourceSelector customMsgSourceSelector) {
+        return new CompositeMsgSource(customMsgSourceSelector);
     }
 }

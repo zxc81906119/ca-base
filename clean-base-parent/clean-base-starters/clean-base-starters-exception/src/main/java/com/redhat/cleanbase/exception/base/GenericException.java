@@ -1,36 +1,33 @@
 package com.redhat.cleanbase.exception.base;
 
 
+import com.redhat.cleanbase.code.response.ResponseCode;
 import com.redhat.cleanbase.exception.content.GenericExceptionContent;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Optional;
+public abstract class GenericException extends Exception implements GenericExceptionNamespace<GenericException> {
 
-public abstract class GenericException extends Exception implements GenericExceptionInterface<GenericException> {
     @Getter
     private final GenericExceptionContent content;
 
-    public GenericException() {
-        this(null, null);
-    }
+    @Getter
+    @Setter
+    private String selfMsg;
 
-    public GenericException(String message) {
-        this(message, null);
-    }
-
-    public GenericException(Throwable cause) {
-        this(null, cause);
+    public GenericException(String message, Throwable cause, ResponseCode inputResponseCode) {
+        super(message, cause);
+        this.selfMsg = message;
+        this.content = initContent(inputResponseCode);
     }
 
     public GenericException(String message, Throwable cause) {
-        super(message, cause);
-        content = initContent();
+        this(message, cause, null);
     }
 
     @Override
     public String getMessage() {
-        return Optional.ofNullable(super.getMessage())
-                .orElseGet(() -> content.getCode().name());
+        return GenericExceptionNamespace.super.getMessage();
     }
 
 }

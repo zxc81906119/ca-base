@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.account.application.domain.model;
 
-import com.redhat.cleanbase.ddd.entity.DomainEntity;
+import com.redhat.cleanbase.ddd.entity.DomainObject;
 import com.redhat.cleanbase.ddd.vo.IdValueObject;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
-public class ActivityDo extends DomainEntity<ActivityDo.ActivityIdVo> {
+public class ActivityDo extends DomainObject<ActivityDo.ActivityIdVo> {
 
     @NonNull
     AccountDo.AccountId ownerAccountId;

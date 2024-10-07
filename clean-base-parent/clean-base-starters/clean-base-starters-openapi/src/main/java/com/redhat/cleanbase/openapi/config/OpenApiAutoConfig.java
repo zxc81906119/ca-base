@@ -1,6 +1,7 @@
 package com.redhat.cleanbase.openapi.config;
 
 import com.redhat.cleanbase.code.response.ResponseCodeEnum;
+import com.redhat.cleanbase.common.utils.ReflectionUtils;
 import com.redhat.cleanbase.exception.context.GenericExceptionContext;
 import com.redhat.cleanbase.exception.info.ExceptionInfo;
 import io.swagger.v3.oas.models.Operation;
@@ -25,14 +26,6 @@ import java.util.stream.Collectors;
 @Configuration
 public class OpenApiAutoConfig {
 
-    @Bean
-    public OperationCustomizer operationCustomizer() {
-        return (operation, handlerMethod) -> {
-            addGenericExceptionResponseExample(operation, handlerMethod);
-            return operation;
-        };
-    }
-
     private static void addGenericExceptionResponseExample(Operation operation, HandlerMethod handlerMethod) {
         val exceptionTypes =
                 Arrays.stream(handlerMethod.getMethod().getExceptionTypes())
@@ -41,10 +34,12 @@ public class OpenApiAutoConfig {
 
         val exceptionRespMap = new LinkedMultiValueMap<String, ExceptionInfoDetail>();
         for (Class<?> exceptionType : exceptionTypes) {
-            if (GenericExceptionContext.isGenericException(exceptionType)) {
-                val exceptionInfo = GenericExceptionContext.getExceptionInfoOrThrow(exceptionType);
-                val statusKey = String.valueOf(exceptionInfo.code().getRoot().getHttpStatus().value());
-                exceptionRespMap.add(statusKey, new ExceptionInfoDetail(exceptionInfo, exceptionType));
+            if (GenericExceptionContext.isGenericException(exceptionType) && ReflectionUtils.canInstance(exceptionType)) {
+                val exceptionInfoOpt = GenericExceptionContext.getExceptionInfoOpt(exceptionType);
+                exceptionInfoOpt.ifPresent((exceptionInfo) -> {
+                    val statusKey = String.valueOf(exceptionInfo.code().getRoot().getHttpStatus().value());
+                    exceptionRespMap.add(statusKey, new ExceptionInfoDetail(exceptionInfo, exceptionType));
+                });
             }
         }
 
@@ -60,13 +55,13 @@ public class OpenApiAutoConfig {
 
                 val responseCode = exceptionInfo.code();
 
-                val message = responseCode.getRoot().name();
+                val i18nKey = responseCode.getRoot().getI18nKey();
 
                 val annoTitle = exceptionInfo.title();
 
-                val title = getTitle(exceptionInfoDetail, message, annoTitle);
+                val title = getTitle(exceptionInfoDetail, i18nKey, annoTitle);
 
-                val example = getExample(exceptionInfo, responseCode, message);
+                val example = getExample(exceptionInfo, responseCode, i18nKey);
 
                 putTileExample(titleExampleMap, title, example, exceptionInfo);
             }
@@ -94,7 +89,7 @@ public class OpenApiAutoConfig {
 
     private static List<ExceptionInfoDetail> getSortedExceptionDetails(Map.Entry<String, List<ExceptionInfoDetail>> entry) {
         val exceptionDetails = entry.getValue();
-        exceptionDetails.sort(Comparator.comparingInt(exceptionInfoDetail -> exceptionInfoDetail.exceptionInfo().code().getValue()));
+        exceptionDetails.sort(Comparator.comparingInt(exceptionInfoDetail -> Integer.parseInt(exceptionInfoDetail.exceptionInfo().code().getValue())));
         return exceptionDetails;
     }
 
@@ -109,7 +104,7 @@ public class OpenApiAutoConfig {
     private static String getExample(ExceptionInfo exceptionInfo, ResponseCodeEnum responseCodeEnum, String message) {
         val exceptionRespBodyTemplate = """
                     {
-                        "code": %d ,
+                        "code": %s ,
                         "message": "%s",
                         "data": {
                             "timestamp": "2022-11-28T08:31:52.766+00:00",
@@ -134,6 +129,14 @@ public class OpenApiAutoConfig {
         return StringUtils.hasText(title) ?
                 title
                 : exceptionInfoDetail.clazz().getSimpleName() + "-" + message;
+    }
+
+    @Bean
+    public OperationCustomizer operationCustomizer() {
+        return (operation, handlerMethod) -> {
+            addGenericExceptionResponseExample(operation, handlerMethod);
+            return operation;
+        };
     }
 
     private record ExceptionInfoDetail(@NonNull ExceptionInfo exceptionInfo, @NonNull Class<?> clazz) {

@@ -17,7 +17,7 @@ public class ActionException extends GenericException {
     }
 
     public ActionException(String systemId, String message) {
-        super(message);
+        super(message, null);
         if (systemId != null) {
             getContent()
                     .putDetail(SYSTEM_ID, systemId);

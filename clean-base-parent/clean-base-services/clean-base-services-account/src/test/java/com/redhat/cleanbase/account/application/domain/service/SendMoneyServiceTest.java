@@ -7,7 +7,6 @@ import com.redhat.cleanbase.account.application.port.out.AccountLockPort;
 import com.redhat.cleanbase.account.application.port.out.LoadAccountPort;
 import com.redhat.cleanbase.account.application.port.out.UpdateAccountStatePort;
 import com.redhat.cleanbase.account.application.port.usecase.model.SendMoneyCommand;
-import com.redhat.cleanbase.exception.base.GenericException;
 import com.redhat.cleanbase.test.base.BaseTest;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +29,7 @@ public class SendMoneyServiceTest extends BaseTest {
     private AccountLockPort accountLockPort;
 
     @Test
-    public void test_sendMoney_happy() throws GenericException {
+    public void test_sendMoney_happy() throws Exception {
         val sourceAccountId =
                 AccountDo.AccountId.builder()
                         .value(41L)

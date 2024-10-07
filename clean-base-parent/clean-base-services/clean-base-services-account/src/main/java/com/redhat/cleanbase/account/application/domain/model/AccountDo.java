@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.account.application.domain.model;
 
-import com.redhat.cleanbase.ddd.entity.DomainEntity;
+import com.redhat.cleanbase.ddd.entity.DomainObject;
 import com.redhat.cleanbase.ddd.vo.IdValueObject;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Getter
-public class AccountDo extends DomainEntity<AccountDo.AccountId> {
+public class AccountDo extends DomainObject<AccountDo.AccountId> {
 
     private AccountDo(AccountId accountId, MoneyVo baselineBalance, ActivityWindowVo activityWindowVo) {
         setIdVO(accountId);

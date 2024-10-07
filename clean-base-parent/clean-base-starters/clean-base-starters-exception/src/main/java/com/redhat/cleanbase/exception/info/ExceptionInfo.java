@@ -14,10 +14,11 @@ public @interface ExceptionInfo {
 
     ResponseCodeEnum code() default ResponseCodeEnum.API_FAILED;
 
+    // 下拉選單的 option
     String title() default "";
-
+    // 每個 option 對應的 response 範例
     String example() default "";
-
+    // 對這個 option 的描述
     String desc() default "";
 
 }

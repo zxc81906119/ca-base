@@ -12,12 +12,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 public final class GenericExceptionContent {
 
-    private static final String VIOLATIONS = "violations";
+    public static final String VIOLATIONS = "violations";
+
+    @Getter
+    private final ResponseCode responseCode;
 
     private final Map<String, Object> details = new HashMap<>();
-    @Getter
-    @NonNull
-    private final ResponseCode code;
 
     public void setViolations(Map<String, List<String>> violations) {
         putDetail(VIOLATIONS, violations);

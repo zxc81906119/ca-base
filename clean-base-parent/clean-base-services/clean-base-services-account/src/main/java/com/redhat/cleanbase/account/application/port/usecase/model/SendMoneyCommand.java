@@ -16,6 +16,6 @@ public record SendMoneyCommand(
     public void validate() {
         GenericValidationContext.getValidator()
                 .validate(this)
-                .orThrow(ParamValidateFailedException::new);
+                .orThrowWithErrMsg(ParamValidateFailedException::new);
     }
 }

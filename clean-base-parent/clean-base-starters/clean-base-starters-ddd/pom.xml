@@ -14,5 +14,9 @@
             <groupId>com.redhat</groupId>
             <artifactId>clean-base-starters-exception</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.redhat</groupId>
+            <artifactId>clean-base-starters-validation</artifactId>
+        </dependency>
     </dependencies>
 </project>
