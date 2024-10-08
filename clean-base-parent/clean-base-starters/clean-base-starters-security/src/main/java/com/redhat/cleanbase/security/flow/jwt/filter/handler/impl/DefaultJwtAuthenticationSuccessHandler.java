@@ -5,7 +5,7 @@ import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowPropertie
 import com.redhat.cleanbase.security.flow.jwt.datasource.impl.DefaultAccessTokenDataSource;
 import com.redhat.cleanbase.security.flow.jwt.datasource.impl.DefaultRefreshTokenDataSource;
 import com.redhat.cleanbase.security.flow.jwt.accessor.AuthenticationAccessor;
-import com.redhat.cleanbase.security.flow.jwt.token.writer.RsTokenWriter;
+import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
 import com.redhat.cleanbase.security.flow.jwt.filter.handler.JwtAuthenticationSuccessHandler;
 import com.redhat.cleanbase.security.flow.jwt.generator.AbstractAccessTokenGenerator;
 import com.redhat.cleanbase.security.flow.jwt.generator.AbstractRefreshTokenGenerator;
@@ -17,8 +17,8 @@ import org.springframework.security.core.Authentication;
 
 public class DefaultJwtAuthenticationSuccessHandler extends JwtAuthenticationSuccessHandler<DefaultAccessToken, DefaultRefreshToken, DefaultAccessTokenDataSource, DefaultRefreshTokenDataSource> {
 
-    public DefaultJwtAuthenticationSuccessHandler(RsTokenWriter rsTokenWriter, JwtFlowProperties jwtProperties, JwtCacheManager jwtCacheManager, AuthenticationAccessor authenticationAccessor, AbstractAccessTokenGenerator<DefaultAccessToken, DefaultAccessTokenDataSource> accessTokenGenerator, AbstractRefreshTokenGenerator<DefaultRefreshToken, DefaultRefreshTokenDataSource> refreshTokenGenerator) {
-        super(rsTokenWriter, jwtProperties, jwtCacheManager, authenticationAccessor, accessTokenGenerator, refreshTokenGenerator);
+    public DefaultJwtAuthenticationSuccessHandler(TokenRsWriter tokenRsWriter, JwtFlowProperties jwtProperties, JwtCacheManager jwtCacheManager, AuthenticationAccessor authenticationAccessor, AbstractAccessTokenGenerator<DefaultAccessToken, DefaultAccessTokenDataSource> accessTokenGenerator, AbstractRefreshTokenGenerator<DefaultRefreshToken, DefaultRefreshTokenDataSource> refreshTokenGenerator) {
+        super(tokenRsWriter, jwtProperties, jwtCacheManager, authenticationAccessor, accessTokenGenerator, refreshTokenGenerator);
     }
 
     @Override

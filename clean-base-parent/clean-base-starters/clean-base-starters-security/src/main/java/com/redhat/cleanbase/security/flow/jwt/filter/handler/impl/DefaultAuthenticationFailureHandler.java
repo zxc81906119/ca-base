@@ -12,10 +12,10 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @RequiredArgsConstructor
 public class DefaultAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-    private final RqDelegateExceptionHandler delegateExceptionHandler;
+    private final RqDelegateExceptionHandler rqDelegateExceptionHandler;
 
     @Override
     public final void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) {
-        delegateExceptionHandler.handleAndWriteRs(request, response, e);
+        rqDelegateExceptionHandler.handleAndWriteRs(request, response, e);
     }
 }

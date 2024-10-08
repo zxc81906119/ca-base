@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface JwtCacheManager {
 
-    default <O, E extends Exception> O tokenOperate(JwtToken jwtToken, Operator<String, O, E> operator) throws E {
+    default <O, E extends Exception> O cacheOperate(JwtToken jwtToken, Operator<String, O, E> operator) throws E {
         val uniqueId = toUniqueId(jwtToken);
         return operator.operate(uniqueId);
     }

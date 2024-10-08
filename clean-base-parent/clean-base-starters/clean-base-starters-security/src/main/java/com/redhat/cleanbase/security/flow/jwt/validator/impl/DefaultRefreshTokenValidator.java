@@ -10,6 +10,7 @@ import lombok.val;
 
 @RequiredArgsConstructor
 public class DefaultRefreshTokenValidator implements RefreshTokenValidator<DefaultRefreshToken> {
+
     private final GenericValidator genericValidator;
 
     @Override

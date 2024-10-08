@@ -5,7 +5,7 @@ import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowPropertie
 import com.redhat.cleanbase.security.flow.jwt.datasource.AccessTokenDataSource;
 import com.redhat.cleanbase.security.flow.jwt.datasource.RefreshTokenDataSource;
 import com.redhat.cleanbase.security.flow.jwt.accessor.AuthenticationAccessor;
-import com.redhat.cleanbase.security.flow.jwt.token.writer.RsTokenWriter;
+import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
 import com.redhat.cleanbase.security.flow.jwt.generator.AbstractAccessTokenGenerator;
 import com.redhat.cleanbase.security.flow.jwt.generator.AbstractRefreshTokenGenerator;
 import com.redhat.cleanbase.security.flow.jwt.token.AccessToken;
@@ -25,21 +25,21 @@ public abstract class JwtAuthenticationSuccessHandler<AT extends AccessToken, RT
 
     protected final JwtFlowProperties jwtProperties;
 
-    private final RsTokenWriter rsTokenWriter;
+    private final TokenRsWriter tokenRsWriter;
     private final JwtCacheManager jwtCacheManager;
     private final AuthenticationAccessor<?> authenticationAccessor;
     private final AbstractAccessTokenGenerator<AT, ATS> accessTokenGenerator;
     private final AbstractRefreshTokenGenerator<RT, RTS> refreshTokenGenerator;
 
     public JwtAuthenticationSuccessHandler(
-            RsTokenWriter rsTokenWriter,
+            TokenRsWriter tokenRsWriter,
             JwtFlowProperties jwtProperties,
             JwtCacheManager jwtCacheManager,
             AuthenticationAccessor<?> authenticationAccessor,
             AbstractAccessTokenGenerator<AT, ATS> accessTokenGenerator,
             AbstractRefreshTokenGenerator<RT, RTS> refreshTokenGenerator
     ) {
-        this.rsTokenWriter = rsTokenWriter;
+        this.tokenRsWriter = tokenRsWriter;
         this.jwtProperties = jwtProperties;
         this.jwtCacheManager = jwtCacheManager;
         this.accessTokenGenerator = accessTokenGenerator;
@@ -57,7 +57,7 @@ public abstract class JwtAuthenticationSuccessHandler<AT extends AccessToken, RT
         val jwtCache = jwtCacheManager.createCache(rt);
         val authInfo = authenticationAccessor.getAuthInfoForCache(authentication);
         jwtCache.setAttributes(authInfo);
-        rsTokenWriter.write(response, at, rt);
+        tokenRsWriter.write(response, at, rt);
     }
 
     private RT genRefreshToken(HttpServletRequest request,

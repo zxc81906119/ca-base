@@ -2,7 +2,7 @@ package com.redhat.cleanbase.web.servlet.exception.handler.impl;
 
 import com.redhat.cleanbase.code.response.ResponseCodeEnum;
 import com.redhat.cleanbase.web.model.response.GenericResponse;
-import com.redhat.cleanbase.web.servlet.exception.condition.ExceptionCondition;
+import com.redhat.cleanbase.web.servlet.exception.condition.RqExceptionCondition;
 import com.redhat.cleanbase.web.servlet.utils.WebUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.LinkedHashMap;
 
 @Slf4j
 @RequiredArgsConstructor
-public class DefaultExceptionHandler implements ExceptionCondition<HttpServletRequest, Exception> {
+public class DefaultExceptionHandler implements RqExceptionCondition<Exception> {
 
     @Override
     public ResponseEntity<?> handle(HttpServletRequest request, Exception e) {

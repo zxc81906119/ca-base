@@ -13,6 +13,6 @@ public class LoginAuthToken extends UsernamePasswordAuthenticationToken {
     }
 
     public LoginAuthToken(Object principal, Object credentials) {
-        this(principal, credentials, null);
+        super(principal, credentials);
     }
 }

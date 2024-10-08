@@ -4,7 +4,9 @@ import com.redhat.cleanbase.security.config.properties.SecurityConfigProperties;
 import com.redhat.cleanbase.security.exception.SecurityPropValidationException;
 import com.redhat.cleanbase.security.flow.config.SecurityFlowConfigurer;
 import com.redhat.cleanbase.security.flow.jwt.annotation.JwtSecurityFlow;
+import com.redhat.cleanbase.security.flow.jwt.filter.AccessTokenVerifyFilter;
 import com.redhat.cleanbase.security.flow.jwt.filter.BaseLoginFilter;
+import com.redhat.cleanbase.security.flow.jwt.filter.RefreshTokenFilter;
 import com.redhat.cleanbase.security.flow.jwt.filter.provider.LoginProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -14,6 +16,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
@@ -23,10 +27,15 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 @Configuration
 @Import(JwtSecurityFlowInnerConfigurer.class)
 public class JwtSecurityFlowConfigurer implements SecurityFlowConfigurer {
-    
+
     private final LogoutHandler logoutHandler;
     private final LoginProvider<?, ?> loginProvider;
     private final BaseLoginFilter<?> baseLoginFilter;
+    private final AccessDeniedHandler accessDeniedHandler;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final RefreshTokenFilter<?, ?, ?, ?> refreshTokenFilter;
+    private final AccessTokenVerifyFilter<?> accessTokenVerifyFilter;
+
 
     @Override
     public void validateProperties(SecurityConfigProperties properties) throws SecurityPropValidationException {
@@ -59,15 +68,20 @@ public class JwtSecurityFlowConfigurer implements SecurityFlowConfigurer {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
-                .sessionManagement(
-                        (securitySessionManagementConfigurer) ->
-                                securitySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .logout((logoutConfigurer) -> {
-                    logoutConfigurer.addLogoutHandler(logoutHandler);
-                })
+                .addFilterBefore(refreshTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(accessTokenVerifyFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(baseLoginFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(loginProvider)
-                .addFilterBefore(baseLoginFilter, UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement(
+                        (configurer) ->
+                                configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .exceptionHandling((configurer) -> {
+                    configurer.accessDeniedHandler(accessDeniedHandler);
+                    configurer.authenticationEntryPoint(authenticationEntryPoint);
+                })
+                .logout((configurer) -> configurer.addLogoutHandler(logoutHandler));
+
     }
 
 }

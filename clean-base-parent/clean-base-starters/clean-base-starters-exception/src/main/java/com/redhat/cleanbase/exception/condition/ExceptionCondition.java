@@ -1,4 +1,4 @@
-package com.redhat.cleanbase.web.servlet.exception.condition;
+package com.redhat.cleanbase.exception.condition;
 
 import com.redhat.cleanbase.common.type.Identifiable;
 import com.redhat.cleanbase.exception.handler.ExceptionHandler;

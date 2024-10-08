@@ -13,13 +13,13 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @RequiredArgsConstructor
-public abstract class WriteRsEntityToRsProcessor {
+public abstract class RsEntityRsWriter {
 
     @NonNull
     private final Operator<Object, String, ?> converter;
 
     @SneakyThrows
-    public void writeRsEntityToRs(HttpServletResponse response, ResponseEntity<?> entity) {
+    public void write(HttpServletResponse response, ResponseEntity<?> entity) {
 
         if (entity == null) {
             return;
@@ -56,15 +56,14 @@ public abstract class WriteRsEntityToRsProcessor {
         }
     }
 
-    public Consumer<ResponseEntity<?>> lazyWriteRsWithRsEntity(HttpServletResponse response) {
+    public Consumer<ResponseEntity<?>> lazyWrite(HttpServletResponse response) {
         return (entity) ->
-                writeRsEntityToRs(response, entity);
+                write(response, entity);
     }
 
-    public Consumer<Supplier<ResponseEntity<?>>> lazyWriteRsWithRsEntitySupplier(HttpServletResponse response) {
+    public Consumer<Supplier<ResponseEntity<?>>> lazyWriteWithSupplier(HttpServletResponse response) {
         return (entitySupplier) ->
-                writeRsEntityToRs(response, entitySupplier.get());
+                write(response, entitySupplier.get());
     }
-
 
 }

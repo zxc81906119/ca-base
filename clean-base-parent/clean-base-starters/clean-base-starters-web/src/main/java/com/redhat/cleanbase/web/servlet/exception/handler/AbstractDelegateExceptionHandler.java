@@ -2,8 +2,8 @@ package com.redhat.cleanbase.web.servlet.exception.handler;
 
 import com.redhat.cleanbase.common.utils.CastUtils;
 import com.redhat.cleanbase.exception.handler.ExceptionHandler;
-import com.redhat.cleanbase.web.servlet.exception.condition.ExceptionCondition;
-import com.redhat.cleanbase.web.servlet.response.processor.WriteRsEntityToRsProcessor;
+import com.redhat.cleanbase.exception.condition.ExceptionCondition;
+import com.redhat.cleanbase.web.servlet.response.processor.RsEntityRsWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 
@@ -11,11 +11,11 @@ import java.util.*;
 
 public abstract class AbstractDelegateExceptionHandler<D> implements ExceptionHandler<D, Exception> {
 
-    private final WriteRsEntityToRsProcessor writeRsEntityToRs;
+    private final RsEntityRsWriter writeRsEntityToRs;
 
     private final Map<Class<? extends Exception>, List<ExceptionCondition<D, ?>>> exceptionHandlerMap = new HashMap<>();
 
-    public AbstractDelegateExceptionHandler(List<ExceptionCondition<D, ?>> exceptionHandlers, WriteRsEntityToRsProcessor writeRsEntityToRs) {
+    public AbstractDelegateExceptionHandler(List<ExceptionCondition<D, ?>> exceptionHandlers, RsEntityRsWriter writeRsEntityToRs) {
         this.writeRsEntityToRs = writeRsEntityToRs;
         exceptionHandlers.forEach((exceptionHandler) ->
                 exceptionHandlerMap.computeIfAbsent(exceptionHandler.getIdentifier(),
@@ -52,7 +52,7 @@ public abstract class AbstractDelegateExceptionHandler<D> implements ExceptionHa
     }
 
     public void handleAndWriteRs(D d, HttpServletResponse response, Exception e) {
-        writeRsEntityToRs.lazyWriteRsWithRsEntitySupplier(response)
+        writeRsEntityToRs.lazyWriteWithSupplier(response)
                 .accept(() -> handle(d, e));
     }
 

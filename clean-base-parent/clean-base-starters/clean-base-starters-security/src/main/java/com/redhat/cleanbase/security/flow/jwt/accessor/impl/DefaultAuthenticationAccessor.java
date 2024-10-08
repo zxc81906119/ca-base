@@ -33,9 +33,7 @@ public class DefaultAuthenticationAccessor implements AuthenticationAccessor<Use
 
     @Override
     public Authentication createAuthentication(User u) {
-        val loginAuthToken = new LoginAuthToken(u, u.getPassword(), u.getAuthorities());
-        loginAuthToken.setAuthenticated(true);
-        return loginAuthToken;
+        return new LoginAuthToken(u, u.getPassword(), u.getAuthorities());
     }
 
 }

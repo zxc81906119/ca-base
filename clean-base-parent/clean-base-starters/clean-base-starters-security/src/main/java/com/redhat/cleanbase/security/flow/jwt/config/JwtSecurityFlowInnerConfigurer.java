@@ -2,7 +2,6 @@ package com.redhat.cleanbase.security.flow.jwt.config;
 
 import com.redhat.cleanbase.convert.parser.JacksonJsonParser;
 import com.redhat.cleanbase.security.config.properties.SecurityConfigProperties;
-import com.redhat.cleanbase.security.flow.jwt.token.writer.impl.DefaultRsTokenWriter;
 import com.redhat.cleanbase.security.flow.jwt.accessor.AuthenticationAccessor;
 import com.redhat.cleanbase.security.flow.jwt.accessor.impl.DefaultAuthenticationAccessor;
 import com.redhat.cleanbase.security.flow.jwt.cache.manager.JwtCacheManager;
@@ -12,8 +11,13 @@ import com.redhat.cleanbase.security.flow.jwt.converter.RequestConverter;
 import com.redhat.cleanbase.security.flow.jwt.converter.impl.DefaultRequestConverter;
 import com.redhat.cleanbase.security.flow.jwt.datasource.impl.DefaultAccessTokenDataSource;
 import com.redhat.cleanbase.security.flow.jwt.datasource.impl.DefaultRefreshTokenDataSource;
-import com.redhat.cleanbase.security.flow.jwt.exception.handler.ActionExceptionHandler;
-import com.redhat.cleanbase.security.flow.jwt.filter.*;
+import com.redhat.cleanbase.security.flow.jwt.exception.handler.AccessDeniedExceptionHandler;
+import com.redhat.cleanbase.security.flow.jwt.exception.handler.AuthenticationExceptionHandler;
+import com.redhat.cleanbase.security.flow.jwt.filter.AccessTokenVerifyFilter;
+import com.redhat.cleanbase.security.flow.jwt.filter.BaseLoginFilter;
+import com.redhat.cleanbase.security.flow.jwt.filter.RefreshTokenFilter;
+import com.redhat.cleanbase.security.flow.jwt.filter.entrypoint.DefaultAuthenticationEntryPoint;
+import com.redhat.cleanbase.security.flow.jwt.filter.handler.impl.DefaultAccessDeniedHandler;
 import com.redhat.cleanbase.security.flow.jwt.filter.handler.impl.DefaultAuthenticationFailureHandler;
 import com.redhat.cleanbase.security.flow.jwt.filter.handler.impl.DefaultJwtAuthenticationSuccessHandler;
 import com.redhat.cleanbase.security.flow.jwt.filter.handler.impl.DefaultLogoutHandler;
@@ -44,7 +48,8 @@ import com.redhat.cleanbase.security.flow.jwt.parser.impl.DefaultAccessTokenPars
 import com.redhat.cleanbase.security.flow.jwt.parser.impl.DefaultRefreshTokenParser;
 import com.redhat.cleanbase.security.flow.jwt.token.impl.DefaultAccessToken;
 import com.redhat.cleanbase.security.flow.jwt.token.impl.DefaultRefreshToken;
-import com.redhat.cleanbase.security.flow.jwt.token.writer.RsTokenWriter;
+import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
+import com.redhat.cleanbase.security.flow.jwt.token.writer.impl.DefaultTokenRsWriter;
 import com.redhat.cleanbase.security.flow.jwt.validator.AccessTokenValidator;
 import com.redhat.cleanbase.security.flow.jwt.validator.RefreshTokenValidator;
 import com.redhat.cleanbase.security.flow.jwt.validator.impl.DefaultAccessTokenValidator;
@@ -52,7 +57,7 @@ import com.redhat.cleanbase.security.flow.jwt.validator.impl.DefaultRefreshToken
 import com.redhat.cleanbase.validation.GenericValidator;
 import com.redhat.cleanbase.web.model.request.GenericRequest;
 import com.redhat.cleanbase.web.servlet.exception.handler.impl.RqDelegateExceptionHandler;
-import com.redhat.cleanbase.web.servlet.response.processor.WriteRsEntityToRsProcessor;
+import com.redhat.cleanbase.web.servlet.response.processor.RsEntityRsWriter;
 import lombok.val;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -62,6 +67,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -102,8 +109,8 @@ public class JwtSecurityFlowInnerConfigurer {
     // todo 客製
 
     @Bean
-    public DelegateJwtKeyGetter keyGetterProxy(List<JwtAlgKeyGetterCondition> keyGetterConditions) {
-        return new DelegateJwtKeyGetter(keyGetterConditions);
+    public DelegateJwtKeyGetter keyGetterProxy(List<JwtAlgKeyGetterCondition> jwtAlgKeyGetterConditions) {
+        return new DelegateJwtKeyGetter(jwtAlgKeyGetterConditions);
     }
 
 
@@ -154,20 +161,26 @@ public class JwtSecurityFlowInnerConfigurer {
 
     @ConditionalOnMissingBean
     @Bean
-    public ActionExceptionHandler actionExceptionHandler() {
-        return new ActionExceptionHandler();
+    public AuthenticationExceptionHandler actionExceptionHandler() {
+        return new AuthenticationExceptionHandler();
+    }
+
+    @ConditionalOnMissingBean
+    @Bean
+    public AccessDeniedExceptionHandler accessDeniedExceptionHandler() {
+        return new AccessDeniedExceptionHandler();
     }
 
     @ConditionalOnMissingBean
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler(
-            RsTokenWriter rsTokenWriter,
+            TokenRsWriter tokenRsWriter,
             JwtCacheManager jwtCacheManager,
             AuthenticationAccessor<User> authenticationAccessor,
             AbstractAccessTokenGenerator<DefaultAccessToken, DefaultAccessTokenDataSource> accessTokenGenerator,
             AbstractRefreshTokenGenerator<DefaultRefreshToken, DefaultRefreshTokenDataSource> refreshTokenGenerator
     ) {
-        return new DefaultJwtAuthenticationSuccessHandler(rsTokenWriter, jwtFlowProperties, jwtCacheManager, authenticationAccessor, accessTokenGenerator, refreshTokenGenerator);
+        return new DefaultJwtAuthenticationSuccessHandler(tokenRsWriter, jwtFlowProperties, jwtCacheManager, authenticationAccessor, accessTokenGenerator, refreshTokenGenerator);
     }
 
     @ConditionalOnMissingBean
@@ -238,15 +251,15 @@ public class JwtSecurityFlowInnerConfigurer {
 
     @ConditionalOnMissingBean
     @Bean
-    public RsTokenWriter rsTokenWriter(WriteRsEntityToRsProcessor writeRsEntityToRsProcessor) {
-        return new DefaultRsTokenWriter(jwtFlowProperties, writeRsEntityToRsProcessor);
+    public TokenRsWriter tokenRsWriter(RsEntityRsWriter rsEntityRsWriter) {
+        return new DefaultTokenRsWriter(jwtFlowProperties, rsEntityRsWriter);
     }
 
     @ConditionalOnMissingBean
     @Bean
     public RefreshTokenFilter<?, ?, ?, ?> refreshTokenFilter(
             ResourceLock resourceLock,
-            RsTokenWriter rsTokenWriter,
+            TokenRsWriter tokenRsWriter,
             JwtCacheManager jwtCacheManager,
             RefreshTokenParser<DefaultRefreshToken> refreshTokenParser,
             RefreshTokenValidator<DefaultRefreshToken> refreshTokenValidator,
@@ -254,7 +267,7 @@ public class JwtSecurityFlowInnerConfigurer {
             AbstractAccessTokenGenerator<DefaultAccessToken, DefaultAccessTokenDataSource> accessTokenGenerator,
             AbstractRefreshTokenGenerator<DefaultRefreshToken, DefaultRefreshTokenDataSource> refreshTokenGenerator
     ) {
-        return new DefaultRefreshTokenFilter(resourceLock, rsTokenWriter, jwtCacheManager, jwtFlowProperties, refreshTokenParser, refreshTokenValidator, rqDelegateExceptionHandler, accessTokenGenerator, refreshTokenGenerator);
+        return new DefaultRefreshTokenFilter(resourceLock, tokenRsWriter, jwtCacheManager, jwtFlowProperties, refreshTokenParser, refreshTokenValidator, rqDelegateExceptionHandler, accessTokenGenerator, refreshTokenGenerator);
     }
 
     @ConditionalOnMissingBean
@@ -263,11 +276,22 @@ public class JwtSecurityFlowInnerConfigurer {
         return new DefaultRefreshTokenParser(delegateJwtKeyGetter);
     }
 
-
     @ConditionalOnMissingBean
     @Bean
     public RefreshTokenValidator<?> refreshTokenValidator(GenericValidator genericValidator) {
         return new DefaultRefreshTokenValidator(genericValidator);
+    }
+
+    @ConditionalOnMissingBean
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(RqDelegateExceptionHandler rqDelegateExceptionHandler) {
+        return new DefaultAccessDeniedHandler(rqDelegateExceptionHandler);
+    }
+
+    @ConditionalOnMissingBean
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint(RqDelegateExceptionHandler rqDelegateExceptionHandler) {
+        return new DefaultAuthenticationEntryPoint(rqDelegateExceptionHandler);
     }
 
 

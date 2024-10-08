@@ -12,7 +12,7 @@ import com.redhat.cleanbase.security.flow.jwt.lock.ResourceLock;
 import com.redhat.cleanbase.security.flow.jwt.parser.RefreshTokenParser;
 import com.redhat.cleanbase.security.flow.jwt.token.AccessToken;
 import com.redhat.cleanbase.security.flow.jwt.token.RefreshToken;
-import com.redhat.cleanbase.security.flow.jwt.token.writer.RsTokenWriter;
+import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
 import com.redhat.cleanbase.security.flow.jwt.validator.RefreshTokenValidator;
 import com.redhat.cleanbase.web.servlet.exception.handler.impl.RqDelegateExceptionHandler;
 import jakarta.servlet.FilterChain;
@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class RefreshTokenFilter<AT extends AccessToken, ATS extends AccessTokenDataSource, RT extends RefreshToken, RTS extends RefreshTokenDataSource> extends OncePerRequestFilter {
 
     private final ResourceLock resourceLock;
-    private final RsTokenWriter rsTokenWriter;
+    private final TokenRsWriter tokenRsWriter;
     private final JwtCacheManager jwtCacheManager;
     private final JwtFlowProperties jwtProperties;
     private final RefreshTokenParser<RT> refreshTokenParser;
@@ -57,7 +57,6 @@ public abstract class RefreshTokenFilter<AT extends AccessToken, ATS extends Acc
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) {
         try {
-            // todo 實做
             val refreshTokenString = getRefreshTokenString(request);
             if (refreshTokenString.isEmpty()) {
                 throw new RefreshTokenNotFoundAuthenticationException();
@@ -86,7 +85,7 @@ public abstract class RefreshTokenFilter<AT extends AccessToken, ATS extends Acc
 
     private void refreshAccessToken(HttpServletResponse response, RT rqRefreshToken) {
         val newAccessToken = genAccessTokenWithSameId(rqRefreshToken);
-        rsTokenWriter.write(response, newAccessToken, null);
+        tokenRsWriter.write(response, newAccessToken, null);
     }
 
     private void refreshBothToken(HttpServletResponse response, RT rqRefreshToken, JwtCache jwtCache) throws JwtCacheInvalidateAuthenticationException, JwtCacheCreateAuthenticationException {
@@ -94,7 +93,7 @@ public abstract class RefreshTokenFilter<AT extends AccessToken, ATS extends Acc
         val newAccessToken = genAccessTokenWithNewId(rqRefreshToken);
         val newRefreshToken = genRefreshToken(newAccessToken);
         createJwtCacheAndSetAttrs(attrs, newRefreshToken);
-        rsTokenWriter.write(response, newAccessToken, newRefreshToken);
+        tokenRsWriter.write(response, newAccessToken, newRefreshToken);
     }
 
     private void createJwtCacheAndSetAttrs(Map<String, Object> attrs, RT newRefreshToken) throws JwtCacheCreateAuthenticationException {

@@ -2,7 +2,7 @@ package com.redhat.cleanbase.web.servlet.exception.handler.impl;
 
 import com.redhat.cleanbase.exception.base.GenericRtException;
 import com.redhat.cleanbase.exception.handler.GenericExceptionFamilyHandler;
-import com.redhat.cleanbase.web.servlet.exception.condition.ExceptionCondition;
+import com.redhat.cleanbase.web.servlet.exception.condition.RqExceptionCondition;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class GenericRtExceptionHandler implements ExceptionCondition<HttpServletRequest, GenericRtException> {
+public class GenericRtExceptionHandler implements RqExceptionCondition<GenericRtException> {
 
     private final GenericExceptionFamilyHandler genericExceptionFamilyHandler;
 

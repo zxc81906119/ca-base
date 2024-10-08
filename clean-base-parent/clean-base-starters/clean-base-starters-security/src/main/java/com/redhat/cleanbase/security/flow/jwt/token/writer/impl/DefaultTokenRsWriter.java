@@ -4,8 +4,8 @@ import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowPropertie
 import com.redhat.cleanbase.security.flow.jwt.token.AccessToken;
 import com.redhat.cleanbase.security.flow.jwt.token.RefreshToken;
 import com.redhat.cleanbase.security.flow.jwt.token.model.RsTokenInfo;
-import com.redhat.cleanbase.security.flow.jwt.token.writer.RsTokenWriter;
-import com.redhat.cleanbase.web.servlet.response.processor.WriteRsEntityToRsProcessor;
+import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
+import com.redhat.cleanbase.web.servlet.response.processor.RsEntityRsWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -14,14 +14,14 @@ import org.springframework.http.ResponseEntity;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class DefaultRsTokenWriter implements RsTokenWriter {
+public class DefaultTokenRsWriter implements TokenRsWriter {
 
     private final JwtFlowProperties jwtFlowProperties;
-    private final WriteRsEntityToRsProcessor writeRsEntityToRsProcessor;
+    private final RsEntityRsWriter rsEntityRsWriter;
 
     @Override
     public void write(HttpServletResponse response, AccessToken accessToken, RefreshToken refreshToken) {
-        writeRsEntityToRsProcessor.lazyWriteRsWithRsEntitySupplier(response)
+        rsEntityRsWriter.lazyWriteWithSupplier(response)
                 .accept(() -> toResponseEntity(accessToken, refreshToken));
     }
 

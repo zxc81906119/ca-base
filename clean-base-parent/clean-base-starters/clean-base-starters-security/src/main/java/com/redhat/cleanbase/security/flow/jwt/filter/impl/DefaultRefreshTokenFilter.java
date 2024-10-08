@@ -5,7 +5,7 @@ import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowPropertie
 import com.redhat.cleanbase.security.flow.jwt.datasource.impl.DefaultAccessTokenDataSource;
 import com.redhat.cleanbase.security.flow.jwt.datasource.impl.DefaultRefreshTokenDataSource;
 import com.redhat.cleanbase.security.flow.jwt.filter.RefreshTokenFilter;
-import com.redhat.cleanbase.security.flow.jwt.token.writer.RsTokenWriter;
+import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
 import com.redhat.cleanbase.security.flow.jwt.generator.AbstractAccessTokenGenerator;
 import com.redhat.cleanbase.security.flow.jwt.generator.AbstractRefreshTokenGenerator;
 import com.redhat.cleanbase.security.flow.jwt.lock.ResourceLock;
@@ -22,8 +22,8 @@ import java.util.Optional;
 @Slf4j
 public class DefaultRefreshTokenFilter extends RefreshTokenFilter<DefaultAccessToken, DefaultAccessTokenDataSource, DefaultRefreshToken, DefaultRefreshTokenDataSource> {
 
-    public DefaultRefreshTokenFilter(ResourceLock resourceLock, RsTokenWriter rsTokenWriter, JwtCacheManager jwtCacheManager, JwtFlowProperties jwtProperties, RefreshTokenParser<DefaultRefreshToken> refreshTokenParser, RefreshTokenValidator<DefaultRefreshToken> refreshTokenValidator, RqDelegateExceptionHandler rqDelegateExceptionHandler, AbstractAccessTokenGenerator<DefaultAccessToken, DefaultAccessTokenDataSource> accessTokenGenerator, AbstractRefreshTokenGenerator<DefaultRefreshToken, DefaultRefreshTokenDataSource> refreshTokenGenerator) {
-        super(resourceLock, rsTokenWriter, jwtCacheManager, jwtProperties, refreshTokenParser, refreshTokenValidator, rqDelegateExceptionHandler, accessTokenGenerator, refreshTokenGenerator);
+    public DefaultRefreshTokenFilter(ResourceLock resourceLock, TokenRsWriter tokenRsWriter, JwtCacheManager jwtCacheManager, JwtFlowProperties jwtProperties, RefreshTokenParser<DefaultRefreshToken> refreshTokenParser, RefreshTokenValidator<DefaultRefreshToken> refreshTokenValidator, RqDelegateExceptionHandler rqDelegateExceptionHandler, AbstractAccessTokenGenerator<DefaultAccessToken, DefaultAccessTokenDataSource> accessTokenGenerator, AbstractRefreshTokenGenerator<DefaultRefreshToken, DefaultRefreshTokenDataSource> refreshTokenGenerator) {
+        super(resourceLock, tokenRsWriter, jwtCacheManager, jwtProperties, refreshTokenParser, refreshTokenValidator, rqDelegateExceptionHandler, accessTokenGenerator, refreshTokenGenerator);
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.redhat.cleanbase.security.flow.jwt.token.AccessToken;
 import com.redhat.cleanbase.security.flow.jwt.token.RefreshToken;
 import jakarta.servlet.http.HttpServletResponse;
 
-public interface RsTokenWriter {
+public interface TokenRsWriter {
 
     void write(HttpServletResponse response, AccessToken accessToken, RefreshToken refreshToken);
 

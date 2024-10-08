@@ -68,10 +68,6 @@ public class SecurityAutoConfig {
 
     private void commonSecurityConfig(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf((configurer) -> {
-                    securityConfigProperties.getCsrfProperties()
-                            .config(configurer);
-                })
                 .authorizeHttpRequests((authorizationManagerRequestMatcherRegistry) -> {
                     securityConfigProperties.getAuthorizeRequestProperties()
                             .config(authorizationManagerRequestMatcherRegistry);

@@ -25,7 +25,7 @@ public class DefaultJwtCacheManager implements JwtCacheManager {
 
     @Override
     public JwtCache createCache(@NonNull JwtToken jwtToken) throws JwtCacheCreateAuthenticationException {
-        return tokenOperate(
+        return cacheOperate(
                 jwtToken,
                 (uniqueId) -> {
                     if (cache.containsKey(uniqueId)) {
@@ -53,7 +53,7 @@ public class DefaultJwtCacheManager implements JwtCacheManager {
 
     @Override
     public Optional<JwtCache> getCache(JwtToken jwtToken) {
-        return tokenOperate(
+        return cacheOperate(
                 jwtToken,
                 (uniqueId) ->
                         Optional.ofNullable(cache.get(uniqueId))

@@ -8,7 +8,6 @@ import com.redhat.cleanbase.security.flow.jwt.key.getter.impl.DelegateJwtKeyGett
 import com.redhat.cleanbase.security.flow.jwt.token.JwtToken;
 import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.impl.compression.GzipCompressionCodec;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 
@@ -54,12 +53,12 @@ public abstract class AbstractJwtTokenGenerator<T extends JwtToken, TS extends J
         }
 
         // todo enum 供選擇,也可以不設定
-        jwtBuilder.compressWith(new GzipCompressionCodec());
+//        jwtBuilder.compressWith(new GzipCompressionCodec());
 
         // customPayload
         val customPayload = getClaims(ts);
         if (customPayload != null) {
-            jwtBuilder.setClaims(customPayload);
+            jwtBuilder.addClaims(customPayload);
             token.setPayload(customPayload);
         }
 
