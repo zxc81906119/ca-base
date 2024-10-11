@@ -11,11 +11,17 @@ import org.springframework.security.web.authentication.ui.DefaultLoginPageGenera
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import java.util.Optional;
+
 public class PlatformFormLoginConfigurer<H extends HttpSecurityBuilder<H>> extends
         AbstractAuthenticationFilterConfigurer<H, PlatformFormLoginConfigurer<H>, UsernamePasswordAuthenticationFilter> {
 
     public PlatformFormLoginConfigurer(UsernamePasswordAuthenticationFilter authenticationFilter) {
-        super(authenticationFilter, null);
+        super(
+                Optional.ofNullable(authenticationFilter)
+                        .orElseGet(UsernamePasswordAuthenticationFilter::new),
+                null
+        );
         usernameParameter("username");
         passwordParameter("password");
     }

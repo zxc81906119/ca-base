@@ -21,8 +21,7 @@ public abstract class IdentifiableGetter<Id, IdB extends Identifiable<Id>> {
             if (identifier == null) {
                 throw new IllegalStateException("identifier is not exist");
             }
-            val identifiable = cache.get(identifier);
-            if (identifiable != null) {
+            if (cache.containsKey(identifier)) {
                 throw new IllegalStateException("duplicate identifier");
             }
             cache.put(identifier, aIdentifiable);

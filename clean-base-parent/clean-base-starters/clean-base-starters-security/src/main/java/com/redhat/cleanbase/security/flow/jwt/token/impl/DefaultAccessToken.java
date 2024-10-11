@@ -2,9 +2,9 @@ package com.redhat.cleanbase.security.flow.jwt.token.impl;
 
 import com.redhat.cleanbase.security.flow.jwt.datasource.impl.DefaultRefreshTokenDataSource;
 import com.redhat.cleanbase.security.flow.jwt.token.AccessToken;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -27,7 +27,7 @@ public class DefaultAccessToken extends DefaultRefreshTokenDataSource implements
     private Date creationTime;
 
     @NotNull
-    @Past
+    @Future
     private Date expireTime;
 
     public DefaultAccessToken() {

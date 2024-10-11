@@ -35,10 +35,10 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public abstract class RefreshTokenFilter<AT extends AccessToken, ATS extends AccessTokenDataSource, RT extends RefreshToken, RTS extends RefreshTokenDataSource> extends OncePerRequestFilter {
 
+    protected final JwtFlowProperties jwtProperties;
     private final ResourceLock resourceLock;
     private final TokenRsWriter tokenRsWriter;
     private final JwtCacheManager jwtCacheManager;
-    private final JwtFlowProperties jwtProperties;
     private final RefreshTokenParser<RT> refreshTokenParser;
     private final RefreshTokenValidator<RT> refreshTokenValidator;
     private final RqDelegateExceptionHandler rqDelegateExceptionHandler;

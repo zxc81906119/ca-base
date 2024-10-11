@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.val;
 
+import java.util.Base64;
 import java.util.Set;
 
 public class HSJwtAlgKeyGetter extends AbstractJwtAlgKeyGetterCondition<DefaultKeyInfo> {
@@ -45,7 +46,10 @@ public class HSJwtAlgKeyGetter extends AbstractJwtAlgKeyGetterCondition<DefaultK
 
         return KeyWithId.builder()
                 .kid(kid)
-                .key(Keys.hmacShaKeyFor(privateKey.getBytes()))
+                .key(Keys.hmacShaKeyFor(
+                        Base64.getDecoder()
+                                .decode(privateKey.getBytes())
+                ))
                 .build();
     }
 

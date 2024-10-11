@@ -6,6 +6,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.val;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 
@@ -49,7 +51,8 @@ public abstract class RsEntityRsWriter {
             if (response.isCommitted()) {
                 throw new RuntimeException("rs has committed , can't write");
             }
-
+            
+            response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
             response.resetBuffer();
             response.getWriter()
                     .write(responseBody);

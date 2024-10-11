@@ -1,7 +1,8 @@
 package com.redhat.cleanbase.security.flow.jwt.parser;
 
-import com.redhat.cleanbase.security.flow.jwt.key.getter.impl.DelegateJwtKeyGetter;
+import com.redhat.cleanbase.common.utils.CastUtils;
 import com.redhat.cleanbase.security.flow.jwt.exception.JwtParseAuthenticationException;
+import com.redhat.cleanbase.security.flow.jwt.key.getter.impl.DelegateJwtKeyGetter;
 import com.redhat.cleanbase.security.flow.jwt.key.model.KeyWithId;
 import com.redhat.cleanbase.security.flow.jwt.token.JwtToken;
 import io.jsonwebtoken.*;
@@ -31,9 +32,9 @@ public abstract class AbstractJwtParser<T extends JwtToken> implements JwtParser
         return jwt.substring(0, i + 1);
     }
 
-    private static JwsHeader<?> getJwsHeader(String jwt) {
+    private static Header<?> getJwtHeader(String jwt) {
         return Jwts.parserBuilder().build()
-                .parseClaimsJws(jwt)
+                .parseClaimsJwt(jwt)
                 .getHeader();
     }
 
@@ -59,13 +60,13 @@ public abstract class AbstractJwtParser<T extends JwtToken> implements JwtParser
 
     private KeyWithId getKeyWithId(String jwt) throws JwtParseAuthenticationException {
         val noSignString = getNoSignString(jwt);
-        val header = getJwsHeader(noSignString);
+        val header = getJwtHeader(noSignString);
         return getKey(header);
     }
 
-    private KeyWithId getKey(JwsHeader<?> header) {
-        val keyId = header.getKeyId();
-        val algorithm = header.getAlgorithm();
+    private KeyWithId getKey(Header<?> header) {
+        val keyId = CastUtils.cast(header.get(JwsHeader.KEY_ID), String.class);
+        val algorithm = CastUtils.cast(header.get(JwsHeader.ALGORITHM), String.class);
         if (keyId == null || algorithm == null) {
             return null;
         }

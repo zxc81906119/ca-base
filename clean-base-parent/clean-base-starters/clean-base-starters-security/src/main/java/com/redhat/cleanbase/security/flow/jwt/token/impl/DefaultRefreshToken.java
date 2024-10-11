@@ -1,10 +1,7 @@
 package com.redhat.cleanbase.security.flow.jwt.token.impl;
 
 import com.redhat.cleanbase.security.flow.jwt.token.RefreshToken;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.util.Date;
@@ -28,6 +25,6 @@ public class DefaultRefreshToken implements RefreshToken {
     private Date creationTime;
 
     @NotNull
-    @Past
+    @Future
     private Date expireTime;
 }

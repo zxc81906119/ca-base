@@ -2,6 +2,7 @@ package com.redhat.cleanbase.security.flow.jwt.token.writer.impl;
 
 import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowProperties;
 import com.redhat.cleanbase.security.flow.jwt.token.AccessToken;
+import com.redhat.cleanbase.security.flow.jwt.token.JwtToken;
 import com.redhat.cleanbase.security.flow.jwt.token.RefreshToken;
 import com.redhat.cleanbase.security.flow.jwt.token.model.RsTokenInfo;
 import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
@@ -12,6 +13,7 @@ import lombok.val;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class DefaultTokenRsWriter implements TokenRsWriter {
@@ -35,24 +37,26 @@ public class DefaultTokenRsWriter implements TokenRsWriter {
                         .getRsParamName();
 
         val accessTokenString = at.getTokenString();
-        val refreshTokenString = rt.getTokenString();
-
-        val bodyBuilder = ResponseEntity.ok();
+        val refreshTokenString =
+                Optional.ofNullable(rt)
+                        .map(JwtToken::getTokenString)
+                        .orElse(null);
         if (Boolean.TRUE.equals(jwtFlowProperties.getIsTokenInRsHeader())) {
-            bodyBuilder.headers((headers) -> {
-                headers.set(accessTokenParamName, accessTokenString);
-                headers.set(refreshTokenParamName, refreshTokenString);
-            });
-        } else {
-            val rsTokenInfo = RsTokenInfo.builder()
-                    .accessTokenParamName(accessTokenParamName)
-                    .accessTokenString(accessTokenString)
-                    .refreshTokenString(refreshTokenString)
-                    .refreshTokenParamName(refreshTokenParamName)
+            return ResponseEntity.noContent()
+                    .headers((headers) -> {
+                        headers.set(accessTokenParamName, accessTokenString);
+                        headers.set(refreshTokenParamName, refreshTokenString);
+                    })
                     .build();
-            bodyBuilder.body(getTokenRsBody(rsTokenInfo));
         }
-        return bodyBuilder.build();
+
+        val rsTokenInfo = RsTokenInfo.builder()
+                .accessTokenParamName(accessTokenParamName)
+                .accessTokenString(accessTokenString)
+                .refreshTokenString(refreshTokenString)
+                .refreshTokenParamName(refreshTokenParamName)
+                .build();
+        return ResponseEntity.ok(getTokenRsBody(rsTokenInfo));
     }
 
     protected Object getTokenRsBody(RsTokenInfo rsTokenInfo) {

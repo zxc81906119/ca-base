@@ -2110,8 +2110,13 @@ public final class HttpSecurity extends AbstractConfiguredSecurityBuilder<Defaul
         return getOrApply(new FormLoginConfigurer<>());
     }
 
-    public HttpSecurity platformFormLogin(UsernamePasswordAuthenticationFilter filter, Customizer<PlatformFormLoginConfigurer<HttpSecurity>> platformFormLoginConfigurerCustomizer) throws Exception {
-        platformFormLoginConfigurerCustomizer.customize(getOrApply(new PlatformFormLoginConfigurer<>(filter)));
+    public HttpSecurity platformFormLogin(UsernamePasswordAuthenticationFilter filter, Customizer<PlatformFormLoginConfigurer<HttpSecurity>> customizer) throws Exception {
+        customizer.customize(getOrApply(new PlatformFormLoginConfigurer<>(filter)));
+        return HttpSecurity.this;
+    }
+
+    public HttpSecurity platformFormLogin(Customizer<PlatformFormLoginConfigurer<HttpSecurity>> customizer) throws Exception {
+        customizer.customize(getOrApply(new PlatformFormLoginConfigurer<>(null)));
         return HttpSecurity.this;
     }
 

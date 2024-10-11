@@ -52,9 +52,6 @@ public abstract class AbstractJwtTokenGenerator<T extends JwtToken, TS extends J
             jwtBuilder.setHeaderParam(JwsHeader.ALGORITHM, signatureAlgorithm.getValue());
         }
 
-        // todo enum 供選擇,也可以不設定
-//        jwtBuilder.compressWith(new GzipCompressionCodec());
-
         // customPayload
         val customPayload = getClaims(ts);
         if (customPayload != null) {

@@ -11,7 +11,6 @@ import java.nio.file.AccessDeniedException;
 @Slf4j
 public class AccessDeniedExceptionHandler implements RqExceptionCondition<AccessDeniedException> {
 
-
     @Override
     public ResponseEntity<?> handle(HttpServletRequest request, AccessDeniedException e) {
         log.error("AccessDenied Exception : {}", e.getMessage(), e);

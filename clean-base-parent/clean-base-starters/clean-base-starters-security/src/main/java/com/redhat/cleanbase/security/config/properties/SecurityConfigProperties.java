@@ -2,7 +2,6 @@ package com.redhat.cleanbase.security.config.properties;
 
 import com.redhat.cleanbase.security.constants.SecurityConstants;
 import com.redhat.cleanbase.security.flow.SecurityFlowType;
-import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowProperties;
 import com.redhat.cleanbase.web.servlet.utils.WebUtils;
 import jakarta.servlet.DispatcherType;
 import lombok.Data;
@@ -28,8 +27,6 @@ import java.util.stream.Collectors;
 public class SecurityConfigProperties {
 
     private SecurityFlowType securityFlowType;
-
-    private JwtFlowProperties jwtFlowProperties = new JwtFlowProperties();
 
     private CorsProperties corsProperties = new CorsProperties();
 
@@ -341,4 +338,6 @@ public class SecurityConfigProperties {
 
 
     }
+
+
 }

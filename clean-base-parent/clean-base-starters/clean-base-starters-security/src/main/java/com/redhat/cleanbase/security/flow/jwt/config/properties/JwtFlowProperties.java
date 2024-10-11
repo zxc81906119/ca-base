@@ -1,15 +1,18 @@
 package com.redhat.cleanbase.security.flow.jwt.config.properties;
 
 import com.redhat.cleanbase.security.config.properties.TimeProperties;
+import com.redhat.cleanbase.security.constants.SecurityConstants;
 import com.redhat.cleanbase.security.flow.jwt.key.model.impl.DefaultKeyInfo;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+@ConfigurationProperties(value = SecurityConstants.JWT_PROP_PREFIX)
 @Data
 public class JwtFlowProperties {
 
@@ -43,11 +46,12 @@ public class JwtFlowProperties {
 
     @Data
     public static class RefreshTokenProperties {
+        public static final String REFRESH_TOKEN = "refresh-token";
+
         private Boolean isRenew;
-
         private String uri = "/token/refresh";
-        private String rsParamName = "refresh-token";
-
+        private String rsParamName = REFRESH_TOKEN;
+        private String rqParamName = REFRESH_TOKEN;
         private TimeProperties timeout = new TimeProperties(10L, TimeUnit.MINUTES);
     }
 
