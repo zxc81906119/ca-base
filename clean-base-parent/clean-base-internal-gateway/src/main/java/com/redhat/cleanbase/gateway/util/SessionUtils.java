@@ -20,7 +20,6 @@ public final class SessionUtils {
         return getWebSessionSync(exchange, null);
     }
 
-
     public static Optional<WebSession> getWebSessionSync(ServerWebExchange exchange, Executor executor) {
         try {
             return getWebSessionReactive(exchange)
