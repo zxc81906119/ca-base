@@ -12,6 +12,7 @@ import com.redhat.cleanbase.security.flow.jwt.lock.ResourceLock;
 import com.redhat.cleanbase.security.flow.jwt.parser.RefreshTokenParser;
 import com.redhat.cleanbase.security.flow.jwt.token.AccessToken;
 import com.redhat.cleanbase.security.flow.jwt.token.RefreshToken;
+import com.redhat.cleanbase.security.flow.jwt.token.getter.RqRefreshTokenGetter;
 import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
 import com.redhat.cleanbase.security.flow.jwt.validator.RefreshTokenValidator;
 import com.redhat.cleanbase.web.servlet.exception.handler.impl.RqDelegateExceptionHandler;
@@ -39,6 +40,7 @@ public abstract class RefreshTokenFilter<AT extends AccessToken, ATS extends Acc
     private final ResourceLock resourceLock;
     private final TokenRsWriter tokenRsWriter;
     private final JwtCacheManager jwtCacheManager;
+    private final RqRefreshTokenGetter rqRefreshTokenGetter;
     private final RefreshTokenParser<RT> refreshTokenParser;
     private final RefreshTokenValidator<RT> refreshTokenValidator;
     private final RqDelegateExceptionHandler rqDelegateExceptionHandler;
@@ -52,7 +54,9 @@ public abstract class RefreshTokenFilter<AT extends AccessToken, ATS extends Acc
                 .matches(request);
     }
 
-    protected abstract Optional<String> getRefreshTokenString(HttpServletRequest request);
+    protected Optional<String> getRefreshTokenString(HttpServletRequest request) {
+        return rqRefreshTokenGetter.getToken(request);
+    }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) {

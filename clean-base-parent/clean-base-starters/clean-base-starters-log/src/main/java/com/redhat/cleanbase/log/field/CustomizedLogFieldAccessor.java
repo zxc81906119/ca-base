@@ -2,7 +2,6 @@ package com.redhat.cleanbase.log.field;
 
 import com.redhat.cleanbase.common.type.IdentifiableGetter;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.slf4j.MDC;
 
 import java.util.List;
@@ -20,11 +19,11 @@ public class CustomizedLogFieldAccessor<T extends CustomizedLogField> extends Id
     }
 
     public void set(String name, String value) {
-        val identifiable = getIdentifiable(name);
-        if (identifiable == null) {
-            log.warn("logField : {} 非由本處理器管轄", name);
-        }
+        getIdentifiableOpt(name)
+                .orElseThrow(() -> new RuntimeException("不存在客製化欄位 : %s".formatted(name)));
+
         log.info("set mdc name: {} , value: {} ", name, value);
+
         MDC.put(name, value);
     }
 

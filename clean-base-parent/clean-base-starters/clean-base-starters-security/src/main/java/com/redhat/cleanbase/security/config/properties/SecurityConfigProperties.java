@@ -55,7 +55,7 @@ public class SecurityConfigProperties {
 
     @Data
     public static class LogoutProperties implements ConfigurableProperties<LogoutConfigurer<?>> {
-        private String url;
+        private String url = "/logout";
 
         public void config(LogoutConfigurer<?> logoutConfigurer) {
             if (url != null && !url.isBlank()) {

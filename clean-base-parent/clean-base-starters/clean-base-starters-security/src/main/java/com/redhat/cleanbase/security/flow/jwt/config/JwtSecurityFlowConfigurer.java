@@ -8,6 +8,7 @@ import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowPropertie
 import com.redhat.cleanbase.security.flow.jwt.filter.AccessTokenVerifyFilter;
 import com.redhat.cleanbase.security.flow.jwt.filter.BaseLoginFilter;
 import com.redhat.cleanbase.security.flow.jwt.filter.RefreshTokenFilter;
+import com.redhat.cleanbase.security.flow.jwt.filter.RefreshTokenVerifyFilter;
 import com.redhat.cleanbase.security.flow.jwt.filter.provider.LoginProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -23,6 +24,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @RequiredArgsConstructor
 @Configuration
@@ -37,9 +39,11 @@ public class JwtSecurityFlowConfigurer implements SecurityFlowConfigurer {
     private final BaseLoginFilter<?> baseLoginFilter;
     private final JwtFlowProperties jwtFlowProperties;
     private final AccessDeniedHandler accessDeniedHandler;
+    private final LogoutSuccessHandler logoutSuccessHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final RefreshTokenFilter<?, ?, ?, ?> refreshTokenFilter;
     private final AccessTokenVerifyFilter<?> accessTokenVerifyFilter;
+    private final RefreshTokenVerifyFilter<?> refreshTokenVerifyFilter;
 
     @Override
     public void validateProperties(SecurityConfigProperties properties) throws SecurityPropValidationException {
@@ -71,8 +75,9 @@ public class JwtSecurityFlowConfigurer implements SecurityFlowConfigurer {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
-                .addFilterBefore(refreshTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(accessTokenVerifyFilter, LogoutFilter.class)
+                .addFilterAfter(refreshTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(refreshTokenVerifyFilter, LogoutFilter.class)
+                .addFilterAfter(accessTokenVerifyFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(baseLoginFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(loginProvider)
                 .sessionManagement(
@@ -83,7 +88,10 @@ public class JwtSecurityFlowConfigurer implements SecurityFlowConfigurer {
                     configurer.accessDeniedHandler(accessDeniedHandler);
                     configurer.authenticationEntryPoint(authenticationEntryPoint);
                 })
-                .logout((configurer) -> configurer.addLogoutHandler(logoutHandler));
+                .logout((configurer) -> {
+                    configurer.addLogoutHandler(logoutHandler);
+                    configurer.logoutSuccessHandler(logoutSuccessHandler);
+                });
 
     }
 

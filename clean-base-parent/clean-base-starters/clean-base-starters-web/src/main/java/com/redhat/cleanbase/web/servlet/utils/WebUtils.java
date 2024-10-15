@@ -17,6 +17,11 @@ public final class WebUtils {
                 .map(ServletRequestAttributes::getRequest);
     }
 
+    public static boolean isWebServlet() {
+        return getHttpServletRequest()
+                .isPresent();
+    }
+
     public static Optional<String> getRequestURI() {
         return getHttpServletRequest()
                 .map(HttpServletRequest::getRequestURI);

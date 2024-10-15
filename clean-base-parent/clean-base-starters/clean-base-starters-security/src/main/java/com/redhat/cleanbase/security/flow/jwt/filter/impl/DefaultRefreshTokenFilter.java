@@ -9,30 +9,20 @@ import com.redhat.cleanbase.security.flow.jwt.generator.AbstractAccessTokenGener
 import com.redhat.cleanbase.security.flow.jwt.generator.AbstractRefreshTokenGenerator;
 import com.redhat.cleanbase.security.flow.jwt.lock.ResourceLock;
 import com.redhat.cleanbase.security.flow.jwt.parser.RefreshTokenParser;
+import com.redhat.cleanbase.security.flow.jwt.token.getter.RqRefreshTokenGetter;
 import com.redhat.cleanbase.security.flow.jwt.token.impl.DefaultAccessToken;
 import com.redhat.cleanbase.security.flow.jwt.token.impl.DefaultRefreshToken;
 import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
 import com.redhat.cleanbase.security.flow.jwt.validator.RefreshTokenValidator;
 import com.redhat.cleanbase.web.servlet.exception.handler.impl.RqDelegateExceptionHandler;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
-
-import java.util.Optional;
 
 @Slf4j
 public class DefaultRefreshTokenFilter extends RefreshTokenFilter<DefaultAccessToken, DefaultAccessTokenDataSource, DefaultRefreshToken, DefaultRefreshTokenDataSource> {
 
-    public DefaultRefreshTokenFilter(JwtFlowProperties jwtProperties, ResourceLock resourceLock, TokenRsWriter tokenRsWriter, JwtCacheManager jwtCacheManager, RefreshTokenParser<DefaultRefreshToken> refreshTokenParser, RefreshTokenValidator<DefaultRefreshToken> refreshTokenValidator, RqDelegateExceptionHandler rqDelegateExceptionHandler, AbstractAccessTokenGenerator<DefaultAccessToken, DefaultAccessTokenDataSource> accessTokenGenerator, AbstractRefreshTokenGenerator<DefaultRefreshToken, DefaultRefreshTokenDataSource> refreshTokenGenerator) {
-        super(jwtProperties, resourceLock, tokenRsWriter, jwtCacheManager, refreshTokenParser, refreshTokenValidator, rqDelegateExceptionHandler, accessTokenGenerator, refreshTokenGenerator);
-    }
 
-    @Override
-    protected Optional<String> getRefreshTokenString(HttpServletRequest request) {
-        val rqParamName = jwtProperties.getRefreshTokenProperties().getRqParamName();
-        return Optional.ofNullable(request.getParameter(rqParamName))
-                .filter((token) -> !token.isBlank())
-                .map(String::trim);
+    public DefaultRefreshTokenFilter(JwtFlowProperties jwtProperties, ResourceLock resourceLock, TokenRsWriter tokenRsWriter, JwtCacheManager jwtCacheManager, RqRefreshTokenGetter rqRefreshTokenGetter, RefreshTokenParser<DefaultRefreshToken> refreshTokenParser, RefreshTokenValidator<DefaultRefreshToken> refreshTokenValidator, RqDelegateExceptionHandler rqDelegateExceptionHandler, AbstractAccessTokenGenerator<DefaultAccessToken, DefaultAccessTokenDataSource> accessTokenGenerator, AbstractRefreshTokenGenerator<DefaultRefreshToken, DefaultRefreshTokenDataSource> refreshTokenGenerator) {
+        super(jwtProperties, resourceLock, tokenRsWriter, jwtCacheManager, rqRefreshTokenGetter, refreshTokenParser, refreshTokenValidator, rqDelegateExceptionHandler, accessTokenGenerator, refreshTokenGenerator);
     }
 
     @Override

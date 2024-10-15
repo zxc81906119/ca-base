@@ -3,11 +3,7 @@ package com.redhat.cleanbase.common.type;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
@@ -23,7 +19,7 @@ public abstract class ConditionSelector<I, C extends Condition<I>> {
 
     public List<C> getConditions(I i) {
         return getConditionStream(i)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Stream<C> getConditionStream(I i) {

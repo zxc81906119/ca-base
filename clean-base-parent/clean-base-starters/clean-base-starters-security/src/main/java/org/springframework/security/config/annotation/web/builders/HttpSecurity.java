@@ -17,6 +17,8 @@
 package org.springframework.security.config.annotation.web.builders;
 
 import com.redhat.cleanbase.security.flow.form_login.config.PlatformFormLoginConfigurer;
+import com.redhat.cleanbase.security.flow.jwt.config.PlatformJwtLoginConfigurer;
+import com.redhat.cleanbase.security.flow.jwt.filter.BaseLoginFilter;
 import io.micrometer.observation.ObservationRegistry;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -2110,8 +2112,17 @@ public final class HttpSecurity extends AbstractConfiguredSecurityBuilder<Defaul
         return getOrApply(new FormLoginConfigurer<>());
     }
 
+    public HttpSecurity platformJwtLogin(BaseLoginFilter<?> filter, Customizer<PlatformJwtLoginConfigurer<HttpSecurity>> customizer) throws Exception {
+        customizer.customize(getOrApply(new PlatformJwtLoginConfigurer<>(filter)));
+        addFilterAt(filter, UsernamePasswordAuthenticationFilter.class);
+        return HttpSecurity.this;
+    }
+
     public HttpSecurity platformFormLogin(UsernamePasswordAuthenticationFilter filter, Customizer<PlatformFormLoginConfigurer<HttpSecurity>> customizer) throws Exception {
         customizer.customize(getOrApply(new PlatformFormLoginConfigurer<>(filter)));
+        if (filter != null) {
+            addFilterAt(filter, UsernamePasswordAuthenticationFilter.class);
+        }
         return HttpSecurity.this;
     }
 

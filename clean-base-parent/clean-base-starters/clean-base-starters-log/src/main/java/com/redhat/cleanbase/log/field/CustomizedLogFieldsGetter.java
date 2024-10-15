@@ -1,8 +1,8 @@
 package com.redhat.cleanbase.log.field;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 @FunctionalInterface
-public interface CustomizedLogFieldsGetter {
-    List<? extends CustomizedLogField> get();
+public interface CustomizedLogFieldsGetter extends Supplier<List<? extends CustomizedLogField>> {
 }

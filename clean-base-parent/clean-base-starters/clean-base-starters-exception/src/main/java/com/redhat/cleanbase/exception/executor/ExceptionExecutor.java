@@ -62,30 +62,30 @@ public class ExceptionExecutor<O, R extends Closeable> {
             throw new UnsupportedOperationException("至少提供 try function 執行");
         };
 
-        val dataWithException = new TryActionResult<O>();
+        val tryActionResult = new TryActionResult<O>();
         try {
-            dataWithException.setData(finalTryFunc.call());
+            tryActionResult.setData(finalTryFunc.call());
         } catch (Exception execException) {
-            if (catchFunc != null) {
-                try {
-                    dataWithException.setData(catchFunc.doAction(execException));
-                } catch (Exception catchException) {
-                    setExceptionAndProcess(dataWithException, execException, catchException);
-                }
+            if (catchFunc == null) {
+                tryActionResult.setException(execException);
             } else {
-                dataWithException.setException(execException);
+                try {
+                    tryActionResult.setData(catchFunc.doAction(execException));
+                } catch (Exception catchException) {
+                    setExceptionAndProcess(tryActionResult, execException, catchException);
+                }
             }
         } finally {
             if (finallyFunc != null) {
                 try {
                     finallyFunc.doAction();
                 } catch (Exception finallyException) {
-                    val postCatchException = dataWithException.getException();
-                    setExceptionAndProcess(dataWithException, postCatchException, finallyException);
+                    val postCatchException = tryActionResult.getException();
+                    setExceptionAndProcess(tryActionResult, postCatchException, finallyException);
                 }
             }
         }
-        return dataWithException;
+        return tryActionResult;
     }
 
     public void setExceptionAndProcess(@NonNull TryActionResult<O> tryActionResult, Exception oldException, @NonNull Exception newException) {

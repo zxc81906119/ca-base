@@ -38,7 +38,7 @@ public class HSJwtAlgKeyGetter extends AbstractJwtAlgKeyGetterCondition<DefaultK
         }
 
         val kid = keyInfo.getKid();
-        val privateKey = keyInfo.getPrivateKey();
+        val privateKey = keyInfo.getBase64PrivateKey();
 
         if (kid == null || privateKey == null) {
             return null;
@@ -47,8 +47,7 @@ public class HSJwtAlgKeyGetter extends AbstractJwtAlgKeyGetterCondition<DefaultK
         return KeyWithId.builder()
                 .kid(kid)
                 .key(Keys.hmacShaKeyFor(
-                        Base64.getDecoder()
-                                .decode(privateKey.getBytes())
+                        Base64.getDecoder().decode(privateKey)
                 ))
                 .build();
     }

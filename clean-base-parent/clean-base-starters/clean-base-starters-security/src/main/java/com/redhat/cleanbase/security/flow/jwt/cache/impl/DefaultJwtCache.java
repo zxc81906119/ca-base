@@ -6,10 +6,7 @@ import com.redhat.cleanbase.security.flow.jwt.lock.DataWithReadWriteLock;
 import com.redhat.cleanbase.security.flow.jwt.cache.AbstractJwtCache;
 import lombok.NonNull;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultJwtCache extends AbstractJwtCache {
@@ -48,7 +45,7 @@ public class DefaultJwtCache extends AbstractJwtCache {
 
     @Override
     public Set<String> getAttributeNames() {
-        return cache.keySet();
+        return Collections.unmodifiableSet(cache.keySet());
     }
 
     public Map<String, Object> getAttributes() {

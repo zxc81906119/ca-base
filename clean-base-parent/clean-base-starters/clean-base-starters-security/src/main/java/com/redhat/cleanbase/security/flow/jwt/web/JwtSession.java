@@ -42,9 +42,7 @@ public class JwtSession implements HttpSession {
 
     @Override
     public Object getAttribute(String name) {
-        return operate(() ->
-                jwtCache.getAttribute(name)
-        );
+        return operate(() -> jwtCache.getAttribute(name));
     }
 
     private <O, E extends Exception> O operate(@NonNull SessionOperator<O, E> sessionOperator) throws E {

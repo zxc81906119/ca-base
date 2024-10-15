@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.security.flow.jwt.filter;
 
 import com.redhat.cleanbase.security.flow.jwt.filter.model.impl.LoginAuthToken;
-import com.redhat.cleanbase.security.flow.jwt.converter.RequestConverter;
+import com.redhat.cleanbase.security.flow.jwt.converter.RequestDtoConverter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.*;
@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public abstract class BaseLoginFilter<T> extends UsernamePasswordAuthenticationFilter {
 
     @NonNull
-    private final RequestConverter<T> requestConverter;
+    private final RequestDtoConverter<T> requestDtoConverter;
 
     @Setter
     protected boolean postOnly = true;
@@ -35,10 +35,10 @@ public abstract class BaseLoginFilter<T> extends UsernamePasswordAuthenticationF
 
     @SneakyThrows
     protected LoginAuthToken rqToLoginAuthToken(HttpServletRequest request) {
-        val requestDto = requestConverter.convert(request);
-        return rqBodyToLoginAuthToken(requestDto);
+        val requestDto = requestDtoConverter.convert(request);
+        return rqDtoToLoginAuthToken(requestDto);
     }
 
-    protected abstract LoginAuthToken rqBodyToLoginAuthToken(T t);
+    protected abstract LoginAuthToken rqDtoToLoginAuthToken(T t);
 
 }

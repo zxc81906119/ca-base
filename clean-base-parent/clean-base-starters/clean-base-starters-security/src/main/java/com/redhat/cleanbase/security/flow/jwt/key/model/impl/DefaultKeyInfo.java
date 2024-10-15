@@ -13,8 +13,8 @@ public class DefaultKeyInfo implements KeyInfo {
     @EqualsAndHashCode.Include
     private String kid;
     // 對稱加密與非對稱加密皆有
-    private String privateKey;
+    private String base64PrivateKey;
     // 只有非對稱加密才有
-    private String publicKey;
+    private String base64PublicKey;
 
 }

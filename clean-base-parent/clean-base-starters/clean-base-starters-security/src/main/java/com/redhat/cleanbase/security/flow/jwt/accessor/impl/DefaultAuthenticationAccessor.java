@@ -4,7 +4,7 @@ import com.redhat.cleanbase.common.utils.CastUtils;
 import com.redhat.cleanbase.security.flow.jwt.accessor.AuthenticationAccessor;
 import com.redhat.cleanbase.security.flow.jwt.cache.JwtCache;
 import com.redhat.cleanbase.security.flow.jwt.filter.model.impl.LoginAuthToken;
-import com.redhat.cleanbase.security.flow.jwt.token.AccessToken;
+import com.redhat.cleanbase.security.flow.jwt.token.JwtToken;
 import lombok.val;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -23,7 +23,10 @@ public class DefaultAuthenticationAccessor implements AuthenticationAccessor<Use
     }
 
     @Override
-    public Authentication getAuthentication(AccessToken accessToken, JwtCache jwtCache) {
+    public Authentication getAuthentication(JwtToken jwtToken, JwtCache jwtCache) {
+        if (jwtCache == null) {
+            return null;
+        }
         val u = CastUtils.cast(jwtCache.getAttribute(USER), User.class);
         if (u == null) {
             throw new RuntimeException("user 莫名消失 , 請找 JwtCacheManager 之實作者發洩");

@@ -34,7 +34,7 @@ public enum ResponseCodeEnum implements ResponseCode {
 
     private final ResponseCode root;
 
-    private final StatusEnum statusEnum;
+    private final StatusEnum status;
 
     ResponseCodeEnum(String value) {
         this(value, null, null, null, StatusEnum.FAIL);
@@ -48,13 +48,13 @@ public enum ResponseCodeEnum implements ResponseCode {
         this(value, null, parent, null, StatusEnum.FAIL);
     }
 
-    ResponseCodeEnum(String value, HttpStatus httpStatus, StatusEnum statusEnum) {
-        this(value, httpStatus, null, null, statusEnum);
+    ResponseCodeEnum(String value, HttpStatus httpStatus, StatusEnum status) {
+        this(value, httpStatus, null, null, status);
     }
 
-    ResponseCodeEnum(String value, HttpStatus httpStatus, ResponseCode parent, String defaultMessage, StatusEnum statusEnum) {
+    ResponseCodeEnum(String value, HttpStatus httpStatus, ResponseCode parent, String defaultMessage, StatusEnum status) {
         this.value = value;
-        this.statusEnum = statusEnum;
+        this.status = status;
         this.defaultMessage = defaultMessage;
         this.httpStatus = Optional.ofNullable(httpStatus)
                 .orElse(HttpStatus.INTERNAL_SERVER_ERROR);
