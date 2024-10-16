@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.cache.manager.request.impl;
+package com.redhat.cleanbase.cache.manager.impl;
 
-import com.redhat.cleanbase.cache.manager.request.RequestCacheManager;
+import com.redhat.cleanbase.cache.manager.RequestCacheManager;
 import com.redhat.cleanbase.web.servlet.utils.WebUtils;
 import lombok.NonNull;
 import org.springframework.cache.Cache;

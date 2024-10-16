@@ -1,6 +1,6 @@
-package com.redhat.cleanbase.cache.manager.request.listener;
+package com.redhat.cleanbase.cache.manager.listener;
 
-import com.redhat.cleanbase.cache.manager.request.RequestCacheManager;
+import com.redhat.cleanbase.cache.manager.RequestCacheManager;
 import jakarta.servlet.ServletRequestEvent;
 import jakarta.servlet.ServletRequestListener;
 import lombok.NonNull;

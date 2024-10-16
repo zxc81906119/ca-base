@@ -2,6 +2,7 @@ package com.redhat.cleanbase.cache.resolver;
 
 import com.redhat.cleanbase.cache.manager.condition.CacheManagerCondition;
 import com.redhat.cleanbase.common.spring.AppContext;
+import com.redhat.cleanbase.common.type.DataWithId;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -70,36 +71,29 @@ public class MultiCacheManagerCacheResolver implements CacheResolver {
     private static Object getCacheKey(CacheOperationInvocationContext<?> cacheContext, CacheableOperation cacheableOperation) {
         val method = cacheContext.getMethod();
         val args = cacheContext.getArgs();
-
-        val evaluationContext = new MethodBasedEvaluationContext(
-                cacheableOperation,
-                method,
-                args,
-                new DefaultParameterNameDiscoverer()
-        );
-
-        try {
-            val opKey = cacheableOperation.getKey();
-            if (StringUtils.hasText(opKey)) {
-                val exp = new SpelExpressionParser().parseExpression(opKey);
-                return exp.getValue(evaluationContext, String.class);
-            }
-            // ref: CacheAspectSupport
-            val keyGeneratorStr = cacheableOperation.getKeyGenerator();
-            val target = cacheContext.getTarget();
-            if (StringUtils.hasText(keyGeneratorStr)) {
-                val keyGenerator =
-                        AppContext.getBean(KeyGenerator.class, keyGeneratorStr)
-                                .orElseThrow();
-                return keyGenerator.generate(target, method, args);
-            }
-            return AppContext.getBean(KeyGenerator.class)
-                    .orElseGet(SimpleKeyGenerator::new)
-                    .generate(target, method, args);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return null;
+        val opKey = cacheableOperation.getKey();
+        if (StringUtils.hasText(opKey)) {
+            val evaluationContext = new MethodBasedEvaluationContext(
+                    cacheableOperation,
+                    method,
+                    args,
+                    new DefaultParameterNameDiscoverer()
+            );
+            val exp = new SpelExpressionParser().parseExpression(opKey);
+            return exp.getValue(evaluationContext, String.class);
         }
+        // ref: CacheAspectSupport
+        val keyGenerator = getKeyGenerator(cacheableOperation.getKeyGenerator());
+        return keyGenerator.generate(cacheContext.getTarget(), method, args);
+    }
+
+    private static KeyGenerator getKeyGenerator(String keyGeneratorStr) {
+        if (StringUtils.hasText(keyGeneratorStr)) {
+            return AppContext.getBean(KeyGenerator.class, keyGeneratorStr);
+        }
+        val beanOrNull = AppContext.getBeanOrNull(KeyGenerator.class);
+        return Optional.ofNullable(beanOrNull)
+                .orElseGet(SimpleKeyGenerator::new);
     }
 
     private static Optional<Object> getCacheVal(Cache cache, Object key) {
@@ -119,17 +113,14 @@ public class MultiCacheManagerCacheResolver implements CacheResolver {
         if (CollectionUtils.isEmpty(cacheNames)) {
             return List.of();
         }
-        val cacheWithIndices = getCacheWithIndices(cacheNames);
-        val caches = cacheWithIndices.stream()
-                .map(CacheWithIndex::data)
-                .toList();
+        val caches = getCaches(cacheNames);
         if (operation instanceof CacheableOperation cacheableOperation) {
             fillCaches(context, cacheableOperation, caches);
         }
         return caches;
     }
 
-    private PriorityQueue<CacheWithIndex> getCacheWithIndices(Set<String> cacheNames) {
+    private List<Cache> getCaches(Set<String> cacheNames) {
         val priorityQueue = new PriorityQueue<>(Comparator.comparingInt(CacheWithIndex::id));
         for (String cacheName : cacheNames) {
             val index = getCacheManagerIndex(cacheName);
@@ -140,7 +131,9 @@ public class MultiCacheManagerCacheResolver implements CacheResolver {
             val cache = Objects.requireNonNull(cacheManager.getCache(cacheName), "正常實做不會出現這個問題");
             priorityQueue.add(new CacheWithIndex(cache, index));
         }
-        return priorityQueue;
+        return priorityQueue.stream()
+                .map(CacheWithIndex::data)
+                .toList();
     }
 
     private Integer getCacheManagerIndex(String cacheName) {
@@ -173,12 +166,6 @@ public class MultiCacheManagerCacheResolver implements CacheResolver {
             }
         }
         return cacheNameIndexMap;
-    }
-
-    public interface DataWithId<DATA, ID> {
-        DATA data();
-
-        ID id();
     }
 
     public record CacheWithIndex(Cache data, Integer id) implements DataWithId<Cache, Integer> {

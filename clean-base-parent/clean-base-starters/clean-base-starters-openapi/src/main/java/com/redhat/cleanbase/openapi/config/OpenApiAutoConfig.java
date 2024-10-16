@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.openapi.config;
 
-import com.redhat.cleanbase.code.response.ResponseCodeEnum;
+import com.redhat.cleanbase.code.response.ResponseCode;
 import com.redhat.cleanbase.common.utils.ReflectionUtils;
 import com.redhat.cleanbase.exception.context.GenericExceptionContext;
 import com.redhat.cleanbase.exception.info.ExceptionInfo;
@@ -34,38 +34,29 @@ public class OpenApiAutoConfig {
 
         val exceptionRespMap = new LinkedMultiValueMap<String, ExceptionInfoDetail>();
         for (Class<?> exceptionType : exceptionTypes) {
-            if (GenericExceptionContext.isGenericException(exceptionType) && ReflectionUtils.canInstance(exceptionType)) {
-                val exceptionInfoOpt = GenericExceptionContext.getExceptionInfoOpt(exceptionType);
-                exceptionInfoOpt.ifPresent((exceptionInfo) -> {
-                    val statusKey = String.valueOf(exceptionInfo.code().getRoot().getHttpStatus().value());
-                    exceptionRespMap.add(statusKey, new ExceptionInfoDetail(exceptionInfo, exceptionType));
-                });
+            if (GenericExceptionContext.isGenericException(exceptionType)
+                    && ReflectionUtils.canInstance(exceptionType)
+            ) {
+                GenericExceptionContext.getExceptionInfoOpt(exceptionType)
+                        .ifPresent((exceptionInfo) -> {
+                            val statusKey = String.valueOf(exceptionInfo.code().getRoot().getHttpStatus().value());
+                            exceptionRespMap.add(statusKey, new ExceptionInfoDetail(exceptionInfo, exceptionType));
+                        });
             }
         }
-
         // 造出每個狀態碼的 response
         for (Map.Entry<String, List<ExceptionInfoDetail>> entry : exceptionRespMap.entrySet()) {
             val titleExampleMap = new LinkedHashMap<String, Example>();
-
             val exceptionDetails = getSortedExceptionDetails(entry);
-
             for (ExceptionInfoDetail exceptionInfoDetail : exceptionDetails) {
-
                 val exceptionInfo = exceptionInfoDetail.exceptionInfo();
-
                 val responseCode = exceptionInfo.code();
-
-                val i18nKey = responseCode.getRoot().getI18nKey();
-
-                val annoTitle = exceptionInfo.title();
-
-                val title = getTitle(exceptionInfoDetail, i18nKey, annoTitle);
-
-                val example = getExample(exceptionInfo, responseCode, i18nKey);
-
+                // 規格就直接用預設值即可
+                val message = responseCode.getRoot().getDefaultMessage();
+                val title = getTitle(exceptionInfoDetail, message, exceptionInfo.title());
+                val example = getExample(exceptionInfo, responseCode, message);
                 putTileExample(titleExampleMap, title, example, exceptionInfo);
             }
-
             val httpStatus = entry.getKey();
             setApiResponse(operation, httpStatus, titleExampleMap);
         }
@@ -88,9 +79,12 @@ public class OpenApiAutoConfig {
     }
 
     private static List<ExceptionInfoDetail> getSortedExceptionDetails(Map.Entry<String, List<ExceptionInfoDetail>> entry) {
-        val exceptionDetails = entry.getValue();
-        exceptionDetails.sort(Comparator.comparingInt(exceptionInfoDetail -> Integer.parseInt(exceptionInfoDetail.exceptionInfo().code().getValue())));
-        return exceptionDetails;
+        return entry.getValue().stream()
+                .sorted(
+                        Comparator.comparingInt(exceptionInfoDetail ->
+                                Integer.parseInt(exceptionInfoDetail.exceptionInfo().code().getValue()))
+                )
+                .toList();
     }
 
     private static void putTileExample(Map<String, Example> examples, String title, String example, ExceptionInfo exceptionInfo) {
@@ -101,23 +95,19 @@ public class OpenApiAutoConfig {
         );
     }
 
-    private static String getExample(ExceptionInfo exceptionInfo, ResponseCodeEnum responseCodeEnum, String message) {
+    private static String getExample(ExceptionInfo exceptionInfo, ResponseCode responseCode, String message) {
         val exceptionRespBodyTemplate = """
                     {
                         "code": %s ,
                         "message": "%s",
-                        "data": {
-                            "timestamp": "2022-11-28T08:31:52.766+00:00",
-                            "path": "/api-path",
-                            "details": %s
-                        },
+                        "data": %s,
                         "traceId": "string"
                     }
                 """;
 
         val annoExample = exceptionInfo.example();
         return exceptionRespBodyTemplate.formatted(
-                responseCodeEnum.getValue()
+                responseCode.getValue()
                 , message
                 , StringUtils.hasText(annoExample) ?
                         annoExample
@@ -139,7 +129,10 @@ public class OpenApiAutoConfig {
         };
     }
 
-    private record ExceptionInfoDetail(@NonNull ExceptionInfo exceptionInfo, @NonNull Class<?> clazz) {
+    private record ExceptionInfoDetail(
+            @NonNull ExceptionInfo exceptionInfo,
+            @NonNull Class<?> clazz
+    ) {
     }
 
 }

@@ -8,6 +8,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Map;
 
 public final class ReflectionUtils {
     private ReflectionUtils() {
@@ -36,6 +37,10 @@ public final class ReflectionUtils {
 
     public static boolean canInstance(Class<?> someClass) {
         return !(isInterface(someClass) || isAbstract(someClass));
+    }
+
+    public static Map<String, Object> getAnnotationAttributes(Annotation annotation) {
+        return AnnotationUtils.getAnnotationAttributes(annotation);
     }
 
     public static boolean isAbstract(Class<?> someClass) {

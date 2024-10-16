@@ -22,7 +22,7 @@ public class CustomizedLogFieldAccessor<T extends CustomizedLogField> extends Id
         getIdentifiableOpt(name)
                 .orElseThrow(() -> new RuntimeException("不存在客製化欄位 : %s".formatted(name)));
 
-        log.info("set mdc name: {} , value: {} ", name, value);
+        log.info("set customized log field: {} , value: {} ", name, value);
 
         MDC.put(name, value);
     }

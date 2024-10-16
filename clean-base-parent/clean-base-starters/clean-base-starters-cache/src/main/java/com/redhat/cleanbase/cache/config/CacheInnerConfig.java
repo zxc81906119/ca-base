@@ -1,25 +1,26 @@
 package com.redhat.cleanbase.cache.config;
 
-import com.redhat.cleanbase.cache.manager.request.listener.CustomServletRequestListener;
-import com.redhat.cleanbase.cache.manager.request.RequestCacheManager;
-import com.redhat.cleanbase.cache.manager.request.impl.DefaultRequestCacheManager;
-import com.redhat.cleanbase.cache.manager.condition.CacheManagerCondition;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.redhat.cleanbase.cache.consts.CacheConstants;
+import com.redhat.cleanbase.cache.manager.RequestCacheManager;
+import com.redhat.cleanbase.cache.manager.condition.RequestCacheManagerCondition;
+import com.redhat.cleanbase.cache.manager.condition.impl.DefaultRequestCacheManagerCondition;
 import com.redhat.cleanbase.cache.manager.getter.CacheManagersGetter;
+import com.redhat.cleanbase.cache.manager.impl.DefaultRequestCacheManager;
+import com.redhat.cleanbase.cache.manager.listener.CustomServletRequestListener;
 import jakarta.servlet.ServletRequestListener;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Collection;
+import java.time.Duration;
 import java.util.List;
 
 @Configuration
@@ -33,21 +34,35 @@ public class CacheInnerConfig {
         val manager = new SimpleCacheManager();
         manager.setCaches(
                 List.of(
-
+                        buildCaffeineCache(CacheConstants.CacheName.LOCAL_TEN_SEC, Duration.ofSeconds(10)),
+                        buildCaffeineCache(CacheConstants.CacheName.LOCAL_ONE_MIN, Duration.ofMinutes(1)),
+                        buildCaffeineCache(CacheConstants.CacheName.LOCAL_FIVE_MIN, Duration.ofMinutes(5)),
+                        buildCaffeineCache(CacheConstants.CacheName.LOCAL_TEN_MIN, Duration.ofMinutes(30)),
+                        buildCaffeineCache(CacheConstants.CacheName.LOCAL_ONE_HOUR, Duration.ofHours(1)),
+                        buildCaffeineCache(CacheConstants.CacheName.LOCAL_ONE_DAY, Duration.ofDays(1))
                 )
         );
         return manager;
     }
 
-    @ConditionalOnBean(RequestCacheManagerCondition.class)
+    private CaffeineCache buildCaffeineCache(String name, Duration duration) {
+        return new CaffeineCache(name, Caffeine.newBuilder().expireAfterWrite(duration).build());
+    }
+
     @ConditionalOnMissingBean
     @Bean
     public CacheManagersGetter cacheManagersGetter(
-            RequestCacheManagerCondition condition,
+            ObjectProvider<RequestCacheManagerCondition> conditionObjectProvider,
             @Qualifier(LOCAL_CACHE_MANAGER) CacheManager localCacheManager
     ) {
-        return () -> List.of(condition, localCacheManager);
+        val condition = conditionObjectProvider.getIfAvailable();
+        val cacheManagers =
+                condition != null ?
+                        List.of(condition, localCacheManager)
+                        : List.of(localCacheManager);
+        return () -> cacheManagers;
     }
+
 
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     static class ServletConfig {
@@ -67,39 +82,6 @@ public class CacheInnerConfig {
         @Bean
         public ServletRequestListener customServletRequestListener(RequestCacheManager requestCacheManager) {
             return new CustomServletRequestListener(requestCacheManager);
-        }
-
-    }
-
-
-    @RequiredArgsConstructor
-    public abstract static class RequestCacheManagerCondition implements CacheManagerCondition {
-
-        public static final String RQ_CACHE_PREFIX = "rq:";
-
-        @NonNull
-        private final RequestCacheManager requestCacheManager;
-
-        @Override
-        public String getCacheNamePrefix() {
-            return RQ_CACHE_PREFIX;
-        }
-
-        @Override
-        public Cache getCache(@NonNull String name) {
-            return requestCacheManager.getCache(name);
-        }
-
-        @Override
-        public @NonNull Collection<String> getCacheNames() {
-            return requestCacheManager.getCacheNames();
-        }
-    }
-
-    public static class DefaultRequestCacheManagerCondition extends RequestCacheManagerCondition {
-
-        public DefaultRequestCacheManagerCondition(@NonNull RequestCacheManager requestCacheManager) {
-            super(requestCacheManager);
         }
 
     }
