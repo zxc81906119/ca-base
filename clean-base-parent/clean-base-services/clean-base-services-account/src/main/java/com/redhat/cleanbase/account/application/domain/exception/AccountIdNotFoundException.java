@@ -2,9 +2,9 @@ package com.redhat.cleanbase.account.application.domain.exception;
 
 import com.redhat.cleanbase.code.response.ResponseCodeEnum;
 import com.redhat.cleanbase.exception.base.GenericRtException;
-import com.redhat.cleanbase.exception.info.ExceptionInfo;
+import com.redhat.cleanbase.exception.info.DefaultExceptionInfoSpec;
 
-@ExceptionInfo(
+@DefaultExceptionInfoSpec(
         code = ResponseCodeEnum.ACCOUNT_ID_NOT_FOUND,
         desc = "帳戶唯一標示不存在"
 )

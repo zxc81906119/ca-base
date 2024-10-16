@@ -4,9 +4,9 @@ package com.redhat.cleanbase.account.application.domain.exception;
 import com.redhat.cleanbase.account.application.domain.model.MoneyVo;
 import com.redhat.cleanbase.code.response.ResponseCodeEnum;
 import com.redhat.cleanbase.exception.base.GenericRtException;
-import com.redhat.cleanbase.exception.info.ExceptionInfo;
+import com.redhat.cleanbase.exception.info.DefaultExceptionInfoSpec;
 
-@ExceptionInfo(
+@DefaultExceptionInfoSpec(
         code = ResponseCodeEnum.THRESHOLD_EXCEEDED,
         desc = "轉帳金額超出上限"
 )

@@ -1,10 +1,10 @@
 package com.redhat.cleanbase.consumer.common.exception;
 
 import com.redhat.cleanbase.exception.base.GenericException;
-import com.redhat.cleanbase.exception.info.ExceptionInfo;
+import com.redhat.cleanbase.exception.info.DefaultExceptionInfoSpec;
 import lombok.Getter;
 
-@ExceptionInfo(
+@DefaultExceptionInfoSpec(
         desc = "系統自定義錯誤"
 )
 @Getter
