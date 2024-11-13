@@ -2,13 +2,12 @@ package com.redhat.cleanbase.web.servlet.config;
 
 import com.redhat.cleanbase.convert.parser.JacksonJsonParser;
 import com.redhat.cleanbase.exception.handler.GenericExceptionFamilyHandler;
-import com.redhat.cleanbase.exception.condition.ExceptionCondition;
-import com.redhat.cleanbase.web.servlet.exception.handler.impl.DefaultExceptionHandler;
-import com.redhat.cleanbase.web.servlet.exception.handler.impl.DefaultGenericExceptionFamilyHandler;
-import com.redhat.cleanbase.web.servlet.exception.handler.impl.RqDelegateExceptionHandler;
+import com.redhat.cleanbase.web.servlet.exception.condition.RqExceptionCondition;
+import com.redhat.cleanbase.web.servlet.exception.handler.DefaultExceptionHandler;
+import com.redhat.cleanbase.web.servlet.exception.handler.DefaultGenericExceptionFamilyHandler;
+import com.redhat.cleanbase.web.servlet.exception.handler.RqDelegatingExceptionHandler;
 import com.redhat.cleanbase.web.servlet.response.processor.RsEntityRsWriter;
 import com.redhat.cleanbase.web.servlet.response.processor.impl.JsonRsEntityRsWriter;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,8 +27,11 @@ public class ServletWebAutoConfig {
     }
 
     @Bean
-    public RqDelegateExceptionHandler delegateExceptionHandler(List<ExceptionCondition<HttpServletRequest, ?>> exceptionConditionList, RsEntityRsWriter rsEntityRsWriter) {
-        return new RqDelegateExceptionHandler(exceptionConditionList, rsEntityRsWriter);
+    public RqDelegatingExceptionHandler delegateExceptionHandler(
+            List<RqExceptionCondition<?>> exceptionConditionList,
+            RsEntityRsWriter rsEntityRsWriter
+    ) {
+        return new RqDelegatingExceptionHandler(exceptionConditionList, rsEntityRsWriter);
     }
 
     @ConditionalOnMissingBean

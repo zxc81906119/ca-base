@@ -1,21 +1,21 @@
 package com.redhat.cleanbase.web.model.response;
 
 
-import com.redhat.cleanbase.code.response.ResponseCode;
-import com.redhat.cleanbase.code.response.ResponseCodeEnum;
 import com.redhat.cleanbase.i18n.msg_source.context.I18nContext;
 import com.redhat.cleanbase.i18n.msg_source.input.GenericI18nInput;
+import com.redhat.cleanbase.code.response.ResponseCode;
+import com.redhat.cleanbase.code.response.ResponseCodeEnum;
 import com.redhat.cleanbase.web.model.info.impl.ServiceAppInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.val;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 @Data
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
 @Schema(description = "交易結果物件")
 public class GenericResponse<T> implements WrapResponse<T, ServiceAppInfo> {
 

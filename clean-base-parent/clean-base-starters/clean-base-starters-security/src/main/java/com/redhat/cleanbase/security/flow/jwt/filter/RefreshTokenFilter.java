@@ -1,5 +1,6 @@
 package com.redhat.cleanbase.security.flow.jwt.filter;
 
+import com.redhat.cleanbase.common.lock.ResourceLock;
 import com.redhat.cleanbase.security.flow.jwt.cache.JwtCache;
 import com.redhat.cleanbase.security.flow.jwt.cache.manager.JwtCacheManager;
 import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowProperties;
@@ -8,14 +9,13 @@ import com.redhat.cleanbase.security.flow.jwt.datasource.RefreshTokenDataSource;
 import com.redhat.cleanbase.security.flow.jwt.exception.*;
 import com.redhat.cleanbase.security.flow.jwt.generator.AbstractAccessTokenGenerator;
 import com.redhat.cleanbase.security.flow.jwt.generator.AbstractRefreshTokenGenerator;
-import com.redhat.cleanbase.security.flow.jwt.lock.ResourceLock;
 import com.redhat.cleanbase.security.flow.jwt.parser.RefreshTokenParser;
 import com.redhat.cleanbase.security.flow.jwt.token.AccessToken;
 import com.redhat.cleanbase.security.flow.jwt.token.RefreshToken;
 import com.redhat.cleanbase.security.flow.jwt.token.getter.RqRefreshTokenGetter;
 import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
 import com.redhat.cleanbase.security.flow.jwt.validator.RefreshTokenValidator;
-import com.redhat.cleanbase.web.servlet.exception.handler.impl.RqDelegateExceptionHandler;
+import com.redhat.cleanbase.web.servlet.exception.handler.RqDelegatingExceptionHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,11 +39,11 @@ public abstract class RefreshTokenFilter<AT extends AccessToken, ATS extends Acc
     protected final JwtFlowProperties jwtProperties;
     private final ResourceLock resourceLock;
     private final TokenRsWriter tokenRsWriter;
-    private final JwtCacheManager jwtCacheManager;
+    private final JwtCacheManager<?> jwtCacheManager;
     private final RqRefreshTokenGetter rqRefreshTokenGetter;
     private final RefreshTokenParser<RT> refreshTokenParser;
     private final RefreshTokenValidator<RT> refreshTokenValidator;
-    private final RqDelegateExceptionHandler rqDelegateExceptionHandler;
+    private final RqDelegatingExceptionHandler rqDelegatingExceptionHandler;
     private final AbstractAccessTokenGenerator<AT, ATS> accessTokenGenerator;
     private final AbstractRefreshTokenGenerator<RT, RTS> refreshTokenGenerator;
 
@@ -83,7 +83,7 @@ public abstract class RefreshTokenFilter<AT extends AccessToken, ATS extends Acc
             refreshAccessToken(response, rqRefreshToken);
 
         } catch (JwtAuthenticationException e) {
-            rqDelegateExceptionHandler.handleAndWriteRs(request, response, e);
+            rqDelegatingExceptionHandler.handleAndWriteRs(request, response, e);
         }
     }
 

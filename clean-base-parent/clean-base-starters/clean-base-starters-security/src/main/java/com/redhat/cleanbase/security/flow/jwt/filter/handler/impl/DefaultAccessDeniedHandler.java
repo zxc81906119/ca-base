@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.security.flow.jwt.filter.handler.impl;
 
-import com.redhat.cleanbase.web.servlet.exception.handler.impl.RqDelegateExceptionHandler;
+import com.redhat.cleanbase.web.servlet.exception.handler.RqDelegatingExceptionHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,10 +13,10 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class DefaultAccessDeniedHandler implements AccessDeniedHandler {
 
-    private final RqDelegateExceptionHandler rqDelegateExceptionHandler;
+    private final RqDelegatingExceptionHandler rqDelegatingExceptionHandler;
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        rqDelegateExceptionHandler.handleAndWriteRs(request, response, accessDeniedException);
+        rqDelegatingExceptionHandler.handleAndWriteRs(request, response, accessDeniedException);
     }
 }

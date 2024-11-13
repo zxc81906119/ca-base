@@ -1,5 +1,7 @@
 package com.redhat.cleanbase.security.flow.jwt.config;
 
+import com.redhat.cleanbase.common.lock.ResourceLock;
+import com.redhat.cleanbase.common.lock.impl.DefaultResourceLock;
 import com.redhat.cleanbase.convert.parser.JacksonJsonParser;
 import com.redhat.cleanbase.security.config.properties.SecurityConfigProperties;
 import com.redhat.cleanbase.security.flow.jwt.accessor.AuthenticationAccessor;
@@ -39,8 +41,6 @@ import com.redhat.cleanbase.security.flow.jwt.key.getter.impl.HSJwtAlgKeyGetter;
 import com.redhat.cleanbase.security.flow.jwt.key.model.impl.DefaultKeyInfo;
 import com.redhat.cleanbase.security.flow.jwt.key.store.JwtKeyStore;
 import com.redhat.cleanbase.security.flow.jwt.key.store.impl.PropertiesJwtKeyStore;
-import com.redhat.cleanbase.security.flow.jwt.lock.ResourceLock;
-import com.redhat.cleanbase.security.flow.jwt.lock.impl.DefaultResourceLock;
 import com.redhat.cleanbase.security.flow.jwt.parser.AccessTokenParser;
 import com.redhat.cleanbase.security.flow.jwt.parser.RefreshTokenParser;
 import com.redhat.cleanbase.security.flow.jwt.parser.impl.DefaultAccessTokenParser;
@@ -59,7 +59,7 @@ import com.redhat.cleanbase.security.flow.jwt.validator.impl.DefaultAccessTokenV
 import com.redhat.cleanbase.security.flow.jwt.validator.impl.DefaultRefreshTokenValidator;
 import com.redhat.cleanbase.validation.GenericValidator;
 import com.redhat.cleanbase.web.model.request.GenericRequest;
-import com.redhat.cleanbase.web.servlet.exception.handler.impl.RqDelegateExceptionHandler;
+import com.redhat.cleanbase.web.servlet.exception.handler.RqDelegatingExceptionHandler;
 import com.redhat.cleanbase.web.servlet.response.processor.RsEntityRsWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -115,14 +115,14 @@ public class JwtSecurityFlowInnerConfigurer {
 
     @ConditionalOnMissingBean
     @Bean
-    public AccessDeniedHandler accessDeniedHandler(RqDelegateExceptionHandler rqDelegateExceptionHandler) {
-        return new DefaultAccessDeniedHandler(rqDelegateExceptionHandler);
+    public AccessDeniedHandler accessDeniedHandler(RqDelegatingExceptionHandler rqDelegatingExceptionHandler) {
+        return new DefaultAccessDeniedHandler(rqDelegatingExceptionHandler);
     }
 
     @ConditionalOnMissingBean
     @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint(RqDelegateExceptionHandler rqDelegateExceptionHandler) {
-        return new DefaultAuthenticationEntryPoint(rqDelegateExceptionHandler);
+    public AuthenticationEntryPoint authenticationEntryPoint(RqDelegatingExceptionHandler rqDelegatingExceptionHandler) {
+        return new DefaultAuthenticationEntryPoint(rqDelegatingExceptionHandler);
     }
 
     // todo 客製
@@ -173,8 +173,8 @@ public class JwtSecurityFlowInnerConfigurer {
 
     @ConditionalOnMissingBean
     @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler(RqDelegateExceptionHandler rqDelegateExceptionHandler) {
-        return new DefaultAuthenticationFailureHandler(rqDelegateExceptionHandler);
+    public AuthenticationFailureHandler authenticationFailureHandler(RqDelegatingExceptionHandler rqDelegatingExceptionHandler) {
+        return new DefaultAuthenticationFailureHandler(rqDelegatingExceptionHandler);
     }
 
     @ConditionalOnMissingBean
@@ -193,7 +193,7 @@ public class JwtSecurityFlowInnerConfigurer {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler(
             TokenRsWriter tokenRsWriter,
-            JwtCacheManager jwtCacheManager,
+            JwtCacheManager<?> jwtCacheManager,
             AuthenticationAccessor<User> authenticationAccessor,
             AbstractAccessTokenGenerator<DefaultAccessToken, DefaultAccessTokenDataSource> accessTokenGenerator,
             AbstractRefreshTokenGenerator<DefaultRefreshToken, DefaultRefreshTokenDataSource> refreshTokenGenerator
@@ -227,16 +227,16 @@ public class JwtSecurityFlowInnerConfigurer {
 
     @ConditionalOnMissingBean
     @Bean
-    public JwtCacheManager jwtCacheManager() {
+    public JwtCacheManager<?> jwtCacheManager() {
         return new DefaultJwtCacheManager();
     }
 
     @ConditionalOnMissingBean
     @Bean
     public AccessTokenVerifyFilter<?> accessTokenVerifyFilter(
-            AccessTokenValidator<DefaultAccessToken> jwtValidator, AccessTokenParser<DefaultAccessToken> jwtParser, JwtCacheManager jwtCacheManager, RqAccessTokenGetter rqAccessTokenGetter, AuthenticationAccessor<?> authenticationAccessor, RqDelegateExceptionHandler rqDelegateExceptionHandler
+            AccessTokenValidator<DefaultAccessToken> jwtValidator, AccessTokenParser<DefaultAccessToken> jwtParser, JwtCacheManager<?> jwtCacheManager, RqAccessTokenGetter rqAccessTokenGetter, AuthenticationAccessor<?> authenticationAccessor, RqDelegatingExceptionHandler rqDelegatingExceptionHandler
     ) {
-        return new DefaultAccessTokenVerifyFilter(jwtFlowProperties, jwtValidator, jwtParser, jwtCacheManager, rqAccessTokenGetter, authenticationAccessor, rqDelegateExceptionHandler);
+        return new DefaultAccessTokenVerifyFilter(jwtFlowProperties, jwtValidator, jwtParser, jwtCacheManager, rqAccessTokenGetter, authenticationAccessor, rqDelegatingExceptionHandler);
     }
 
     @ConditionalOnMissingBean
@@ -254,9 +254,9 @@ public class JwtSecurityFlowInnerConfigurer {
     @ConditionalOnMissingBean
     @Bean
     public RefreshTokenVerifyFilter<?> refreshTokenVerifyFilter(
-            RefreshTokenValidator<DefaultRefreshToken> jwtValidator, RefreshTokenParser<DefaultRefreshToken> jwtParser, JwtCacheManager jwtCacheManager, RqRefreshTokenGetter rqRefreshTokenGetter, AuthenticationAccessor<?> authenticationAccessor, RqDelegateExceptionHandler rqDelegateExceptionHandler, SecurityConfigProperties securityConfigProperties
+            RefreshTokenValidator<DefaultRefreshToken> jwtValidator, RefreshTokenParser<DefaultRefreshToken> jwtParser, JwtCacheManager<?> jwtCacheManager, RqRefreshTokenGetter rqRefreshTokenGetter, AuthenticationAccessor<?> authenticationAccessor, RqDelegatingExceptionHandler rqDelegatingExceptionHandler, SecurityConfigProperties securityConfigProperties
     ) {
-        return new DefaultRefreshTokenVerifyFilter(jwtFlowProperties, jwtValidator, jwtParser, jwtCacheManager, rqRefreshTokenGetter, authenticationAccessor, rqDelegateExceptionHandler, securityConfigProperties);
+        return new DefaultRefreshTokenVerifyFilter(jwtFlowProperties, jwtValidator, jwtParser, jwtCacheManager, rqRefreshTokenGetter, authenticationAccessor, rqDelegatingExceptionHandler, securityConfigProperties);
     }
 
     @ConditionalOnMissingBean
@@ -292,9 +292,9 @@ public class JwtSecurityFlowInnerConfigurer {
     @ConditionalOnMissingBean
     @Bean
     public RefreshTokenFilter<?, ?, ?, ?> refreshTokenFilter(
-            ResourceLock resourceLock, TokenRsWriter tokenRsWriter, JwtCacheManager jwtCacheManager, RqRefreshTokenGetter rqRefreshTokenGetter, RefreshTokenParser<DefaultRefreshToken> refreshTokenParser, RefreshTokenValidator<DefaultRefreshToken> refreshTokenValidator, RqDelegateExceptionHandler rqDelegateExceptionHandler, AbstractAccessTokenGenerator<DefaultAccessToken, DefaultAccessTokenDataSource> accessTokenGenerator, AbstractRefreshTokenGenerator<DefaultRefreshToken, DefaultRefreshTokenDataSource> refreshTokenGenerator
+            ResourceLock resourceLock, TokenRsWriter tokenRsWriter, JwtCacheManager<?> jwtCacheManager, RqRefreshTokenGetter rqRefreshTokenGetter, RefreshTokenParser<DefaultRefreshToken> refreshTokenParser, RefreshTokenValidator<DefaultRefreshToken> refreshTokenValidator, RqDelegatingExceptionHandler rqDelegatingExceptionHandler, AbstractAccessTokenGenerator<DefaultAccessToken, DefaultAccessTokenDataSource> accessTokenGenerator, AbstractRefreshTokenGenerator<DefaultRefreshToken, DefaultRefreshTokenDataSource> refreshTokenGenerator
     ) {
-        return new DefaultRefreshTokenFilter(jwtFlowProperties, resourceLock, tokenRsWriter, jwtCacheManager, rqRefreshTokenGetter, refreshTokenParser, refreshTokenValidator, rqDelegateExceptionHandler, accessTokenGenerator, refreshTokenGenerator);
+        return new DefaultRefreshTokenFilter(jwtFlowProperties, resourceLock, tokenRsWriter, jwtCacheManager, rqRefreshTokenGetter, refreshTokenParser, refreshTokenValidator, rqDelegatingExceptionHandler, accessTokenGenerator, refreshTokenGenerator);
     }
 
     @ConditionalOnMissingBean

@@ -1,6 +1,7 @@
 package com.redhat.cleanbase.cache.resolver;
 
 import com.redhat.cleanbase.cache.manager.condition.CacheManagerCondition;
+import com.redhat.cleanbase.cache.manager.getter.CacheManagersGetter;
 import com.redhat.cleanbase.common.spring.AppContext;
 import com.redhat.cleanbase.common.type.DataWithId;
 import lombok.NonNull;
@@ -25,12 +26,13 @@ public class MultiCacheManagerCacheResolver implements CacheResolver {
     private final List<CacheManager> conditions;
     private final Map<String, Integer> cacheNameIndexMap;
 
-    public MultiCacheManagerCacheResolver(@NonNull List<CacheManager> conditions) {
-        if (CollectionUtils.isEmpty(conditions)) {
+    public MultiCacheManagerCacheResolver(CacheManagersGetter cacheManagersGetter) {
+        val cacheManagers = cacheManagersGetter.get();
+        if (CollectionUtils.isEmpty(cacheManagers)) {
             throw new RuntimeException("必須提供至少一個 cache manager condition");
         }
-        this.conditions = conditions;
-        this.cacheNameIndexMap = toCacheNameIndexMap(conditions);
+        this.conditions = cacheManagers;
+        this.cacheNameIndexMap = toCacheNameIndexMap(cacheManagers);
     }
 
     private static void fillCaches(
@@ -137,7 +139,8 @@ public class MultiCacheManagerCacheResolver implements CacheResolver {
     }
 
     private Integer getCacheManagerIndex(String cacheName) {
-        return cacheNameIndexMap.computeIfAbsent(cacheName,
+        return cacheNameIndexMap.computeIfAbsent(
+                cacheName,
                 (name) ->
                         IntStream.range(0, conditions.size())
                                 .filter((index) ->

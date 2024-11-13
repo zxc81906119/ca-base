@@ -1,15 +1,15 @@
 package com.redhat.cleanbase.security.flow.jwt.filter;
 
 import com.redhat.cleanbase.security.flow.jwt.accessor.AuthenticationAccessor;
-import com.redhat.cleanbase.security.flow.jwt.cache.manager.JwtCacheManager;
-import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowProperties;
 import com.redhat.cleanbase.security.flow.jwt.exception.*;
 import com.redhat.cleanbase.security.flow.jwt.parser.AbstractJwtParser;
+import com.redhat.cleanbase.security.flow.jwt.validator.JwtValidator;
+import com.redhat.cleanbase.security.flow.jwt.cache.manager.JwtCacheManager;
+import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowProperties;
 import com.redhat.cleanbase.security.flow.jwt.token.JwtToken;
 import com.redhat.cleanbase.security.flow.jwt.token.getter.RqJwtTokenGetter;
-import com.redhat.cleanbase.security.flow.jwt.validator.JwtValidator;
 import com.redhat.cleanbase.security.flow.jwt.web.JwtRequest;
-import com.redhat.cleanbase.web.servlet.exception.handler.impl.RqDelegateExceptionHandler;
+import com.redhat.cleanbase.web.servlet.exception.handler.RqDelegatingExceptionHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,10 +30,10 @@ public abstract class JwtTokenVerifyFilter<T extends JwtToken> extends OncePerRe
 
     private final JwtValidator<T> jwtValidator;
     private final AbstractJwtParser<T> jwtParser;
-    private final JwtCacheManager jwtCacheManager;
+    private final JwtCacheManager<?> jwtCacheManager;
     private final RqJwtTokenGetter rqJwtTokenGetter;
     private final AuthenticationAccessor<?> authenticationAccessor;
-    private final RqDelegateExceptionHandler rqDelegateExceptionHandler;
+    private final RqDelegatingExceptionHandler rqDelegatingExceptionHandler;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -70,7 +70,7 @@ public abstract class JwtTokenVerifyFilter<T extends JwtToken> extends OncePerRe
             filterChain.doFilter(finalRq, response);
 
         } catch (JwtAuthenticationException e) {
-            rqDelegateExceptionHandler.handleAndWriteRs(request, response, e);
+            rqDelegatingExceptionHandler.handleAndWriteRs(request, response, e);
         }
 
     }

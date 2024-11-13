@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -51,8 +52,12 @@ public abstract class RsEntityRsWriter {
             if (response.isCommitted()) {
                 throw new RuntimeException("rs has committed , can't write");
             }
-            
-            response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+
+            val contentType = Optional.ofNullable(headers.getContentType())
+                    .map(MediaType::toString)
+                    .orElse(MediaType.APPLICATION_JSON_VALUE);
+
+            response.setHeader(HttpHeaders.CONTENT_TYPE, contentType);
             response.resetBuffer();
             response.getWriter()
                     .write(responseBody);

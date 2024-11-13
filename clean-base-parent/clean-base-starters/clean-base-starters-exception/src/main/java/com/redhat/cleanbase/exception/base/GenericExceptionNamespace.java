@@ -1,12 +1,12 @@
 package com.redhat.cleanbase.exception.base;
 
-import com.redhat.cleanbase.code.response.ResponseCode;
 import com.redhat.cleanbase.common.utils.CastUtils;
 import com.redhat.cleanbase.exception.content.GenericExceptionContent;
 import com.redhat.cleanbase.exception.context.GenericExceptionContext;
 import com.redhat.cleanbase.exception.info.ExceptionInfo;
 import com.redhat.cleanbase.i18n.msg_source.context.I18nContext;
 import com.redhat.cleanbase.i18n.msg_source.input.GenericI18nInput;
+import com.redhat.cleanbase.code.response.ResponseCode;
 import lombok.val;
 
 import java.util.Optional;

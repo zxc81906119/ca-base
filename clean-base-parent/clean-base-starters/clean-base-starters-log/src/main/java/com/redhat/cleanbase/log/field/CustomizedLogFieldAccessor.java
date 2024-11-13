@@ -7,14 +7,14 @@ import org.slf4j.MDC;
 import java.util.List;
 
 @Slf4j
-public class CustomizedLogFieldAccessor<T extends CustomizedLogField> extends IdentifiableGetter<String, T> {
+public class CustomizedLogFieldAccessor extends IdentifiableGetter<String, CustomizedLogField> {
 
 
-    public CustomizedLogFieldAccessor(List<T> identifiableList) {
+    public CustomizedLogFieldAccessor(List<CustomizedLogField> identifiableList) {
         super(identifiableList);
     }
 
-    public void set(T customizedLogField, String value) {
+    public void set(CustomizedLogField customizedLogField, String value) {
         set(customizedLogField.name(), value);
     }
 

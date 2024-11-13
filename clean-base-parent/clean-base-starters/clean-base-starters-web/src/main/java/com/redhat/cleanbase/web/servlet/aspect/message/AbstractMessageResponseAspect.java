@@ -1,5 +1,6 @@
 package com.redhat.cleanbase.web.servlet.aspect.message;
 
+import com.redhat.cleanbase.web.servlet.context.IAppInfoContext;
 import com.redhat.cleanbase.common.utils.StringUtil;
 import com.redhat.cleanbase.exception.base.GenericException;
 import com.redhat.cleanbase.exception.base.GenericExceptionNamespace;
@@ -7,7 +8,6 @@ import com.redhat.cleanbase.exception.base.GenericRtException;
 import com.redhat.cleanbase.web.model.info.IClientAppInfo;
 import com.redhat.cleanbase.web.model.info.IGenericAppInfo;
 import com.redhat.cleanbase.web.model.info.IServiceAppInfo;
-import com.redhat.cleanbase.web.servlet.context.IAppInfoContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -96,7 +96,7 @@ public abstract class AbstractMessageResponseAspect<C extends IClientAppInfo, S 
     /**
      * 印出HTTP相關資訊
      */
-    private void printHttpInfo() {
+    protected void printHttpInfo() {
 
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder
                 .currentRequestAttributes();
@@ -136,7 +136,7 @@ public abstract class AbstractMessageResponseAspect<C extends IClientAppInfo, S 
     /**
      * 取得使用者IP
      */
-    private String getIp() {
+    protected String getIp() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder
                 .currentRequestAttributes();
         HttpServletRequest request = attr.getRequest();

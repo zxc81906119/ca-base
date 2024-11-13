@@ -1,12 +1,10 @@
 package com.redhat.cleanbase.exception.handler;
 
-import org.springframework.http.ResponseEntity;
-
-public interface ExceptionHandler<D, E extends Exception> {
+public interface ExceptionHandler<D, R, E extends Exception> {
 
     default boolean isSupported(D d, E e) {
         return true;
     }
 
-    ResponseEntity<?> handle(D d, E e);
+    R handle(D d, E e);
 }

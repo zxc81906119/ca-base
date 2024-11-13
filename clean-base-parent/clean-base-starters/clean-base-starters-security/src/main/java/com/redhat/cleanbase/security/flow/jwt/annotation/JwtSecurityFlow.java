@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.security.flow.jwt.annotation;
 
-import com.redhat.cleanbase.security.flow.SecurityFlowType;
 import com.redhat.cleanbase.security.flow.config.condition.ConditionalOnSecurityType;
+import com.redhat.cleanbase.security.flow.SecurityFlowType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

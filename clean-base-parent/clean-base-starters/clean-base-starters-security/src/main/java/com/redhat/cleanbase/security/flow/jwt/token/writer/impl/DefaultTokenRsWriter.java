@@ -6,19 +6,22 @@ import com.redhat.cleanbase.security.flow.jwt.token.JwtToken;
 import com.redhat.cleanbase.security.flow.jwt.token.RefreshToken;
 import com.redhat.cleanbase.security.flow.jwt.token.model.RsTokenInfo;
 import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
+import com.redhat.cleanbase.web.model.response.GenericResponse;
 import com.redhat.cleanbase.web.servlet.response.processor.RsEntityRsWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Map;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 public class DefaultTokenRsWriter implements TokenRsWriter {
 
-    private final JwtFlowProperties jwtFlowProperties;
+    protected final JwtFlowProperties jwtFlowProperties;
     private final RsEntityRsWriter rsEntityRsWriter;
 
     @Override
@@ -28,41 +31,63 @@ public class DefaultTokenRsWriter implements TokenRsWriter {
     }
 
     protected ResponseEntity<?> toResponseEntity(AccessToken at, RefreshToken rt) {
-
-        val accessTokenParamName =
-                jwtFlowProperties.getAccessTokenProperties()
-                        .getRsParamName();
-        val refreshTokenParamName =
-                jwtFlowProperties.getRefreshTokenProperties()
-                        .getRsParamName();
-
-        val accessTokenString = at.getTokenString();
-        val refreshTokenString =
-                Optional.ofNullable(rt)
-                        .map(JwtToken::getTokenString)
-                        .orElse(null);
         if (Boolean.TRUE.equals(jwtFlowProperties.getIsTokenInRsHeader())) {
             return ResponseEntity.noContent()
-                    .headers((headers) -> {
-                        headers.set(accessTokenParamName, accessTokenString);
-                        headers.set(refreshTokenParamName, refreshTokenString);
-                    })
+                    .headers((headers) ->
+                            Optional.ofNullable(getTokenRsHeader(at, rt))
+                                    .ifPresent(headers::putAll))
                     .build();
         }
-
-        val rsTokenInfo = RsTokenInfo.builder()
-                .accessTokenParamName(accessTokenParamName)
-                .accessTokenString(accessTokenString)
-                .refreshTokenString(refreshTokenString)
-                .refreshTokenParamName(refreshTokenParamName)
-                .build();
-        return ResponseEntity.ok(getTokenRsBody(rsTokenInfo));
+        return ResponseEntity.ok(getTokenRsBody(at, rt));
     }
 
-    protected Object getTokenRsBody(RsTokenInfo rsTokenInfo) {
-        return Map.of(
-                rsTokenInfo.getAccessTokenParamName(), rsTokenInfo.getAccessTokenString(),
-                rsTokenInfo.getRefreshTokenParamName(), rsTokenInfo.getRefreshTokenString()
-        );
+    protected RsTokenInfo getRsTokenInfo(AccessToken accessToken, RefreshToken refreshToken) {
+        val accessTokenProperties = jwtFlowProperties.getAccessTokenProperties();
+        val refreshTokenProperties = jwtFlowProperties.getRefreshTokenProperties();
+        val builder = RsTokenInfo.builder();
+        val refreshTokenOptional = Optional.ofNullable(refreshToken);
+        builder
+                .accessTokenParamName(accessTokenProperties.getRsParamName())
+                .accessTokenExpirationParamName(accessTokenProperties.getExpirationRsParamName())
+                .accessTokenExpiration(accessToken.getExpireTime().getTime())
+                .refreshTokenExpiration(
+                        refreshTokenOptional
+                                .map(JwtToken::getExpireTime)
+                                .map(Date::getTime)
+                )
+                .refreshTokenExpirationParamName(refreshTokenProperties.getExpirationRsParamName())
+                .refreshTokenParamName(refreshTokenProperties.getRsParamName())
+                .accessTokenString(accessToken.getTokenString())
+                .refreshTokenString(
+                        refreshTokenOptional
+                                .map(JwtToken::getTokenString)
+                )
+        ;
+
+        return builder.build();
+    }
+
+    protected HttpHeaders getTokenRsHeader(AccessToken at, RefreshToken rt) {
+        val rsTokenInfo = getRsTokenInfo(at, rt);
+        val httpHeaders = new HttpHeaders();
+        httpHeaders.set(rsTokenInfo.getAccessTokenParamName(), rsTokenInfo.getAccessTokenString());
+        httpHeaders.set(rsTokenInfo.getAccessTokenExpirationParamName(), rsTokenInfo.getAccessTokenExpiration().toString());
+        rsTokenInfo.getRefreshTokenString()
+                .ifPresent((refreshToken) -> httpHeaders.set(rsTokenInfo.getRefreshTokenParamName(), refreshToken));
+        rsTokenInfo.getRefreshTokenExpiration()
+                .ifPresent((refreshTokenExpiration) -> httpHeaders.set(rsTokenInfo.getRefreshTokenExpirationParamName(), refreshTokenExpiration.toString()));
+        return httpHeaders;
+    }
+
+    protected Object getTokenRsBody(AccessToken at, RefreshToken rt) {
+        val rsTokenInfo = getRsTokenInfo(at, rt);
+        val map = new HashMap<>();
+        map.put(rsTokenInfo.getAccessTokenParamName(), rsTokenInfo.getAccessTokenString());
+        map.put(rsTokenInfo.getAccessTokenExpirationParamName(), rsTokenInfo.getAccessTokenExpiration().toString());
+        rsTokenInfo.getRefreshTokenString()
+                .ifPresent((refreshTokenString) -> map.put(rsTokenInfo.getRefreshTokenParamName(), refreshTokenString));
+        rsTokenInfo.getRefreshTokenExpiration()
+                .ifPresent((refreshTokenExpiration) -> map.put(rsTokenInfo.getRefreshTokenExpirationParamName(), refreshTokenExpiration.toString()));
+        return GenericResponse.ok(map);
     }
 }

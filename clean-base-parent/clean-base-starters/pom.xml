@@ -92,6 +92,21 @@
                 <artifactId>clean-base-starters-convert</artifactId>
                 <version>${clean-base.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-actuator</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-job</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redhat</groupId>
+                <artifactId>clean-base-starters-batch</artifactId>
+                <version>${clean-base.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <modules>
@@ -109,5 +124,8 @@
         <module>clean-base-starters-ddd</module>
         <module>clean-base-starters-jpa</module>
         <module>clean-base-starters-security</module>
+        <module>clean-base-starters-actuator</module>
+        <module>clean-base-starters-job</module>
+        <module>clean-base-starters-batch</module>
     </modules>
 </project>

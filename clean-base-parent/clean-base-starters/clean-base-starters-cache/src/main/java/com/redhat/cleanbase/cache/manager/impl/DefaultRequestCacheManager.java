@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.cache.manager.impl;
 
-import com.redhat.cleanbase.cache.manager.RequestCacheManager;
 import com.redhat.cleanbase.web.servlet.utils.WebUtils;
+import com.redhat.cleanbase.cache.manager.RequestCacheManager;
 import lombok.NonNull;
 import org.springframework.cache.Cache;
 import org.springframework.cache.concurrent.ConcurrentMapCache;

@@ -1,8 +1,8 @@
 package com.redhat.cleanbase.security.config.properties;
 
 import com.redhat.cleanbase.security.constants.SecurityConstants;
-import com.redhat.cleanbase.security.flow.SecurityFlowType;
 import com.redhat.cleanbase.web.servlet.utils.WebUtils;
+import com.redhat.cleanbase.security.flow.SecurityFlowType;
 import jakarta.servlet.DispatcherType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

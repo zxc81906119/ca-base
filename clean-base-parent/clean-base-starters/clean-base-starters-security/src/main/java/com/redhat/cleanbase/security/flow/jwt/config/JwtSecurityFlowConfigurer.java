@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.security.flow.jwt.config;
 
-import com.redhat.cleanbase.security.config.properties.SecurityConfigProperties;
 import com.redhat.cleanbase.security.exception.SecurityPropValidationException;
+import com.redhat.cleanbase.security.config.properties.SecurityConfigProperties;
 import com.redhat.cleanbase.security.flow.config.SecurityFlowConfigurer;
 import com.redhat.cleanbase.security.flow.jwt.annotation.JwtSecurityFlow;
 import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowProperties;

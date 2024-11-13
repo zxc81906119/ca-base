@@ -1,8 +1,8 @@
 package com.redhat.cleanbase.web.model.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.redhat.cleanbase.web.model.info.impl.ClientAppInfo;
 import com.redhat.cleanbase.web.model.request.paging.ReqPageInfo;
+import com.redhat.cleanbase.web.model.info.impl.ClientAppInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

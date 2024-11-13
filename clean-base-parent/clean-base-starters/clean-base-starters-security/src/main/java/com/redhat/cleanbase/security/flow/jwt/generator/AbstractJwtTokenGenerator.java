@@ -1,7 +1,6 @@
 package com.redhat.cleanbase.security.flow.jwt.generator;
 
 
-import com.redhat.cleanbase.security.config.properties.TimeProperties;
 import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowProperties;
 import com.redhat.cleanbase.security.flow.jwt.datasource.JwtDataSource;
 import com.redhat.cleanbase.security.flow.jwt.key.getter.impl.DelegateJwtKeyGetter;
@@ -81,7 +80,7 @@ public abstract class AbstractJwtTokenGenerator<T extends JwtToken, TS extends J
         return token;
     }
 
-    protected abstract TimeProperties getExpireTimeInfo(TS ts);
+    protected abstract JwtFlowProperties.TimeProperties getExpireTimeInfo(TS ts);
 
     protected abstract String getId(TS ts);
 

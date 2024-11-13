@@ -1,15 +1,15 @@
 package com.redhat.cleanbase.security.flow.jwt.filter.handler;
 
+import com.redhat.cleanbase.security.flow.jwt.accessor.AuthenticationAccessor;
 import com.redhat.cleanbase.security.flow.jwt.cache.manager.JwtCacheManager;
 import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowProperties;
 import com.redhat.cleanbase.security.flow.jwt.datasource.AccessTokenDataSource;
 import com.redhat.cleanbase.security.flow.jwt.datasource.RefreshTokenDataSource;
-import com.redhat.cleanbase.security.flow.jwt.accessor.AuthenticationAccessor;
-import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
 import com.redhat.cleanbase.security.flow.jwt.generator.AbstractAccessTokenGenerator;
 import com.redhat.cleanbase.security.flow.jwt.generator.AbstractRefreshTokenGenerator;
 import com.redhat.cleanbase.security.flow.jwt.token.AccessToken;
 import com.redhat.cleanbase.security.flow.jwt.token.RefreshToken;
+import com.redhat.cleanbase.security.flow.jwt.token.writer.TokenRsWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +26,7 @@ public abstract class JwtAuthenticationSuccessHandler<AT extends AccessToken, RT
     protected final JwtFlowProperties jwtProperties;
 
     private final TokenRsWriter tokenRsWriter;
-    private final JwtCacheManager jwtCacheManager;
+    private final JwtCacheManager<?> jwtCacheManager;
     private final AuthenticationAccessor<?> authenticationAccessor;
     private final AbstractAccessTokenGenerator<AT, ATS> accessTokenGenerator;
     private final AbstractRefreshTokenGenerator<RT, RTS> refreshTokenGenerator;
@@ -34,7 +34,7 @@ public abstract class JwtAuthenticationSuccessHandler<AT extends AccessToken, RT
     public JwtAuthenticationSuccessHandler(
             TokenRsWriter tokenRsWriter,
             JwtFlowProperties jwtProperties,
-            JwtCacheManager jwtCacheManager,
+            JwtCacheManager<?> jwtCacheManager,
             AuthenticationAccessor<?> authenticationAccessor,
             AbstractAccessTokenGenerator<AT, ATS> accessTokenGenerator,
             AbstractRefreshTokenGenerator<RT, RTS> refreshTokenGenerator
@@ -47,6 +47,9 @@ public abstract class JwtAuthenticationSuccessHandler<AT extends AccessToken, RT
         this.authenticationAccessor = authenticationAccessor;
     }
 
+
+
+    @Override
     @SneakyThrows
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,

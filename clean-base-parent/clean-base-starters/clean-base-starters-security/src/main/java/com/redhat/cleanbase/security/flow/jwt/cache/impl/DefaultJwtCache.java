@@ -1,9 +1,9 @@
 package com.redhat.cleanbase.security.flow.jwt.cache.impl;
 
 
-import com.redhat.cleanbase.security.flow.jwt.cache.func.InvalidateCacheFunc;
-import com.redhat.cleanbase.security.flow.jwt.lock.DataWithReadWriteLock;
+import com.redhat.cleanbase.common.lock.DataWithReadWriteLock;
 import com.redhat.cleanbase.security.flow.jwt.cache.AbstractJwtCache;
+import com.redhat.cleanbase.security.flow.jwt.cache.func.InvalidateCacheFunc;
 import lombok.NonNull;
 
 import java.util.*;

@@ -61,6 +61,7 @@ public class MsgSourceAutoConfig {
         return new PropMsgSourceProxy(delegate);
     }
 
+    @ConditionalOnMissingBean(CustomMsgSourceSelector.class)
     @Bean
     public CustomMsgSourceSelector customMsgSelector(List<CustomMsgSource> customMsgSources) {
         return new CustomMsgSourceSelector(customMsgSources);

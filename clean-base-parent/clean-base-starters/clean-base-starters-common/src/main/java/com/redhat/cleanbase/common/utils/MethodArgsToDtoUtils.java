@@ -49,12 +49,11 @@ public final class MethodArgsToDtoUtils {
     public static StringBuilder getClassName(Type type, Set<String> generics) {
         val stringBuilder = new StringBuilder();
 
-        if (type instanceof Class) {
-            return stringBuilder.append(((Class<?>) type).getSimpleName());
+        if (type instanceof Class<?> clazz) {
+            return stringBuilder.append(clazz.getSimpleName());
         }
 
-        if (type instanceof ParameterizedType) {
-            val parameterizedType = (ParameterizedType) type;
+        if (type instanceof ParameterizedType parameterizedType) {
             stringBuilder
                     .append(((Class<?>) parameterizedType.getRawType()).getSimpleName())
                     .append("<");
@@ -76,8 +75,7 @@ public final class MethodArgsToDtoUtils {
             return stringBuilder.append(typeName);
         }
 
-        if (type instanceof WildcardType) {
-            val wildcardType = (WildcardType) type;
+        if (type instanceof WildcardType wildcardType) {
             val upperBounds = wildcardType.getUpperBounds();
             val lowerBounds = wildcardType.getLowerBounds();
             stringBuilder.append("?");

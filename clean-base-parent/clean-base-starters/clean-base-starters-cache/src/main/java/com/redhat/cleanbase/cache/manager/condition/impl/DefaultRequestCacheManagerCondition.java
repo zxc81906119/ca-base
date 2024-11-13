@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.cache.manager.condition.impl;
 
-import com.redhat.cleanbase.cache.manager.condition.RequestCacheManagerCondition;
 import com.redhat.cleanbase.cache.manager.RequestCacheManager;
+import com.redhat.cleanbase.cache.manager.condition.RequestCacheManagerCondition;
 import lombok.NonNull;
 
 public class DefaultRequestCacheManagerCondition extends RequestCacheManagerCondition {

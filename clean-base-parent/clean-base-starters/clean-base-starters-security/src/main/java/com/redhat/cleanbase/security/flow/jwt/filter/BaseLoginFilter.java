@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.security.flow.jwt.filter;
 
-import com.redhat.cleanbase.security.flow.jwt.filter.model.impl.LoginAuthToken;
 import com.redhat.cleanbase.security.flow.jwt.converter.RequestDtoConverter;
+import com.redhat.cleanbase.security.flow.jwt.filter.model.impl.LoginAuthToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.*;

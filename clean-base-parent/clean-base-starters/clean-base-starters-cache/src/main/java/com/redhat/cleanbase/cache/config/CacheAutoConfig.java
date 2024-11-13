@@ -19,11 +19,11 @@ public class CacheAutoConfig implements CachingConfigurer {
 
     private final CacheManagersGetter cacheManagersGetter;
 
-    @Bean
     @ConditionalOnMissingBean
+    @Bean
     @Override
     public CacheResolver cacheResolver() {
-        return new MultiCacheManagerCacheResolver(cacheManagersGetter.get());
+        return new MultiCacheManagerCacheResolver(cacheManagersGetter);
     }
 
 }

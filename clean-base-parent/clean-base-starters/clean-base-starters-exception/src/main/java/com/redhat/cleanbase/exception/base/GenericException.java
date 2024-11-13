@@ -1,8 +1,8 @@
 package com.redhat.cleanbase.exception.base;
 
 
-import com.redhat.cleanbase.code.response.ResponseCode;
 import com.redhat.cleanbase.exception.content.GenericExceptionContent;
+import com.redhat.cleanbase.code.response.ResponseCode;
 import lombok.Getter;
 import lombok.Setter;
 

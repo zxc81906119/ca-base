@@ -1,9 +1,9 @@
 package com.redhat.cleanbase.openapi.config;
 
-import com.redhat.cleanbase.code.response.ResponseCode;
 import com.redhat.cleanbase.common.utils.ReflectionUtils;
 import com.redhat.cleanbase.exception.context.GenericExceptionContext;
 import com.redhat.cleanbase.exception.info.ExceptionInfo;
+import com.redhat.cleanbase.code.response.ResponseCode;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.Content;

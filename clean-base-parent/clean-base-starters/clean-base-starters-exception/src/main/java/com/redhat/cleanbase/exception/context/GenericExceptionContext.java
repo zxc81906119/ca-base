@@ -1,5 +1,7 @@
 package com.redhat.cleanbase.exception.context;
 
+import com.redhat.cleanbase.exception.info.ExceptionInfo;
+import com.redhat.cleanbase.exception.info.ExceptionInfoSpec;
 import com.redhat.cleanbase.code.response.ResponseCode;
 import com.redhat.cleanbase.common.constants.GenericConstants;
 import com.redhat.cleanbase.common.spring.SelfDestroyBean;
@@ -7,8 +9,6 @@ import com.redhat.cleanbase.common.utils.CastUtils;
 import com.redhat.cleanbase.common.utils.ReflectionUtils;
 import com.redhat.cleanbase.exception.base.GenericException;
 import com.redhat.cleanbase.exception.base.GenericRtException;
-import com.redhat.cleanbase.exception.info.ExceptionInfo;
-import com.redhat.cleanbase.exception.info.ExceptionInfoSpec;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -64,7 +64,7 @@ public final class GenericExceptionContext {
         return new ArrayList<>(GENERIC_RT_EXCEPTIONS);
     }
 
-    private static boolean isJdkAnnotation(Class<?> clazz) {
+    private static boolean isJdkClazz(Class<?> clazz) {
         val pakkage = clazz.getPackage();
         return pakkage != null && (pakkage.getName().startsWith("java.") || pakkage.getName().startsWith("jdk.internal"));
     }
@@ -73,7 +73,7 @@ public final class GenericExceptionContext {
     public static Annotation getExceptionInfoByClazz(Class<?> clazz) {
         if (clazz == null
                 || clazz.isAnnotation()
-                || isJdkAnnotation(clazz)
+                || isJdkClazz(clazz)
         ) {
             return null;
         }
@@ -92,7 +92,7 @@ public final class GenericExceptionContext {
         }
         val linkedList = new LinkedList<Annotation>();
         for (Annotation annotation : annotations) {
-            if (!isJdkAnnotation(annotation.annotationType())) {
+            if (!isJdkClazz(annotation.annotationType())) {
                 linkedList.add(annotation);
             }
         }
@@ -106,7 +106,7 @@ public final class GenericExceptionContext {
                 return pop;
             }
             for (Annotation annotation : clazz.getAnnotations()) {
-                if (!isJdkAnnotation(annotation.annotationType())) {
+                if (!isJdkClazz(annotation.annotationType())) {
                     linkedList.add(annotation);
                 }
             }

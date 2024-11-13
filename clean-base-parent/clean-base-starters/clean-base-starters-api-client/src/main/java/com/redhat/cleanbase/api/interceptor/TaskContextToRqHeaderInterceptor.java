@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.api.interceptor;
 
-import com.redhat.cleanbase.api.context.TaskContext;
 import com.redhat.cleanbase.api.data.source.FeignClientDataSource;
+import com.redhat.cleanbase.api.context.TaskContext;
 import lombok.val;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;

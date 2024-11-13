@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.ddd.usecase;
 
-import com.redhat.cleanbase.common.closer.ResourceCloserCollector;
 import com.redhat.cleanbase.ddd.readmodel.ReadModel;
+import com.redhat.cleanbase.common.closer.ResourceCloserCollector;
 import lombok.NonNull;
 import lombok.val;
 

@@ -1,10 +1,10 @@
 package com.redhat.cleanbase.security.config;
 
+import com.redhat.cleanbase.security.flow.jwt.config.JwtSecurityFlowConfigurer;
 import com.redhat.cleanbase.security.config.properties.SecurityConfigProperties;
 import com.redhat.cleanbase.security.flow.config.SecurityFlowConfigurer;
 import com.redhat.cleanbase.security.flow.form_login.config.FormLoginSecurityFlowConfigurer;
 import com.redhat.cleanbase.security.flow.config.getter.SecurityFlowConfigurerGetter;
-import com.redhat.cleanbase.security.flow.jwt.config.JwtSecurityFlowConfigurer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;

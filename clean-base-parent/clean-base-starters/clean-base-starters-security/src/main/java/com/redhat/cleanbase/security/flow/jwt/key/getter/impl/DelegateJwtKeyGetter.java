@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.security.flow.jwt.key.getter.impl;
 
-import com.redhat.cleanbase.common.type.ConditionSelector;
 import com.redhat.cleanbase.security.flow.jwt.key.condition.JwtAlgKeyGetterCondition;
+import com.redhat.cleanbase.common.type.ConditionSelector;
 import com.redhat.cleanbase.security.flow.jwt.key.getter.JwtAlgKeyGetter;
 import com.redhat.cleanbase.security.flow.jwt.key.model.KeyWithId;
 import io.jsonwebtoken.SignatureAlgorithm;

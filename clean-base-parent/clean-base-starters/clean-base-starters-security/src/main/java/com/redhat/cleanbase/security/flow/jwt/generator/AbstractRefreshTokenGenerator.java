@@ -1,6 +1,5 @@
 package com.redhat.cleanbase.security.flow.jwt.generator;
 
-import com.redhat.cleanbase.security.config.properties.TimeProperties;
 import com.redhat.cleanbase.security.flow.jwt.config.properties.JwtFlowProperties;
 import com.redhat.cleanbase.security.flow.jwt.datasource.RefreshTokenDataSource;
 import com.redhat.cleanbase.security.flow.jwt.key.getter.impl.DelegateJwtKeyGetter;
@@ -20,7 +19,7 @@ public abstract class AbstractRefreshTokenGenerator<T extends RefreshToken, TS e
     }
 
     @Override
-    protected TimeProperties getExpireTimeInfo(TS ts) {
+    protected JwtFlowProperties.TimeProperties getExpireTimeInfo(TS ts) {
         return jwtProperties.getRefreshTokenProperties()
                 .getTimeout();
     }

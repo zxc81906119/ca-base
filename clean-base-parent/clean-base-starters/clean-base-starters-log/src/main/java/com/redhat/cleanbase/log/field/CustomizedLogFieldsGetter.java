@@ -4,5 +4,5 @@ import java.util.List;
 import java.util.function.Supplier;
 
 @FunctionalInterface
-public interface CustomizedLogFieldsGetter extends Supplier<List<? extends CustomizedLogField>> {
+public interface CustomizedLogFieldsGetter extends Supplier<List<CustomizedLogField>> {
 }

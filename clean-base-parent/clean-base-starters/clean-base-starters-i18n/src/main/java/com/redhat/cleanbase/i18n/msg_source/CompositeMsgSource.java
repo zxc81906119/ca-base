@@ -2,8 +2,8 @@ package com.redhat.cleanbase.i18n.msg_source;
 
 import com.redhat.cleanbase.i18n.msg_source.base.ConvenientMsgSource;
 import com.redhat.cleanbase.i18n.msg_source.base.CustomMsgSource;
-import com.redhat.cleanbase.i18n.msg_source.condition.selector.CustomMsgSourceSelector;
 import com.redhat.cleanbase.i18n.msg_source.input.I18nInput;
+import com.redhat.cleanbase.i18n.msg_source.condition.selector.CustomMsgSourceSelector;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -29,11 +29,11 @@ public class CompositeMsgSource implements ConvenientMsgSource {
 
     @Override
     public String getMessage(I18nInput input, Locale locale) {
-        val inputClass = input.getClass();
+
         val finalLocale = Optional.ofNullable(locale)
                 .orElseGet(LocaleContextHolder::getLocale);
 
-        return customMsgSourceSelector.getConditionStream(inputClass)
+        return customMsgSourceSelector.getConditionStream(input.getClass())
                 .map((msgSource) -> getMsgOrNull(input, finalLocale, msgSource))
                 .filter(Objects::nonNull)
                 .findFirst()

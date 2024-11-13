@@ -1,6 +1,6 @@
 package com.redhat.cleanbase.security.flow.jwt.filter.handler.impl;
 
-import com.redhat.cleanbase.web.servlet.exception.handler.impl.RqDelegateExceptionHandler;
+import com.redhat.cleanbase.web.servlet.exception.handler.RqDelegatingExceptionHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +12,10 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @RequiredArgsConstructor
 public class DefaultAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-    private final RqDelegateExceptionHandler rqDelegateExceptionHandler;
+    private final RqDelegatingExceptionHandler rqDelegatingExceptionHandler;
 
     @Override
     public final void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) {
-        rqDelegateExceptionHandler.handleAndWriteRs(request, response, e);
+        rqDelegatingExceptionHandler.handleAndWriteRs(request, response, e);
     }
 }

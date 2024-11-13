@@ -1,7 +1,7 @@
 package com.redhat.cleanbase.security.exception;
 
-import com.redhat.cleanbase.exception.base.GenericException;
 import com.redhat.cleanbase.exception.info.DefaultExceptionInfoSpec;
+import com.redhat.cleanbase.exception.base.GenericException;
 
 @DefaultExceptionInfoSpec
 public class SecurityPropValidationException extends GenericException {

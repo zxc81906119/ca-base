@@ -13,5 +13,9 @@
             <groupId>com.redhat</groupId>
             <artifactId>clean-base-starters-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+        </dependency>
     </dependencies>
 </project>
